@@ -64,7 +64,7 @@
 
 @section('footer')
 <!-- <script src="../bower_components/moment/moment.js"></script> -->
-<script src="{{asset('js/plugins/fullcalendar/lib/moment.min.js)}}"></script>
+<script src="{{asset('js/plugins/fullcalendar/lib/moment.min.js')}}"></script>
 <script src="{{asset('js/plugins/fullcalendar/lib/jquery.min.js')}}"></script>
 <script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
 <script src="{{asset('js/plugins/fullcalendar/fullcalendar.min.js')}}"></script>
