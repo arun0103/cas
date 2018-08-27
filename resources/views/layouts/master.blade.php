@@ -371,7 +371,7 @@
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="{{asset('js/plugins/jquery/jquery-3.3.1.js')}}"></script>
-<script src="{{asset('js/plugins/jqueryUI/jquery-ui.min.js')}}"></script>
+<script src="{{asset('js/plugins/fullcalendar/lib/jquery-ui.min.js')}}"></script>
 <script src="{{asset('js/plugins/bootstrap/js/bootstrap.js')}}"></script>
 <script src="{{asset('js/plugins/fastclick/fastclick.js')}}"></script>
 @yield('footer')
