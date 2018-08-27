@@ -37,14 +37,20 @@ class RosterController extends Controller
             foreach($branch as $b){
                 $checkDate = $year."-".($month>9?$month:"0".$month)."-01";
                 
-                $check = Roster::where([['company_id',$company_id],['branch_id',$b],['date',$checkDate]])->get();
-                if(count($check)==0){
+                // $check = Roster::where([['company_id',$company_id],['branch_id',$b],['date',$checkDate]])->get();
+                // if(count($check)==0)
+                {
                     $employees = Employee::where([['company_id',$company_id],['branch_id',$b]])->get();
                     $employeeCount +=count($employees);
                     foreach($employees as $employee){
                         for($i=1; $i<=$number_of_days; $i++){
                             $twoDigitDay = $i<10?"0".$i:$i;
                             $date = $year."-".$twoDigitMonth."-".$twoDigitDay;
+
+                            $check_roster_exists = Roster::where([['company_id',$company_id],['employee_id',$employee->employee_id],['date',$date]])->get();
+                            if(count($check_roster_exists)>0)
+                                continue;
+
                             $dateDay =  date('D', strtotime($date." 00:00"));
                             $dateDay_number = 0;
                             $day_status = "W";
@@ -74,6 +80,7 @@ class RosterController extends Controller
                             else{
                                 $isHoliday = false;
                             }
+                            
                             $roster = new Roster([
                                 'employee_id'=>$employee->employee_id,
                                 'company_id'=>$company_id,
