@@ -10,9 +10,8 @@
 
 @section('content')
     <div class="loading">Loading&#8230;</div>
-    <div>
-        <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
-    </div>
+    <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
+
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">List Of Master Leaves
@@ -22,78 +21,78 @@
         <!-- /.box-header -->
         <div class="box-body">
             <table id="leaveMasterTable" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Leave ID</th>
-                    <th>Name</th>
-                    <th>Maximum Leave Allowed</th>
-                    <th>Minimum Leave Allowed</th>
-                    <th>Weekly Off Cover</th>
-                    <th>Paid Holiday Cover</th>
-                    <th>Club with leaves</th>
-                    <th>Cannot Club with leaves</th>
-                    <th>Balance Adjusted From</th>
-                    <th>Treat Present</th>
-                    <th>Treat Absent</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="leaveMaster-list" name="leaveMaster-list">
-                @foreach ($leaveMaster as $lt)
-                <tr id="leaveMaster{{$lt->leave_id}}">
-                    <td>{{$lt->leave_id}}</td>
-                    <td>{{$lt->name}}</td>
-                    <td>{{$lt->max_leave_allowed}}</td>
-                    <td>{{$lt->min_leave_allowed}}</td>
-                    <td>@if($lt->weekly_off_cover==1)
-                        TRUE
-                        @else
-                        FALSE
-                        @endif
-                    </td>
-                    <td>@if($lt->paid_holiday_cover==1)
-                        TRUE
-                        @else
-                        FALSE
-                        @endif
-                    </td>
-                    <td>{{$lt->club_with_leaves}}</td>
-                    <td>{{$lt->cant_club_with_leaves}}</td>
-                    <td>{{$lt->balance_adjusted_from}}</td>
-                    <td>@if($lt->treat_present==1)
-                        TRUE
-                        @else
-                        FALSE
-                        @endif
+                <thead>
+                    <tr>
+                        <th>Leave ID</th>
+                        <th>Name</th>
+                        <th>Maximum Leave Allowed</th>
+                        <th>Minimum Leave Allowed</th>
+                        <th>Weekly Off Cover</th>
+                        <th>Paid Holiday Cover</th>
+                        <th>Club with leaves</th>
+                        <th>Cannot Club with leaves</th>
+                        <th>Balance Adjusted From</th>
+                        <th>Treat Present</th>
+                        <th>Treat Absent</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="leaveMaster-list" name="leaveMaster-list">
+                    @foreach ($leaveMaster as $lt)
+                    <tr id="leaveMaster{{$lt->leave_id}}">
+                        <td>{{$lt->leave_id}}</td>
+                        <td>{{$lt->name}}</td>
+                        <td>{{$lt->max_leave_allowed}}</td>
+                        <td>{{$lt->min_leave_allowed}}</td>
+                        <td>@if($lt->weekly_off_cover==1)
+                            TRUE
+                            @else
+                            FALSE
+                            @endif
                         </td>
-                    <td>@if($lt->treat_absent==1)
-                        TRUE
-                        @else
-                        FALSE
-                        @endif</td>
-                    <td>
-                        <button class="btn btn-warning open_modal" value="{{$lt->leave_id}}"><i class="fa fa-edit"> </i> Edit</button>
-                        <button class="btn btn-danger delete-leaveMaster" value="{{$lt->leave_id}}"><i class="fa fa-trash"> </i> Delete</button>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>Leave ID</th>
-                    <th>Name</th>
-                    <th>Maximum Leave Allowed</th>
-                    <th>Minimum Leave Allowed</th>
-                    <th>Weekly Off Cover</th>
-                    <th>Paid Holiday Cover</th>
-                    <th>Club with leaves</th>
-                    <th>Cannot Club with leaves</th>
-                    <th>Balance Adjusted From</th>
-                    <th>Treat Present</th>
-                    <th>Treat Absent</th>
-                    <th>Actions</th>
-                </tr>
-            </tfoot>
+                        <td>@if($lt->paid_holiday_cover==1)
+                            TRUE
+                            @else
+                            FALSE
+                            @endif
+                        </td>
+                        <td>{{$lt->club_with_leaves}}</td>
+                        <td>{{$lt->cant_club_with_leaves}}</td>
+                        <td>{{$lt->balance_adjusted_from}}</td>
+                        <td>@if($lt->treat_present==1)
+                            TRUE
+                            @else
+                            FALSE
+                            @endif
+                            </td>
+                        <td>@if($lt->treat_absent==1)
+                            TRUE
+                            @else
+                            FALSE
+                            @endif</td>
+                        <td>
+                            <button class="btn btn-warning open_modal" value="{{$lt->leave_id}}"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-danger delete-leaveMaster" value="{{$lt->leave_id}}"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Leave ID</th>
+                        <th>Name</th>
+                        <th>Maximum Leave Allowed</th>
+                        <th>Minimum Leave Allowed</th>
+                        <th>Weekly Off Cover</th>
+                        <th>Paid Holiday Cover</th>
+                        <th>Club with leaves</th>
+                        <th>Cannot Club with leaves</th>
+                        <th>Balance Adjusted From</th>
+                        <th>Treat Present</th>
+                        <th>Treat Absent</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
         <!-- /.box-body -->
@@ -116,14 +115,14 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputLeaveId" class="control-label">Leave ID</label>
+                                            <label for="inputLeaveId" class="control-label">Leave ID <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputLeaveId" placeholder="Leave ID" name="leave_id">
                                             <span id="error_msg_id">Leave ID must be unique!</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputName" class="control-label">Name</label>
+                                            <label for="inputName" class="control-label">Name <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputName" placeholder="Name" name="leave_name">
                                         </div>
                                     </div>
@@ -131,13 +130,13 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputMaxLeaveAllowed" class="control-label">Maximum Leave Allowed</label>
+                                            <label for="inputMaxLeaveAllowed" class="control-label">Maximum Leave Allowed <span class="required">*</span></label>
                                             <input type="number" class="form-control" id="inputMaxLeaveAllowed" placeholder="Max Leave Allowed (in days)" name="maxLeaveAllowed"> 
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputMinLeaveAllowed" class="control-label">Minimum Leave Allowed </label>
+                                            <label for="inputMinLeaveAllowed" class="control-label">Minimum Leave Allowed <span class="required">*</span> </label>
                                             <input type="number" class="form-control" id="inputMinLeaveAllowed" placeholder="Mininum Leave Allowed (in days)" name="minLeaveAllowed">
                                         </div>
                                     </div>
@@ -145,7 +144,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class=" control-label">Weekly Off Cover</label>
+                                            <label class=" control-label">Weekly Off Cover <span class="required">*</span></label>
                                             <div class="col-sm-12">
                                                 <label for="radio_weekly_off_cover_true">Yes
                                                     <input type="radio" id="radio_weekly_off_cover_true" name="weekly_off_cover" value="1" class="flat-red" checked>
@@ -158,7 +157,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label">Paid Holiday Cover</label>
+                                            <label class="control-label">Paid Holiday Cover <span class="required">*</span></label>
                                             <div class="col-sm-12">
                                                 <label for="radio_paid_holiday_cover_true">Yes
                                                     <input type="radio" id="radio_paid_holiday_cover_true" name="paid_holiday_cover" value="1" class="flat-red" checked>
@@ -177,7 +176,7 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <select id="select_can_club" class="form-control select2 percent100" multiple="multiple" data-placeholder="Select Leave(s) that can be clubbed with" name="selectedClubWith[]">
-                                                        <option></option>
+                                                        
                                                         @foreach($allLeaves as $leave)
                                                         <option value="{{$leave->leave_id}}">{{$leave->name}}</option>
                                                         @endforeach
@@ -192,7 +191,7 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <select id="select_cannot_club" class="form-control select2 " multiple="multiple" data-placeholder="Select Leave(s) that cannot be clubbed with" name="selectedCannotClubWith[]">
-                                                        <option></option>
+                                                        
                                                         @foreach($allLeaves as $leave)
                                                         <option value="{{$leave->leave_id}}">{{$leave->name}}</option>
                                                         @endforeach
@@ -213,7 +212,7 @@
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label class="control-label">Treat Present</label>
+                                            <label class="control-label">Treat Present <span class="required">*</span></label>
                                             <div class="col-sm-12">
                                                 <label for="radio_treat_present_true">Yes
                                                     <input type="radio" id="radio_treat_present_true" name="treat_present" value="1" class="flat-red" checked>
@@ -226,7 +225,7 @@
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label class="control-label">Treat Absent</label>
+                                            <label class="control-label">Treat Absent <span class="required">*</span></label>
                                             <div class="col-sm-12">
                                                 <label for="radio_treat_absent_true">Yes
                                                     <input type="radio" id="radio_treat_absent_true" name="treat_absent" value="1" class="flat-red" checked>
@@ -296,10 +295,12 @@
         state="update";
         $('#error_msg_id').removeClass('error').addClass('no-error');
         var leave_master_id = $(this).val();
+        //console.log(leave_master_id);
         $.get('/getLeaveMasterById/' + leave_master_id, function (data) {
             //success data
             original_leave_master_id = leave_master_id;
-            console.log(data);
+            
+            //console.log(data);
             $('#modal-add').modal('show');
             $('#inputLeaveId').val(data.leave_id);
             $('#inputName').val(data.name);
@@ -402,15 +403,23 @@
         e.preventDefault(); 
         var selected_can_club='';
         $.each($('#select_can_club').val(), function(index, value){
-            selected_can_club +=value;
-            if(index != $('#select_can_club').val().length -1)
+            //console.log(index + ' ' +value);
+            if(index !=0){ //!= $('#select_can_club').val().length -1
                 selected_can_club += ',';
+                selected_can_club +=value;
+            }else{
+                selected_can_club = value;
+            }
+            
         });
         var selected_cannot_club='';
         $.each($('#select_cannot_club').val(), function(index, value){
-            selected_cannot_club +=value;
-            if(index != $('#select_cannot_club').val().length -1)
+            if(index !=0){
                 selected_cannot_club += ',';
+                selected_cannot_club +=value;
+            }else{
+                selected_cannot_club = value;
+            }
         });
 
         var checked_weekly_off_cover, checked_paid_holiday_cover, checked_treat_present, checked_treat_absent;
@@ -455,7 +464,7 @@
             type = "PUT"; //for updating existing resource
             url = '/updateLeaveMaster/' + original_leave_master_id;
         }
-        console.log(formData);
+        //console.log(formData);
         $.ajax({
             type: type,
             url: url,
@@ -490,8 +499,8 @@
                         +'<td>'+data.balance_adjusted_from+'</td>'
                         +'<td>'+isTreatPresentTrue+'</td>'
                         +'<td>'+isTreatAbsentTrue+'</td>';
-                newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.leave_master_id + '"><i class="fa fa-edit"> </i> Edit</button>';
-                newRow += ' <button class="btn btn-danger btn-delete delete-leaveMaster" value="' + data.leave_master_id + '"><i class="fa fa-trash"> </i> Delete</button></td></tr>';
+                newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.leave_id + '"><i class="fa fa-edit"></i></button>';
+                newRow += ' <button class="btn btn-danger btn-delete delete-leaveMaster" value="' + data.leave_id + '"><i class="fa fa-trash"></i></button></td></tr>';
                 if (state == "add"){ //if user added a new record
                     $('#leaveMaster-list').prepend(newRow);
                 }else{ //if user updated an existing record
@@ -501,8 +510,9 @@
                 $('#modal-add').modal('hide');
             },
             error: function (data) {
-                alert('Error: '+JSON.stringify(data));
-                console.log('Error:', JSON.stringify(data));
+                alert("Something went wrong! Please Try Again!")
+                // alert('Error: '+JSON.stringify(data));
+                // console.log('Error:', JSON.stringify(data));
             }
         });
     });

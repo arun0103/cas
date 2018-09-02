@@ -9,9 +9,7 @@
 
 @section('content')
     <div class="loading">Loading&#8230;</div>
-    <div>
-        <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
-    </div>
+    <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">List Of Categories
@@ -56,8 +54,8 @@
                             @endif
                         </td>
                         <td>
-                            <button class="btn btn-warning open_modal" value="{{$category->category_id}}"><i class="fa fa-edit"> </i> Edit</button>
-                            <button class="btn btn-danger delete-row" value="{{$category->category_id}}"><i class="fa fa-trash"> </i> Delete</button>
+                            <button class="btn btn-warning open_modal" value="{{$category->category_id}}"><i class="fa fa-edit"> </i></button>
+                            <button class="btn btn-danger delete-row" value="{{$category->category_id}}"><i class="fa fa-trash"> </i></button>
                         </td>
                     </tr>
                 @endforeach
@@ -96,13 +94,13 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputCategoryId" class="control-label">Category ID</label>
+                                            <label for="inputCategoryId" class="control-label">Category ID <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputCategoryId" placeholder="Category ID" name="category_id">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputName" class="control-label">Name</label>
+                                            <label for="inputName" class="control-label">Name <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputName" placeholder="Name" name="category_name">
                                         </div>
                                     </div>
@@ -110,13 +108,13 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputMaxLateTime" class="control-label">Max Late Time Allowed</label>
+                                            <label for="inputMaxLateTime" class="control-label">Max Late Time Allowed <span class="required">*</span></label>
                                             <input type="number" class="form-control" id="inputMaxLateTime" placeholder="Max Late Time Allowed (in minutes)" name="maxLateAllowed">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputMaxEarlyTime" class="control-label">Max Early Time Allowed</label>
+                                            <label for="inputMaxEarlyTime" class="control-label">Max Early Time Allowed <span class="required">*</span></label>
                                             <input type="number" class="form-control" id="inputMaxEarlyTime" placeholder="Max Early Time Allowed (in minutes)" name="maxEarlyAllowed">
                                         </div>
                                     </div>
@@ -124,13 +122,13 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputMaxShortLeave" class="control-label">Max Short Leave Allowed</label>
+                                            <label for="inputMaxShortLeave" class="control-label">Max Short Leave Allowed <span class="required">*</span></label>
                                             <input type="number" class="form-control" id="inputMaxShortLeave" placeholder="Max Short Leave Allowed (in days)" name="maxShortLeaveAllowed">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputMinWorkingDaysWeeklyOff" class="control-label">Min Working Days Weekly Off</label>
+                                            <label for="inputMinWorkingDaysWeeklyOff" class="control-label">Min Working Days Weekly Off <span class="required">*</span></label>
                                             <input type="number" class="form-control" id="inputMinWorkingDaysWeeklyOff" placeholder="Min Working Days Weekly Off" name="minWorkingDaysWeeklyOff">
                                         </div>
                                     </div>
@@ -138,7 +136,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label">Weekly Off Cover</label>
+                                            <label class="control-label">Weekly Off Cover <span class="required">*</span></label>
                                             <div class="col-sm-12">
                                                 <label for="radio_yes">Yes
                                                     <input type="radio" id="radio_weeklyOffCover_yes" name="weeklyOffCover" value="1" class="flat-red" checked>
@@ -151,7 +149,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="control-label">Paid Holiday Cover</label>
+                                            <label class="control-label">Paid Holiday Cover <span class="required">*</span></label>
                                             <div class="col-sm-12">
                                                 <label for="radio_yes">Yes
                                                     <input type="radio" id="radio_paidHolidayCover_yes" name="paidHolidayCover" value="1" class="flat-red" checked>
@@ -357,8 +355,8 @@
                             + data.min_working_days_weekly_off + '</td><td>'
                             + isWeeklyOffCoverTrue+ '</td><td>'
                             + isPaidHolidayCoverTrue + '</td>';
-                newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.category_id + '"><i class="fa fa-edit"> </i> Edit</button>';
-                newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.category_id + '"><i class="fa fa-trash"> </i> Delete</button></td></tr>';
+                newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.category_id + '"><i class="fa fa-edit"> </i></button>';
+                newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.category_id + '"><i class="fa fa-trash"> </i></button></td></tr>';
                 if (state == "add"){ //if user added a new record
                     $('#categories-list').prepend(newRow);
                 }else{ //if user updated an existing record

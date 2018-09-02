@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
+  <link rel="shortcut icon" href="{{ asset('img/AdminLTELogo.png') }}">
+  
   <title>CAS | Dashboard 2</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   
@@ -185,14 +187,14 @@
             <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
             <li class="nav-item ">
-              <a href="{{ route('home') }}" class="nav-link ">
+              <a href="{{ route('dashboard') }}" class="nav-link ">
                 <i class="nav-icon fa fa-dashboard"></i>
                 <p>
                   Dashboard
                 </p>
               </a>
             </li>
-            @if(session()->get('role')=='admin')
+            @if(session()->get('role')=='admin' && session()->get('company_type')=='business')
               <li class="nav-item ">
                 <a href="{{ route('branches') }}" class="nav-link " onclick="checkClicked()">
                   <i class="nav-icon fa fa-pagelines"></i>
@@ -309,6 +311,172 @@
               </li>
 
             @endif
+            @if(session()->get('role')=='admin' && session()->get('company_type')=='institute')
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fa fa-user"></i>
+                  <p>
+                    Employee Pane
+                    <i class="right fa fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item ">
+                    <a href="{{ route('branches') }}" class="nav-link " onclick="checkClicked()">
+                      <i class="nav-icon fa fa-pagelines"></i>
+                      <p>
+                        Branches
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('leaveMasterData') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-pagelines"></i>
+                      <p>
+                        Leave Master
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('leaveTypes') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-pagelines"></i>
+                      <p>
+                        Leave Types
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('departments') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                        Departments
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('categories') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                        Categories
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('designations') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                      Designations
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('shifts') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                      Shifts
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('employees') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                      Employees
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('holidays') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                      Holidays
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('rosters') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                      Roster
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('manualPunch') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                      Manual Punch
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('leaveRequests') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                      Leave Requests
+                      </p>
+                    </a>
+                  </li>
+                  <hr>
+                  <li class="nav-item ">
+                    <a href="{{ route('upload') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-upload"></i>
+                      <p>
+                      Upload Raw File
+                      </p>
+                    </a>
+                  </li>
+                  <!--  For employees -->
+                  <li class="nav-item ">
+                    <a href="{{ route('employeeDashboard') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                      Employee Dashboard
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fa fa-user"></i>
+                  <p>
+                    Student Pane
+                    <i class="right fa fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item ">
+                    <a href="{{ route('viewGrades') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-pagelines"></i>
+                      <p>
+                        Grades
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item ">
+                    <a href="{{ route('viewSections') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-pagelines"></i>
+                      <p>
+                        Sections
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item ">
+                    <a href="{{ route('viewStudents') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-pagelines"></i>
+                      <p>
+                        Students
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            @endif
             @if(session()->get('role')=='super')
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -373,7 +541,7 @@
 <script src="{{asset('js/plugins/jquery/jquery-3.3.1.js')}}"></script>
 <script src="{{asset('js/plugins/fullcalendar/lib/jquery-ui.min.js')}}"></script>
 <script src="{{asset('js/plugins/bootstrap/js/bootstrap.js')}}"></script>
-<script src="{{asset('js/plugins/fastclick/fastclick.js')}}"></script>
+<!-- <script src="{{asset('js/plugins/fastclick/fastclick.js')}}"></script> -->
 @yield('footer')
 <!-- Bootstrap -->
 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->

@@ -19,11 +19,15 @@ Route::get('/admin/dashboard', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 Route::get('create', 'EmployeeController@create');
 Route::get('index', 'EmployeeController@index');
+
+/******************************  Dashboard routes  ************************** */
+Route::get('/refreshDashboard/Institute', 'DashboardController@getNewDashboardContents_institute');
+Route::get('/refreshDashboard/Business', 'DashboardController@getNewDashboardContents_business');
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Super Admins////////////////////////////////////
@@ -38,6 +42,31 @@ Route::post('/addCompany', 'SuperController@addCompany');
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////// Company Admins ////////////////////////////////
+
+/////////////// Student
+
+Route::get('/admin/students','StudentController@getStudents')->name('viewStudents');
+Route::get('/getStudentById/{id}','StudentController@getStudentByid');
+Route::post('/addStudent','StudentController@addStudent');
+Route::delete('/deleteStudent/{id}','StudentController@deleteStudent');
+Route::put('/updateStudent/{id}','StudentController@updateStudent');
+
+Route::get('sectionsOfGrade/{grade_id}', 'StudentController@getSectionsOfGrade');
+
+Route::get('/admin/grades','StudentController@getGrades')->name('viewGrades');
+Route::get('/getGradeById/{id}','StudentController@getGradeById');
+Route::post('/addGrade','StudentController@addGrade');
+Route::put('/updateGrade/{id}','StudentController@updateGrade');
+Route::delete('/deleteGrade/{id}','StudentController@deleteGrade');
+
+Route::get('/admin/sections','StudentController@getSections')->name('viewSections');
+Route::get('/getSectionById/{id}','StudentController@getSectionById');
+Route::post('/addSection','StudentController@addSection');
+Route::put('/updateSection/{id}','StudentController@updateSection');
+Route::delete('/deleteSection/{id}','StudentController@deleteSection');
+
+
+Route::get('/admin/sections','StudentController@getSections')->name('viewSections');
 
 ///////////////// Reports
 Route::get('/admin/reports', 'ReportController@viewReportPage')->name('reportSelect');

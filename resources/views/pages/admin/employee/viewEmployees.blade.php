@@ -111,15 +111,15 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="inputEmployeeId" class="control-label">Employee ID</label>
+                                                            <label for="inputEmployeeId" class="control-label">Employee ID <span class="required">*</span></label>
                                                             <input type="text" class="form-control" id="inputEmployeeId" placeholder="Employee ID" name="employee_id" >
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="inputName" class="control-label">Name</label>
+                                                            <label for="inputName" class="control-label">Name <span class="required">*</span></label>
                                                             <input type="text" class="form-control" id="inputName" placeholder="Name" name="employee_name">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label class="control-label">Gender</label>
+                                                            <label class="control-label">Gender <span class="required">*</span></label>
                                                             <div>
                                                                 <label for="radio_male">Male
                                                                     <input type="radio" id="radio_male" name="gender" value="1" class="flat-red" checked>
@@ -150,7 +150,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <div><label for="datepicker_DOB" class="control-label">D.O.B</label></div>
+                                                            <div><label for="datepicker_DOB" class="control-label">D.O.B <span class="required">*</span></label></div>
                                                             <div class="input-group date">
                                                                 <div class="input-group-addon left-addon">
                                                                     <input type="text" class="form-control pull-right" id="datepicker_DOB" autocomplete="off">
@@ -161,7 +161,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="control-label">Maritial Status</label>
+                                                            <label class="control-label">Maritial Status <span class="required">*</span></label>
                                                             <div>
                                                                 <label for="radio_single">Single
                                                                     <input type="radio" id="radio_single" name="maritial_status" value="single" class="flat-red" checked>
@@ -200,7 +200,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="inputFatherName" class="control-label">Father Name</label>
+                                                    <label for="inputFatherName" class="control-label">Father Name <span class="required">*</span></label>
                                                     <div>
                                                         <input type="text" class="form-control" id="inputFatherName" placeholder="Father's Name">
                                                     </div>
@@ -208,7 +208,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="inputEducationalQualification" class="control-label">Educational Qualification</label>
+                                                            <label for="inputEducationalQualification" class="control-label">Educational Qualification <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="inputEducationalQualification" placeholder="Educational Qualification">
                                                             </div>
@@ -216,7 +216,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="inputProfessionalQualification" class="control-label">Professional Qualification</label>
+                                                            <label for="inputProfessionalQualification" class="control-label">Professional Qualification <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="inputProfessionalQualification" placeholder="Professional Qualification">
                                                             </div>
@@ -226,7 +226,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="inputMobile1" class="control-label">Mobile Number 1</label>
+                                                            <label for="inputMobile1" class="control-label">Mobile Number 1 <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="inputMobile1" placeholder="Mobile Number with country code">
                                                             </div>
@@ -242,7 +242,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="inputExperience" class="control-label">Experience</label>
+                                                    <label for="inputExperience" class="control-label">Experience <span class="required">*</span></label>
                                                     <div>
                                                         <input type="text" class="form-control" id="inputExperience" placeholder="Experience (in years)">
                                                     </div>
@@ -256,7 +256,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="inputCountry" class="control-label">Country</label>
+                                                            <label for="inputCountry" class="control-label">Country <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text"  class="form-control" id="inputCountry" placeholder="Country" name="country">
                                                             </div>
@@ -264,7 +264,7 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="inputState" class="control-label">State</label>
+                                                            <label for="inputState" class="control-label">State <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text"  class="form-control" id="inputState" placeholder="State" name="state">
                                                             </div>
@@ -272,7 +272,7 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="inputCity" class="control-label">City</label>
+                                                            <label for="inputCity" class="control-label">City <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text"  class="form-control" id="inputCity" placeholder="City" name="city">
                                                             </div>
@@ -282,7 +282,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="inputStreet_address_1" class="control-label">Street Address 1</label>
+                                                            <label for="inputStreet_address_1" class="control-label">Street Address 1 <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text"  class="form-control" id="inputStreet_address_1" placeholder="Street Address 1" name="street_address_1">
                                                             </div>
@@ -298,7 +298,7 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="inputPostalCode" class="control-label">Postal Code</label>
+                                                            <label for="inputPostalCode" class="control-label">Postal Code <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="number" class="form-control" id="inputPostalCode" placeholder="Postal Code" name="postal_code">
                                                             </div>
@@ -317,7 +317,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="inputCardNumber" class="control-label">Card Number</label>
+                                                            <label for="inputCardNumber" class="control-label">Card Number <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="number" class="form-control" id="inputCardNumber" placeholder="Employee Card Number">
                                                             </div>
@@ -325,7 +325,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="select_department" class="control-label">Department</label>
+                                                            <label for="select_department" class="control-label">Department <span class="required">*</span></label>
                                                             <select id="select_department" class="form-control select2" data-placeholder="Select a Department">
                                                                 <option></option>
                                                                 @foreach($departments as $department)
@@ -338,7 +338,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="select_category" class="control-label">Category</label>
+                                                            <label for="select_category" class="control-label">Category <span class="required">*</span></label>
                                                             <select id="select_category" class="form-control select2" data-placeholder="Select a Category">
                                                                 <option></option>
                                                                 @foreach($categories as $category)
@@ -349,7 +349,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="select_branch" class="control-label">Branch</label>
+                                                            <label for="select_branch" class="control-label">Branch <span class="required">*</span></label>
                                                             <select id="select_branch" class="form-control select2" data-placeholder="Select a Branch">
                                                                 <option></option>
                                                                 @foreach($branches as $branch)
@@ -362,7 +362,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="select_designation" class="control-label">Designation</label>
+                                                            <label for="select_designation" class="control-label">Designation <span class="required">*</span></label>
                                                             <select id="select_designation" class="form-control select2" data-placeholder="Select a Designation">
                                                                 <option></option>
                                                                 @foreach($designations as $designation)
@@ -373,7 +373,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="control-label">Type</label>
+                                                            <label class="control-label">Type <span class="required">*</span></label>
                                                             <div>
                                                                 <label for="radio_temporary">Temporary
                                                                     <input type="radio" id="radio_temporary" name="type" value="0" class="flat-red" checked>
@@ -391,7 +391,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="select_weekOffDay" class="control-label">Week Off on</label>
+                                                            <label for="select_weekOffDay" class="control-label">Week Off on <span class="required">*</span></label>
                                                             <select id="select_weekOffDay" class="form-control select2" data-placeholder="Select a Day">
                                                                 <option></option>
                                                                 <option value="7">Sunday</option>
@@ -406,7 +406,7 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="select_additionalOffDay" class="control-label">Additional Off on</label>
+                                                            <label for="select_additionalOffDay" class="control-label">Additional Off on </label>
                                                             <select id="select_additionalOffDay" class="form-control select2" data-placeholder="Select a Day">
                                                                 <option></option>
                                                                 <option value="0">Sunday</option>
@@ -422,7 +422,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label for="select_additionalOffWeek" class="control-label">Additional Off Week</label>
-                                                            <select id="select_additionalOffWeek" class="form-control select2" data-placeholder="Select a Week">
+                                                            <select id="select_additionalOffWeek" class="form-control select2" multiple data-placeholder="Select a Week">
                                                                 <option></option>
                                                                 <option value="1">1st Week</option>
                                                                 <option value="2">2nd Week</option>
@@ -435,7 +435,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="select_shift_1" class="control-label">Shift 1</label>
+                                                            <label for="select_shift_1" class="control-label">Shift 1 <span class="required">*</span></label>
                                                             <select id="select_shift_1" class="form-control select2" data-placeholder="Select a Shift">
                                                                 <option></option>
                                                                 @foreach($shifts as $shift)
@@ -499,13 +499,13 @@
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label class="control-label">Change By Week</label>
+                                                            <label class="control-label">Change By Week <span class="required">*</span></label>
                                                             <div>
                                                                 <label for="radio_changeByWeek_yes">Yes
-                                                                    <input type="radio" id="radio_changeByWeek_yes" name="change_by_week" value="1" class="flat-red" checked>
+                                                                    <input type="radio" id="radio_changeByWeek_yes" name="change_by_week" value="1" class="flat-red">
                                                                 </label>
                                                                 <label for="radio_changeByWeek_no">No
-                                                                    <input type="radio" id="radio_changeByWeek_no" name="change_by_week" value="0" class="flat-red">
+                                                                    <input type="radio" id="radio_changeByWeek_no" name="change_by_week" value="0" class="flat-red" checked>
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -515,10 +515,10 @@
                                                             <label class="control-label">Change After Day</label>
                                                             <div>
                                                                 <label for="radio_changeAfterDay_yes">Yes
-                                                                    <input type="radio" id="radio_changeAfterDay_yes" name="change_after_day" value="1" class="flat-red" checked>
+                                                                    <input type="radio" id="radio_changeAfterDay_yes" name="change_after_day" value="1" class="flat-red">
                                                                 </label>
                                                                 <label for="radio_changeAfterDay_no">No
-                                                                    <input type="radio" id="radio_changeAfterDay_no" name="change_after_day" value="0" class="flat-red">
+                                                                    <input type="radio" id="radio_changeAfterDay_no" name="change_after_day" value="0" class="flat-red" checked>
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -574,7 +574,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="control-label">Comp Off Applicable</label>
+                                                            <label class="control-label">Comp Off Applicable <span class="required">*</span></label>
                                                             <div>
                                                                 <label for="radio_comp_off_yes">Yes
                                                                     <input type="radio" id="radio_comp_off_yes" name="comp_off_applicable" value="1" class="flat-red" checked>
@@ -587,7 +587,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="control-label">Overtime applicable</label>
+                                                            <label class="control-label">Overtime applicable <span class="required">*</span></label>
                                                             <div>
                                                                 <label for="radio_overtime_yes">Yes
                                                                     <input type="radio" id="radio_overtime_yes" name="overtime_applicable" value="1" class="flat-red" checked>
@@ -634,7 +634,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <div><label for="datepicker_joiningDate" class="control-label">Joining Date</label></div>
+                                                            <div><label for="datepicker_joiningDate" class="control-label">Joining Date <span class="required">*</span></label></div>
                                                             <div class="input-group date">
                                                                 <div class="input-group-addon left-addon">
                                                                     <input type="text" class="form-control pull-right" id="datepicker_joiningDate" autocomplete="off">
@@ -672,7 +672,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="input_ESI_number" class="control-label">ESI Number</label>
+                                                            <label for="input_ESI_number" class="control-label">ESI Number <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="input_ESI_number" placeholder="ESI Number">
                                                             </div>
@@ -680,7 +680,7 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="input_PF_number" class="control-label">PF Number</label>
+                                                            <label for="input_PF_number" class="control-label">PF Number <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="input_PF_number" placeholder="PF Number">
                                                             </div>
@@ -688,7 +688,7 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="input_PAN_number" class="control-label">PAN Number</label>
+                                                            <label for="input_PAN_number" class="control-label">PAN Number <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="input_PAN_number" placeholder="PAN Number">
                                                             </div>
@@ -698,7 +698,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="input_UAN_number" class="control-label">UAN Number</label>
+                                                            <label for="input_UAN_number" class="control-label">UAN Number <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="input_UAN_number" placeholder="UAN Number">
                                                             </div>
@@ -706,13 +706,13 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="control-label">Wage Type</label>
+                                                            <label class="control-label">Wage Type <span class="required">*</span></label>
                                                             <div>
                                                                 <label for="radio_daily">Daily
-                                                                    <input type="radio" id="radio_daily" name="wage_type" value="0" class="flat-red" checked>
+                                                                    <input type="radio" id="radio_daily" name="wage_type" value="0" class="flat-red">
                                                                 </label>
                                                                 <label for="radio_monthly">Monthly
-                                                                    <input type="radio" id="radio_monthly" name="wage_type" value="1" class="flat-red">
+                                                                    <input type="radio" id="radio_monthly" name="wage_type" value="1" class="flat-red" checked>
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -721,7 +721,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="input_bank_name" class="control-label">Bank Name</label>
+                                                            <label for="input_bank_name" class="control-label">Bank Name <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="input_bank_name" placeholder="Bank Name">
                                                             </div>
@@ -729,7 +729,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="input_bank_branch" class="control-label">Branch</label>
+                                                            <label for="input_bank_branch" class="control-label">Branch <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="input_bank_branch" placeholder="Branch">
                                                             </div>
@@ -739,7 +739,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="input_IFSC_code" class="control-label">IFSC Code</label>
+                                                            <label for="input_IFSC_code" class="control-label">IFSC Code <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="input_IFSC_code" placeholder="IFSC Code">
                                                             </div>
@@ -747,7 +747,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="input_account_number" class="control-label">Account Number</label>
+                                                            <label for="input_account_number" class="control-label">Account Number <span class="required">*</span></label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="input_account_number" placeholder="Account Number">
                                                             </div>
@@ -885,7 +885,7 @@
             state="add";
         $("#tab_1").tab('show').addClass('active');
         $('#error_msg_id').removeClass('error').addClass('no-error');
-        $('#form_addshift').trigger("reset");
+        $('#form_addEmployee').trigger("reset");
         $('#btn_confirm').val("add");
         $('#btn_confirm').text("Add");
         $('#modal-title').text('Add Employee');
@@ -1115,14 +1115,15 @@
             dataType: 'json',
             success: function (data) {
                 console.log(data);
-                var employee = '<tr id="employee'+data.orig_data.employee_id +'"><td>' + data['orig_data'].name + '</td><td>'
-                                                                    + data.orig_data.father_name + '</td><td>' 
-                                                                    + data.orig_data.employee_id + '</td><td>' 
-                                                                    + data.orig_data.card_number + '</td><td>' 
-                                                                    + data.department_name + '</td><td>' 
-                                                                    + data.designation_name + '</td><td>' 
-                                                                    + data.branch_name + '</td><td>' 
-                                                                    + data.shift_name + '</td>' ;
+                var employee = '<tr id="employee'+data.orig_data.employee_id +'"><td>' +
+                                    + data.orig_data.name + '</td><td>'
+                                    + data.orig_data.father_name + '</td><td>' 
+                                    + data.orig_data.employee_id + '</td><td>' 
+                                    + data.orig_data.card_number + '</td><td>' 
+                                    + data.department_name + '</td><td>' 
+                                    + data.designation_name + '</td><td>' 
+                                    + data.branch_name + '</td><td>' 
+                                    + data.shift_name + '</td>' ;
                 employee += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.orig_data.employee_id + '"><i class="fa fa-edit"></i></button>';
                 employee += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.orig_data.employee_id + '"><i class="fa fa-trash"></i></button></td></tr>';
                 if (state == "add"){ //if user added a new record

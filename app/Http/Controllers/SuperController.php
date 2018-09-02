@@ -13,9 +13,11 @@ use Session;
 class SuperController extends Controller
 {
     public function addCompany(Request $req){
+        $added_by = Session::get('user_id');
         $validatedData = $req->validate([
             'company_id' => 'required|unique:companies|max:255',
             'company_name' => 'required',
+            'company_type' => 'required',
             'country' => 'required',
             'state' => 'required',
             'city' => 'required',
@@ -24,11 +26,11 @@ class SuperController extends Controller
             'postal_code' => 'required',
             'website' => 'required',
             'contact' => 'required',
-            'VAT_number' => 'required',
-            'PAN_number' => 'required',
-            'registration_number' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required',
+            // 'VAT_number' => 'required',
+            // 'PAN_number' => 'required',
+            // 'registration_number' => 'required',
+            // 'latitude' => 'required',
+            // 'longitude' => 'required',
             'adminName' => 'required',
             'email' => 'required|unique:users',
         ]);
@@ -38,9 +40,12 @@ class SuperController extends Controller
         $admin->role = "admin";
         $admin->company_id = $req->input('company_id');
         $admin->password = bcrypt('admin');
+        $admin->added_by = $added_by;
         if($admin->save()){
+            
             $company = new Company([
                 'company_id'=>$req->input('company_id'),
+                'company_type'=>$req->input('company_type'),
                 'name'=>$req->input('company_name'),
                 'country'=>$req->input('country'),
                 'state'=>$req->input('state'),
@@ -54,9 +59,10 @@ class SuperController extends Controller
                 'PAN_number'=>$req->input('PAN_number'),
                 'registration_number'=>$req->input('registration_number'),
                 'lat'=>$req->input('latitude'),
-                'lng'=>$req->input('longitude')
+                'lng'=>$req->input('longitude'),
+                'added_by'=>$added_by,
             ]);
-            $dbName = "cas_".$req->input('company_id');
+            //$dbName = "cas_".$req->input('company_id');
             if($company->save()){
                 // if(\DB::statement('create database ' .$dbName )== true){
                     //     Artisan::call('migrate',
@@ -67,8 +73,7 @@ class SuperController extends Controller
                     //         '--force'    => true
                     //     ]);
                 // }
-                return redirect('/super/companies/add')->with('status', 'Company created!');
-                
+                return redirect('/super/companies/add')->with('status', 'Company created!');   
             }
         }
         return redirect('/super/companies/add')->with('status', 'Failed to create company!');

@@ -41,16 +41,16 @@ class CreateEmployeesTable extends Migration
             $table->text('image')->nullable()->default(NULL);
             $table->text('imageType')->nullable()->default(NULL);
 
-            $table->text('scanned1')->nullable()->default(NULL);
-            $table->text('scanned1_Type')->nullable()->default(NULL);
-            $table->text('scanned2')->nullable()->default(NULL);
-            $table->text('scanned2_Type')->nullable()->default(NULL);
-            $table->text('scanned3')->nullable()->default(NULL);
-            $table->text('scanned3_Type')->nullable()->default(NULL);
-            $table->text('scanned4')->nullable()->default(NULL);
-            $table->text('scanned4_Type')->nullable()->default(NULL);
-            $table->text('scanned5')->nullable()->default(NULL);
-            $table->text('scanned5_Type')->nullable()->default(NULL);
+            // $table->text('scanned1')->nullable()->default(NULL);
+            // $table->text('scanned1_Type')->nullable()->default(NULL);
+            // $table->text('scanned2')->nullable()->default(NULL);
+            // $table->text('scanned2_Type')->nullable()->default(NULL);
+            // $table->text('scanned3')->nullable()->default(NULL);
+            // $table->text('scanned3_Type')->nullable()->default(NULL);
+            // $table->text('scanned4')->nullable()->default(NULL);
+            // $table->text('scanned4_Type')->nullable()->default(NULL);
+            // $table->text('scanned5')->nullable()->default(NULL);
+            // $table->text('scanned5_Type')->nullable()->default(NULL);
 
             $table->integer('card_number');
             $table->string('dept_id');
@@ -105,7 +105,7 @@ class CreateEmployeesTable extends Migration
 
             
             $table->timestamps();
-
+            $table->unique('card_number');
             $table->unique(array('employee_id','company_id'));
         });
     }

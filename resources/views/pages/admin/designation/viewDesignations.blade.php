@@ -8,9 +8,7 @@
 
 @section('content')
     <div class="loading">Loading&#8230;</div>
-    <div>
-        <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
-    </div>
+    <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">List Of Designations
@@ -22,27 +20,27 @@
             <table id="designationTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Designation Name</th>
                     <th>Designation ID</th>
+                    <th>Designation Name</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="designations-list" name="designations-list">
             @foreach($designations as $designation)
                 <tr id='designation{{$designation->designation_id}}'>
-                    <td>{{$designation->name}}</td>
                     <td>{{$designation->designation_id}}</td>
+                    <td>{{$designation->name}}</td>
                     <td>
-                        <button class="btn btn-warning open_modal" value="{{$designation->designation_id}}"><i class="fa fa-edit"> </i> Edit</button>
-                        <button class="btn btn-danger delete-row" value="{{$designation->designation_id}}"><i class="fa fa-trash"> </i> Delete</button>
+                        <button class="btn btn-warning open_modal" value="{{$designation->designation_id}}"><i class="fa fa-edit"></i></button>
+                        <button class="btn btn-danger delete-row" value="{{$designation->designation_id}}"><i class="fa fa-trash"></i></button>
                     </td>
                 </tr>
             @endforeach
             </tbody>
             <tfoot>
                 <tr>
-                    <th>Designation Name</th>
                     <th>Designation ID</th>
+                    <th>Designation Name</th>
                     <th>Actions</th>
                 </tr>
             </tfoot>
@@ -66,14 +64,14 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="inputDesignationId" class="control-label">Designation ID</label>
+                                    <label for="inputDesignationId" class="control-label">Designation ID <span class="required">*</span></label>
                                     <input type="text" class="form-control" id="inputDesignationId" placeholder="Designation ID" name="designation_id">
                                     <span id="error_msg_id">Designation ID is already used</span>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="inputName" class="control-label">Designation Name</label>
+                                    <label for="inputName" class="control-label">Designation Name <span class="required">*</span></label>
                                     <input type="text" class="form-control" id="inputName" placeholder="Name" name="designation_name">
                                 </div>
                             </div>
@@ -221,9 +219,9 @@
             dataType: 'json',
             success: function (data) {
                 //console.log(data);
-                var designation = '<tr id="designation' + data.designation_id + '"><td>' + data.name + '</td><td>' + data.designation_id + '</td>';
-                designation += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.designation_id + '"><i class="fa fa-edit"> </i> Edit</button>';
-                designation += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.designation_id + '"><i class="fa fa-trash"> </i> Delete</button></td></tr>';
+                var designation = '<tr id="designation' + data.designation_id + '"><td>' + data.designation_id + '</td><td>' + data.name + '</td>';
+                designation += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.designation_id + '"><i class="fa fa-edit"></i></button>';
+                designation += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.designation_id + '"><i class="fa fa-trash"></i></button></td></tr>';
                 if (state == "add"){ //if user added a new record
                     $('#designations-list').append(designation);
                 }else{ //if user updated an existing record

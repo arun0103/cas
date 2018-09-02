@@ -19,19 +19,19 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="inputEmployeeId" class="col-sm-4 control-label">Employee ID</label>
+                                        <label for="inputEmployeeId" class="col-sm-4 control-label">Employee ID <span class="required">*</span></label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control" id="inputEmployeeId" placeholder="Employee ID">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputName" class="col-sm-4 control-label">Name</label>
+                                        <label for="inputName" class="col-sm-4 control-label">Name <span class="required">*</span></label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control" id="inputName" placeholder="Name">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label">Gender</label>
+                                        <label class="col-sm-4 control-label">Gender <span class="required">*</span></label>
                                         <div class="col-sm-8">
                                             <label for="radio_male">Male
                                                 <input type="radio" id="radio_male" name="gender" value="1" class="flat-red" checked>
@@ -42,7 +42,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div><label for="datepicker_DOB" class="col-sm-4 control-label">D.O.B</label></div>
+                                        <div><label for="datepicker_DOB" class="col-sm-4 control-label">D.O.B <span class="required">*</span></label></div>
                                         <div class="col-sm-8">
                                             <div class="input-group date">
                                                 <div class="input-group-addon">
@@ -53,7 +53,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label">Maritial Status</label>
+                                        <label class="col-sm-4 control-label">Maritial Status <span class="required">*</span></label>
                                         <div class="col-sm-8">
                                             <label for="radio_single">Single
                                                 <input type="radio" id="radio_single" name="maritial_status" value="single" class="flat-red" checked>
@@ -103,37 +103,37 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="inputFatherName" class="col-sm-2 control-label">Father Name</label>
+                                <label for="inputFatherName" class="col-sm-2 control-label">Father Name <span class="required">*</span></label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="inputFatherName" placeholder="Father's Name">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputEducationalQualification" class="col-sm-2 control-label">Educational Qualification</label>
+                                <label for="inputEducationalQualification" class="col-sm-2 control-label">Educational Qualification <span class="required">*</span></label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="inputEducationalQualification" placeholder="Educational Qualification">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputProfessionalQualification" class="col-sm-2 control-label">Professional Qualification</label>
+                                <label for="inputProfessionalQualification" class="col-sm-2 control-label">Professional Qualification <span class="required">*</span></label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="inputProfessionalQualification" placeholder="Professional Qualification">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
+                                <label for="inputExperience" class="col-sm-2 control-label">Experience <span class="required">*</span></label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="inputExperience" placeholder="Experience (in years)">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                                <label for="inputEmail" class="col-sm-2 control-label">Email <span class="required">*</span></label>
                                 <div class="col-sm-10">
                                     <input type="email" class="form-control" id="inputEmail" placeholder="Email">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputAddress" class="col-sm-2 control-label">Address</label>
+                                <label for="inputAddress" class="col-sm-2 control-label">Address <span class="required">*</span></label>
                                 <div class="col-sm-10">
                                     <textarea class="form-control" id="inputAddress" placeholder="Please provide full address"></textarea>
                                 </div>

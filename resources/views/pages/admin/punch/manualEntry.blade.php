@@ -68,10 +68,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                    <input type="hidden" id="inputRosterId">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="select_shift" class="control-label">Shift</label>
+                                    <label for="select_shift" class="control-label">Shift<label>Branch <span class="required">*</span></label></label>
                                     <select id="select_shift" class="form-control select2" data-placeholder="Select a Shift">
                                         <option></option>
                                         @foreach($shifts as $shift)
@@ -87,7 +88,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Day Status</label>
+                                    <label>Day Status<label>Branch <span class="required">*</span></label></label>
                                     <select id="select_dayStatus" class="form-control select2">
                                         <option value="W">Work</option>
                                         <option value="H">Holiday</option>
@@ -393,12 +394,12 @@
     <script src="{{asset('js/plugins/timepicker/bootstrap-timepicker.js')}}"></script>
     <script src="{{asset('js/plugins/bootstrap-datetimepicker-0.0.11/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript">
-    $(function() {
-        $('#datetimepicker1').datetimepicker({
-            language: 'en',
-            pick12HourFormat: true
+        $(function() {
+            $('#datetimepicker1').datetimepicker({
+                language: 'en',
+                pick12HourFormat: true
+            });
         });
-    });
     </script>
     <script>
     var dataFrom, id;
@@ -430,88 +431,91 @@
             $('#modal-title').text("Add/Edit Punch Detail of "+date);
             $('#form_manualEntrySearch').trigger("reset");
             //alert('/getPunchDetails/'+branch_id +'/'+emp_id+'/'+date);
-            $.get('/getPunchDetails/'+branch_id +'/'+emp_id+'/'+date, function(punchData){
-                if(punchData != ""){
-                    dataFrom = "punch";
-                    id = punchData.id;
-                    //alert(JSON.stringify(punchData));
-                    $('#select_shift').val(punchData.shift_code).trigger('change');
-                    $('#select_dayStatus').val(punchData.status).trigger('change');
-                    if(punchData.punch_1 !=null){
-                        $('#datepicker_punch1_date').val(getDate(punchData.punch_1)).trigger('change');
-                        $('#time_punch_1').val(getTime(punchData.punch_1)).trigger('change');
+            $.get('/getRosterDetails/'+branch_id +'/'+emp_id+'/'+date, function(rosterData){
+                if(rosterData != ""){
+                    id = rosterData.id;
+                    $('#inputRosterId').val(id);
+                    dataFrom = "roster";
+                    //alert(JSON.stringify(rosterData));
+                    $('#select_shift').val(rosterData.shift_id).trigger('change');
+                    $('#select_dayStatus').val(rosterData.is_holiday).trigger('change'); 
+                    $('#input_half_1').val(rosterData.final_half_1).trigger('change');
+                    $('#input_half_2').val(rosterData.final_half_2).trigger('change');
+                    $.get('/getPunchDetails/'+branch_id +'/'+emp_id+'/'+date, function(punchData){
+                    if(punchData != ""){
+                        dataFrom = "punch";
+                        id = punchData.id;
+                        //alert(JSON.stringify(punchData));
+                        $('#select_shift').val(punchData.shift_code).trigger('change');
+                        $('#select_dayStatus').val(punchData.status).trigger('change');
+                        if(punchData.punch_1 !=null){
+                            $('#datepicker_punch1_date').val(getDate(punchData.punch_1)).trigger('change');
+                            $('#time_punch_1').val(getTime(punchData.punch_1)).trigger('change');
+                        }
+                        if(punchData.punch_2 !=null){
+                            $('#datepicker_punch2_date').val(getDate(punchData.punch_2)).trigger('change');
+                            $('#time_punch_2').val(getTime(punchData.punch_2)).trigger('change');
+                        }
+                        if(punchData.punch_3 !=null){
+                            $('#datepicker_punch3_date').val(getDate(punchData.punch_3)).trigger('change');
+                            $('#time_punch_3').val(getTime(punchData.punch_3)).trigger('change');
+                        }
+                        if(punchData.punch_4 !=null){
+                            $('#datepicker_punch4_date').val(getDate(punchData.punch_4)).trigger('change');
+                            $('#time_punch_4').val(getTime(punchData.punch_4)).trigger('change');
+                        }
+                        if(punchData.punch_5 !=null){
+                            $('#datepicker_punch5_date').val(getDate(punchData.punch_5)).trigger('change');
+                            $('#time_punch_5').val(getTime(punchData.punch_5)).trigger('change');
+                        }
+                        if(punchData.punch_6 !=null){
+                            $('#datepicker_punch6_date').val(getDate(punchData.punch_6)).trigger('change');
+                            $('#time_punch_6').val(getTime(punchData.punch_6)).trigger('change');
+                        }
+                        if(punchData.half_1_gate_pass ==1){
+                            $('#hasGatePass1').prop('checked',true);
+                            $('#gatePass1_out').prop('disabled',false);
+                            $('#gatePass1_out').prop('required','required');
+                            $('#gatePass1_in').prop('disabled',false);
+                            $('#gatePass1_in').prop('required','required');
+                            $('#inputHours1').prop('disabled',false);
+                            $('#inputHours1').prop('required','required');
+                            $('#gatePass1_out').val(punchData.half_1_gp_out).trigger('change');
+                            $('#gatePass1_in').val(punchData.half_1_gp_in).trigger('change');
+                            $('#inputHours1').val(punchData.half_1_gp_hrs).trigger('change');
+                        }
+                        if(punchData.half_2_gate_pass ==1){
+                            $('#hasGatePass2').prop('checked',true);
+                            $('#gatePass2_out').prop('disabled',false);
+                            $('#gatePass2_out').prop('required','required');
+                            $('#gatePass2_in').prop('disabled',false);
+                            $('#gatePass2_in').prop('required','required');
+                            $('#inputHours2').prop('disabled',false);
+                            $('#inputHours2').prop('required','required');
+                            $('#gatePass2_out').val(punchData.half_2_gp_out).trigger('change');
+                            $('#gatePass2_in').val(punchData.half_2_gp_in).trigger('change');
+                            $('#inputHours2').val(punchData.half_2_gp_hrs).trigger('change');
+                        }
+                        $('#inputRemarks').val(punchData.remarks).trigger('change');
+                        $('#input_half_1').val(punchData.final_half_1).trigger('change');
+                        $('#input_half_2').val(punchData.final_half_2).trigger('change');
+                        $('#btn_confirm_delete').prop('hidden',false); 
+                        $('#modal-manual_entry').modal('show');
+                    }else{
+                        //alert("finding roster details");
+                        
                     }
-                    if(punchData.punch_2 !=null){
-                        $('#datepicker_punch2_date').val(getDate(punchData.punch_2)).trigger('change');
-                        $('#time_punch_2').val(getTime(punchData.punch_2)).trigger('change');
-                    }
-                    if(punchData.punch_3 !=null){
-                        $('#datepicker_punch3_date').val(getDate(punchData.punch_3)).trigger('change');
-                        $('#time_punch_3').val(getTime(punchData.punch_3)).trigger('change');
-                    }
-                    if(punchData.punch_4 !=null){
-                        $('#datepicker_punch4_date').val(getDate(punchData.punch_4)).trigger('change');
-                        $('#time_punch_4').val(getTime(punchData.punch_4)).trigger('change');
-                    }
-                    if(punchData.punch_5 !=null){
-                        $('#datepicker_punch5_date').val(getDate(punchData.punch_5)).trigger('change');
-                        $('#time_punch_5').val(getTime(punchData.punch_5)).trigger('change');
-                    }
-                    if(punchData.punch_6 !=null){
-                        $('#datepicker_punch6_date').val(getDate(punchData.punch_6)).trigger('change');
-                        $('#time_punch_6').val(getTime(punchData.punch_6)).trigger('change');
-                    }
-                    if(punchData.half_1_gate_pass ==1){
-                        $('#hasGatePass1').prop('checked',true);
-                        $('#gatePass1_out').prop('disabled',false);
-                        $('#gatePass1_out').prop('required','required');
-                        $('#gatePass1_in').prop('disabled',false);
-                        $('#gatePass1_in').prop('required','required');
-                        $('#inputHours1').prop('disabled',false);
-                        $('#inputHours1').prop('required','required');
-                        $('#gatePass1_out').val(punchData.half_1_gp_out).trigger('change');
-                        $('#gatePass1_in').val(punchData.half_1_gp_in).trigger('change');
-                        $('#inputHours1').val(punchData.half_1_gp_hrs).trigger('change');
-                    }
-                    if(punchData.half_2_gate_pass ==1){
-                        $('#hasGatePass2').prop('checked',true);
-                        $('#gatePass2_out').prop('disabled',false);
-                        $('#gatePass2_out').prop('required','required');
-                        $('#gatePass2_in').prop('disabled',false);
-                        $('#gatePass2_in').prop('required','required');
-                        $('#inputHours2').prop('disabled',false);
-                        $('#inputHours2').prop('required','required');
-                        $('#gatePass2_out').val(punchData.half_2_gp_out).trigger('change');
-                        $('#gatePass2_in').val(punchData.half_2_gp_in).trigger('change');
-                        $('#inputHours2').val(punchData.half_2_gp_hrs).trigger('change');
-                    }
-                    $('#inputRemarks').val(punchData.remarks).trigger('change');
-                    $('#input_half_1').val(punchData.final_half_1).trigger('change');
-                    $('#input_half_2').val(punchData.final_half_2).trigger('change');
-                    $('#btn_confirm_delete').prop('hidden',false); 
+                });
+                    $('#btn_confirm_delete').prop('hidden',true);                       
                     $('#modal-manual_entry').modal('show');
                 }else{
-                    //alert("finding roster details");
-                    $.get('/getRosterDetails/'+branch_id +'/'+emp_id+'/'+date, function(rosterData){
-                        if(rosterData != ""){
-                            id = rosterData.id;
-                            dataFrom = "roster";
-                            //alert(JSON.stringify(rosterData));
-                            $('#select_shift').val(rosterData.shift_id).trigger('change');
-                            $('#select_dayStatus').val(rosterData.is_holiday).trigger('change'); 
-                            $('#input_half_1').val(rosterData.final_half_1).trigger('change');
-                            $('#input_half_2').val(rosterData.final_half_2).trigger('change');
-                            $('#btn_confirm_delete').prop('hidden',true);                       
-                            $('#modal-manual_entry').modal('show');
-                        }else{
-                            // if(confirm("No roster data of given date! Do you want to create new roster?")){
-                            //     alert("Creating new roster!");
-                            // }
-                            alert("No Data found in Roster.. \n\nPlease create Roster first!")
-                        }
-                    }); 
+                    // if(confirm("No roster data of given date! Do you want to create new roster?")){
+                    //     alert("Creating new roster!");
+                    // }
+                    alert("No Data found in Roster.. \n\nPlease create Roster first!")
                 }
-            });
+            }); 
+            
         
         }else{
             if(branch_id ==""){
@@ -535,6 +539,7 @@
         //alert("Save button clicked");
         console.log($('#select_dayStatus').val());
         var formData = {
+            'roster_id'         :$('#inputRosterId').val(),
             'branch_id'         :$('#select_branch').val(),
             'employee_id'       :$('#select_employee').val(),
             'shift_id'          :$('#select_shift').val(),

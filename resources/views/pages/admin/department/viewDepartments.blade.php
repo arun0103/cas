@@ -8,13 +8,11 @@
 
 @section('content')
     <div class="loading">Loading&#8230;</div>
-    <div>
-        <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
-    </div>
+    <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
+    
     <div class="modal fade" id="modal-add">
         <form id="form_addDepartment" class="form-horizontal" method="post" action="/addDepartment">
             {{ csrf_field() }}
-            
             <div class="modal-dialog modal-lg" style="width:90% !important;height:90% !important; padding:0;margin:0 auto">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -28,15 +26,15 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="inputDepartmentId" class="control-label">Department ID</label>
-                                        <input type="text" class="form-control" id="inputDepartmentId" placeholder="Department ID" name="department_id" required data-validation="length alphanumeric" data-validation-length="min4">
+                                        <label for="inputDepartmentId" class="control-label">Department ID <span class="required">*</span></label>
+                                        <input type="text" class="form-control" id="inputDepartmentId" placeholder="Department ID" name="department_id" required data-validation="length" data-validation-length="min4">
                                         <span id="error_msg_id">Department ID already exists!</span>
                                     </div>
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="form-group">
-                                        <label for="inputName" class="control-label">Name</label>
-                                        <input type="text" class="form-control" id="inputName" placeholder="Name" name="department_name" required data-validation="length alphanumeric" data-validation-length="min4">
+                                        <label for="inputName" class="control-label">Name <span class="required">*</span></label>
+                                        <input type="text" class="form-control" id="inputName" placeholder="Name" name="department_name" required data-validation="length" data-validation-length="min4">
                                     </div>
                                 </div>
                             </div>
@@ -66,27 +64,27 @@
             <table id="departmentTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Department Name</th>
                     <th>Department ID</th>
+                    <th>Department Name</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="departments-list" name="departments-list">
-            @foreach($departments as $dept)
-                <tr id="department{{$dept->department_id}}">
-                    <td>{{$dept->name}}</td>
-                    <td>{{$dept->department_id}}</td>
-                    <td>
-                        <button class="btn btn-warning open_modal" value="{{$dept->department_id}}"><i class="fa fa-edit"> </i> Edit</button>
-                        <button class="btn btn-danger delete-department" value="{{$dept->department_id}}"><i class="fa fa-trash"> </i> Delete</button>
-                    </td>
-                </tr>
-            @endforeach
+                @foreach($departments as $dept)
+                    <tr id="department{{$dept->department_id}}">
+                        <td>{{$dept->department_id}}</td>
+                        <td>{{$dept->name}}</td>
+                        <td>
+                            <button class="btn btn-warning open_modal" value="{{$dept->department_id}}"><i class="fa fa-edit"> </i></button> 
+                            <button class="btn btn-danger delete-department" value="{{$dept->department_id}}"><i class="fa fa-trash"> </i></button>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
             <tfoot>
                 <tr>
-                    <th>Department Name</th>
                     <th>Department ID</th>
+                    <th>Department Name</th>
                     <th>Actions</th>
                 </tr>
             </tfoot>
@@ -231,9 +229,9 @@
             dataType: 'json',
             success: function (data) {
                 //console.log(data);
-                var department = '<tr id="department' + data.department_id + '"><td>' + data.name + '</td><td>' + data.department_id + '</td>';
-                department += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.department_id + '"><i class="fa fa-edit"> </i> Edit</button>';
-                department += ' <button class="btn btn-danger btn-delete delete-department" value="' + data.department_id + '"><i class="fa fa-trash"> </i> Delete</button></td></tr>';
+                var department = '<tr id="department' + data.department_id + '"><td>' + data.department_id + '</td><td>' + data.name + '</td>';
+                department += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.department_id + '"><i class="fa fa-edit"> </i></button>';
+                department += ' <button class="btn btn-danger btn-delete delete-department" value="' + data.department_id + '"><i class="fa fa-trash"> </i></button></td></tr>';
                 if (state == "add"){ //if user added a new record
                     $('#departments-list').append(department);
                 }else{ //if user updated an existing record

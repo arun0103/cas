@@ -13,9 +13,9 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
-        'company_id','name', 'website','contact',
+        'company_id','company_type','name', 'website','contact',
          'country', 'state','city','street_address_1','street_address_2','postal_code',
-         'lat','lng','VAT_number','PAN_number','registration_number','updated_at','created_at'
+         'lat','lng','VAT_number','PAN_number','registration_number','updated_at','created_at', 'added_by'
     ];
 
     public function branches(){

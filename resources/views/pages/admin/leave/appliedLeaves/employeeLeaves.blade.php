@@ -88,7 +88,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="select_branch" class="control-label">Branch</label>
+                                            <label for="select_branch" class="control-label">Branch <span class="required">*</span></label>
                                             <select id="select_branch" class="form-control select2" data-placeholder="Select Branch" name="selectedBranch" onchange="populateEmployee(this.value)">
                                                 <option></option>
                                                 @foreach($companyBranches as $branch)
@@ -102,7 +102,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="select_employee" class="control-label">Employee</label>
+                                            <label for="select_employee" class="control-label">Employee <span class="required">*</span></label>
                                             <select id="select_employee" class="form-control select2" data-placeholder="Select Employee" name="selectedEmployee" onchange="populateLeaveTypes(this.value)">
                                             </select>
                                         </div>
@@ -111,14 +111,14 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="select_leaveType" class="control-label">Leave Type</label>
+                                            <label for="select_leaveType" class="control-label">Leave Type <span class="required">*</span></label>
                                             <select id="select_leaveType" class="form-control select2" data-placeholder="Select Leave Type" name="selectedLeaveType" onchange="checkLeaveBalance(this.value)">
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputLeaveStatus_add" class="control-label">Status</label>
+                                            <label for="inputLeaveStatus_add" class="control-label">Status <span class="required">*</span></label>
                                             <input type="text" class="form-control inputLeaveStatus" id="inputLeaveStatus_add" placeholder="Select Leave First" name="leaveStatus" disabled>
                                         </div>
                                     </div>
@@ -126,14 +126,14 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputLeaveDays" class="control-label">Leave Days</label>
+                                            <label for="inputLeaveDays" class="control-label">Leave Days <span class="required">*</span></label>
                                             <input type="number" class="form-control" id="inputLeaveDays" placeholder="Leave Days" name="leaveDays" min="1">
                                         </div>
                                     </div>
                                     
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="select_leavePart" class="control-label">Day Part</label>
+                                            <label for="select_leavePart" class="control-label">Day Part <span class="required">*</span></label>
                                             <select id="select_leavePart" class="form-control select2" data-placeholder="Select Day Part" name="selectedLeavePart">
                                             <option></option>
                                             <option value=3>Full Day</option>
@@ -146,7 +146,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group" >
-                                            <div><label for="datepicker_from" class="control-label">From</label></div>
+                                            <div><label for="datepicker_from" class="control-label">From <span class="required">*</span></label></div>
                                             <div class="input-group date">
                                                 <div class="input-group-addon left-addon">
                                                     <input type="text" class="form-control pull-right" id="datepicker_from" autocomplete="off" onchange="fromDateSelected(this.value)">
@@ -157,7 +157,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group" >
-                                            <div><label for="datepicker_to" class="control-label">To</label></div>
+                                            <div><label for="datepicker_to" class="control-label">To <span class="required">*</span></label></div>
                                             <div class="input-group date">
                                                 <div class="input-group-addon left-addon">
                                                     <input type="text" class="form-control pull-right" data-date-format="yyyy-mm-dd" id="datepicker_to" autocomplete="off" >

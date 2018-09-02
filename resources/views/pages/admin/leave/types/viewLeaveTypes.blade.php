@@ -9,9 +9,8 @@
 
 @section('content')
     <div class="loading">Loading&#8230;</div>
-    <div>
-        <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
-    </div>
+    <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
+    
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">List Of Leaves
@@ -21,34 +20,34 @@
         <!-- /.box-header -->
         <div class="box-body">
             <table id="leaveTable" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Leave Name</th>
-                    <th>Branch</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="leaves-list" name="leaves-list">
-                @if(count($dataToDisplay)>0)
-                    @foreach($dataToDisplay as $row)
-                    <tr id="leave{{$row['leave_id']}}___{{$row['branch_id']}}">
-                        <td>{{$row['leave_name']}}</td>
-                        <td>{{$row['branch_name']}}</td>
-                        <td>
-                            <button class="btn btn-warning open_modal" value="{{$row['leave_id']}}___{{$row['branch_id']}}"><i class="fa fa-edit"> </i> Edit</button>
-                            <button class="btn btn-danger delete-row" value="{{$row['leave_id']}}___{{$row['branch_id']}}"><i class="fa fa-trash"> </i> Delete</button>
-                        </td>
+                <thead>
+                    <tr>
+                        <th>Leave Name</th>
+                        <th>Branch</th>
+                        <th>Actions</th>
                     </tr>
-                    @endforeach
-                @endif
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>Leave Name</th>
-                    <th>Branch</th>
-                    <th>Actions</th>
-                </tr>
-            </tfoot>
+                </thead>
+                <tbody id="leaves-list" name="leaves-list">
+                    @if(count($dataToDisplay)>0)
+                        @foreach($dataToDisplay as $row)
+                        <tr id="leave{{$row['leave_id']}}___{{$row['branch_id']}}">
+                            <td>{{$row['leave_name']}}</td>
+                            <td>{{$row['branch_name']}}</td>
+                            <td>
+                                <button class="btn btn-warning open_modal" value="{{$row['leave_id']}}___{{$row['branch_id']}}"><i class="fa fa-edit"> </i></button>
+                                <button class="btn btn-danger delete-row" value="{{$row['leave_id']}}___{{$row['branch_id']}}"><i class="fa fa-trash"> </i></button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Leave Name</th>
+                        <th>Branch</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
         <!-- /.box-body -->
@@ -70,18 +69,18 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="select_branch_id">Branch</label>
+                                            <label for="select_branch_id">Branch <span class="required">*</span></label>
                                             <select id="select_branch_id" class="form-control select2" data-placeholder="Select Branch" name="selectedBranch">
                                                 <option></option>    
-                                            @foreach($branches as $branch)
-                                                <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
+                                                @foreach($branches as $branch)
+                                                    <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group" >
-                                            <label for="select_leave_id">Leave</label>
+                                            <label for="select_leave_id">Leave <span class="required">*</span></label>
                                                 <select id="select_leave_id" class="form-control select2" data-placeholder="Select Leave" name="selectedLeave">
                                                     <option></option>
                                                     @foreach($leaves as $leave)
@@ -273,8 +272,8 @@
                     
                     var newRow = '<tr id="leave' + data.data.leave_id+'___'+data.data.branch_id + '"><td>' + data.names.leave_name + '</td><td>'
                                 + data.names.branch_name + '</td>';
-                        newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.data.leave_id+'___'+data.data.branch_id + '"><i class="fa fa-edit"> </i> Edit</button>';
-                        newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.data.leave_id+'___'+data.data.branch_id + '"><i class="fa fa-trash"> </i> Delete</button></td></tr>';
+                        newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.data.leave_id+'___'+data.data.branch_id + '"><i class="fa fa-edit"> </i></button>';
+                        newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.data.leave_id+'___'+data.data.branch_id + '"><i class="fa fa-trash"> </i></button></td></tr>';
                         
                     if (state == "add"){ //if user added a new record
                         $('#leaves-list').prepend(newRow);
@@ -286,8 +285,9 @@
                     
                 },
                 error: function (data) {
-                    alert('Error: '+JSON.stringify(data));
-                    console.log('Error:', JSON.stringify(data));
+                    alert(JSON.stringify(data));
+                    // alert('Error: '+JSON.stringify(data));
+                    // console.log('Error:', JSON.stringify(data));
                 }
             });
 

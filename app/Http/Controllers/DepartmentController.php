@@ -9,7 +9,8 @@ use Session;
 class DepartmentController extends Controller
 {
     public function getDepartments(){
-        $departments = Department::all();
+        $company_id = Session::get('company_id');
+        $departments = Department::where('company_id',$company_id)->get();
         return view('pages/admin/department/viewDepartments',['departments'=>$departments]);
     }
     public function addDepartment(Request $request){

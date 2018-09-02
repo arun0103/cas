@@ -38,15 +38,12 @@ class AdminController extends Controller
         Storage::disk('local')->put($fileName, file_get_contents($file));
 
         $contents = File::get(storage_path('app/'.$fileName));
-        //echo 'content'.$contents;
         $rows =explode("\n", $contents);
         $index = 0;
         echo count($rows);
         foreach($rows as $row){
             if($index>0){
                 $rowData = explode("\t",$row);
-                //echo count($rowData);
-                //echo $rowData[6];
                 $data = new RawData([
                     'card_number'=>$rowData[0],
                     'machine_id'=>$rowData[1],
@@ -54,8 +51,6 @@ class AdminController extends Controller
                     'status'=> false
                 ]);
                 $data->save();
-                
-                //echo $data.'<br>';
             }
             $index++;
         }
@@ -192,6 +187,7 @@ class AdminController extends Controller
             'dept_id'=>$employeeDetails->dept_id,
             'company_id'=>$employeeDetails->company_id,
             'category_id'=>$employeeDetails->category_id,
+            'roster_id'=>$req->roster_id,
             'punch_date'=>$req->punch_date,
             'punch_1'=>$req->punch_1,
             'punch_2'=>$req->punch_2,

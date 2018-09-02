@@ -42,8 +42,8 @@
                         <td>{{$shift->grace_early}}</td>
                         <td>{{$shift->grace_late}}</td>
                         <td>
-                            <button class="btn btn-warning open_modal" value="{{$shift->shift_id}}"><i class="fa fa-edit"> </i> Edit</button>
-                            <button class="btn btn-danger delete-row" value="{{$shift->shift_id}}"><i class="fa fa-trash"> </i> Delete</button>
+                            <button class="btn btn-warning open_modal" value="{{$shift->shift_id}}"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-danger delete-row" value="{{$shift->shift_id}}"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr>
                 @endforeach
@@ -79,13 +79,13 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="inputShiftId" class="control-label">Shift ID</label>
+                                    <label for="inputShiftId" class="control-label">Shift ID <span class="required">*</span></label>
                                     <input type="text" class="form-control" id="inputShiftId" placeholder="Shift ID" name="shift_id">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="inputName" class="control-label">Name</label>
+                                    <label for="inputName" class="control-label">Name <span class="required">*</span></label>
                                     <input type="text" class="form-control" id="inputName" placeholder="Name" name="shift_name">
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                             <div class="col-sm-6">
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
-                                        <label for="timePicker_start" class="control-label">Start Time</label>
+                                        <label for="timePicker_start" class="control-label">Start Time <span class="required">*</span></label>
                                         <div class="input-group-addon left-addon"> 
                                             <input type="text" class="form-control timepicker pull-right" id="timePicker_start" name="start_time">
                                             <i class="fa fa-clock-o"></i>
@@ -105,7 +105,7 @@
                             <div class="col-sm-6">
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
-                                        <label for="timePicker_end" class="control-label">End Time</label>
+                                        <label for="timePicker_end" class="control-label">End Time <span class="required">*</span></label>
                                         <div class="input-group-addon left-addon">
                                             <input type="text" class="form-control timepicker pull-right" id="timePicker_end" name="end_time">
                                             <i class="fa fa-clock-o"></i>
@@ -117,13 +117,13 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="inputGraceEarly" class="control-label">Early Grace</label>
+                                    <label for="inputGraceEarly" class="control-label">Early Grace <span class="required">*</span></label>
                                     <input type="number" class="form-control" id="inputGraceEarly" placeholder="Early Grace (in minutes)" name="early_grace">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="inputGraceLate" class="control-label">Late Grace</label>
+                                    <label for="inputGraceLate" class="control-label">Late Grace <span class="required">*</span></label>
                                     <input type="number" class="form-control" id="inputGraceLate" placeholder="Late Grace (in minutes)" name="late_grace">
                                 </div>
                             </div>
@@ -294,8 +294,8 @@
                                                                     + data.end_time + '</td><td>' 
                                                                     + data.grace_early + '</td><td>' 
                                                                     + data.grace_late + '</td>' ;
-                shift += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.shift_id + '"><i class="fa fa-edit"> </i> Edit</button>';
-                shift += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.shift_id + '"><i class="fa fa-trash"> </i> Delete</button></td></tr>';
+                shift += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.shift_id + '"><i class="fa fa-edit"></i></button>';
+                shift += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.shift_id + '"><i class="fa fa-trash"></i></button></td></tr>';
                 if (state == "add"){ //if user added a new record
                     $('#shifts-list').append(shift);
                 }else{ //if user updated an existing record

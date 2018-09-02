@@ -8,9 +8,7 @@
 
 @section('content')
     <div class="loading">Loading&#8230;</div>
-    <div>
-        <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
-    </div>
+    <input type="hidden" id="inputCompanyId" disabled value="{{Session::get('company_id')}}">
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">List Of Branches
@@ -45,8 +43,8 @@
                     <td>{{$branch->PAN_number}}</td>
                     <td>{{$branch->registration_number}}</td>
                     <td>
-                        <button class="btn btn-warning open_modal" value="{{$branch->branch_id}}"><i class="fa fa-edit"> </i> Edit</button>
-                        <button class="btn btn-danger delete-branch" value="{{$branch->branch_id}}"><i class="fa fa-trash"> </i> Delete</button>
+                        <button class="btn btn-warning open_modal" value="{{$branch->branch_id}}"><i class="fa fa-edit"> </i></button>
+                        <button class="btn btn-danger delete-branch" value="{{$branch->branch_id}}"><i class="fa fa-trash"> </i></button>
                     </td>
                     
                 </tr>
@@ -87,14 +85,14 @@
                                 <div class="row">
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <label for="inputBranchId" class="control-label">Branch ID</label>
+                                            <label for="inputBranchId" class="control-label">Branch ID <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputBranchId" placeholder="Branch ID" name="branch_id" autocomplete="no">
                                             <span id="error_msg_id">Branch ID must be unique</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
                                         <div class="form-group">
-                                            <label for="inputName" class="control-label">Name</label>
+                                            <label for="inputName" class="control-label">Name <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputName" placeholder="Name" name="branch_name" autocomplete="no">
                                         </div>
                                     </div>
@@ -108,13 +106,13 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputContactNumber" class="control-label">Contact Number</label>
+                                            <label for="inputContactNumber" class="control-label">Contact Number <span class="required">*</span></label>
                                             <input type="number" class="form-control" id="inputContactNumber" placeholder="Contact Number" name="contact" autocomplete="no">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputCountry" class="control-label">Country</label>
+                                            <label for="inputCountry" class="control-label">Country <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputCountry" placeholder="Country" name="country" autocomplete="country">
                                         </div>
                                     </div>
@@ -122,13 +120,13 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputState" class="control-label">State</label>
+                                            <label for="inputState" class="control-label">State <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputState" placeholder="State" name="state" autocomplete="state">
                                         </div>   
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputCity" class="control-label">City</label>
+                                            <label for="inputCity" class="control-label">City <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputCity" placeholder="City" name="city" autocomplete="city">
                                         </div>
                                     </div>
@@ -136,13 +134,13 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputStreet_address_1" class="control-label">Street address 1</label>
+                                            <label for="inputStreet_address_1" class="control-label">Street address 1 <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputStreet_address_1" placeholder="Street address 1" name="street_address_1" autocomplete="no">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputStreet_address_2" class="control-label">Street Address 2</label>
+                                            <label for="inputStreet_address_2" class="control-label">Street Address 2 <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputStreet_address_2" placeholder="Street Address 2" name="street_address_2" autocomplete="no">
                                         </div>
                                     </div>
@@ -150,7 +148,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="inputPostalCode" class="control-label">Postal Code</label>
+                                            <label for="inputPostalCode" class="control-label">Postal Code <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputPostalCode" placeholder="Postal Code" name="postalCode" autocomplete="no">
                                         </div>
                                     </div>
@@ -277,7 +275,7 @@
         $.get('/getBranchById/' + branch_id, function (data) {
             //success data
             original_branch_id = branch_id;
-            console.log(data);
+            //console.log(data);
             $('#inputBranchId').val(data.branch_id);
             $('#inputName').val(data.name);
             $('#inputWebsite').val(data.website);
@@ -389,7 +387,7 @@
             type = "PUT"; //for updating existing resource
             url = '/updateBranch/' + original_branch_id;
         }
-        console.log(formData);
+        //console.log(formData);
         $.ajax({
             type: type,
             url: url,
@@ -405,8 +403,8 @@
                         +'<td>'+data.VAT_number+'</td>'
                         +'<td>'+data.PAN_number+'</td>'
                         +'<td>'+data.registration_number+'</td>';
-                branch += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.branch_id + '"><i class="fa fa-edit"> </i> Edit</button>';
-                branch += ' <button class="btn btn-danger btn-delete delete-branch" value="' + data.branch_id + '"><i class="fa fa-trash"> </i> Delete</button></td></tr>';
+                branch += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.branch_id + '"><i class="fa fa-edit"> </i></button>';
+                branch += ' <button class="btn btn-danger btn-delete delete-branch" value="' + data.branch_id + '"><i class="fa fa-trash"> </i></button></td></tr>';
                 if (state == "add"){ //if user added a new record
                     $('#branches-list').append(branch);
                 }else{ //if user updated an existing record
@@ -416,8 +414,9 @@
                 $('#modal-add').modal('hide');
             },
             error: function (data) {
-                alert('Error: '+JSON.stringify(data));
-                console.log('Error:', JSON.stringify(data));
+                // alert('Error: '+JSON.stringify(data));
+                // console.log('Error:', JSON.stringify(data));
+                alert("Something went wrong! Please Try Again Later!")
             }
         });
     });

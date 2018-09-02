@@ -15,7 +15,6 @@ class CreateRostersTable extends Migration
     {
         Schema::create('rosters', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('punch_id')->nullable();
             $table->string('employee_id');
             $table->string('company_id');
             $table->string('branch_id')->nullable();

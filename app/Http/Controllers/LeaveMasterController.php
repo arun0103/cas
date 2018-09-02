@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\LeaveMaster;
+use Session;
 
 class LeaveMasterController extends Controller
 {
@@ -44,11 +45,13 @@ class LeaveMasterController extends Controller
 
     }
     public function getLeaveMaster(){
-        $leaveMaster = LeaveMaster::all();
+        $company_id = Session::get('company_id');
+        $leaveMaster = LeaveMaster::where('company_id',$company_id)->get();
         return view('pages/admin/leave/master/viewLeaveMaster', ['leaveMaster'=>$leaveMaster,'allLeaves'=>$leaveMaster]);
     }
     public function getDataForLeaveMaster(){
-        $leaveMaster = LeaveMaster::all();
+        $company_id = Session::get('company_id');
+        $leaveMaster = LeaveMaster::where('company_id',$company_id)->get();
         return view('pages/admin/leave/master/addLeaveMaster', ['allLeaves'=>$leaveMaster]);
     }
 

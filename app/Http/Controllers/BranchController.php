@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Branch;
 use Carbon\Carbon;
+use Session;
 
 class BranchController extends Controller
 {
@@ -34,7 +35,8 @@ class BranchController extends Controller
         // }
     }
     public function getBranches(){
-        $branches = Branch::all();
+        $company_id = Session::get('company_id');
+        $branches = Branch::where('company_id',$company_id)->get();
         return view('pages/admin/branch/viewBranches',['branches'=>$branches]);
     }
     public function getBranchById($id){

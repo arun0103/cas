@@ -1,5 +1,8 @@
 @extends('layouts.master')
 
+@section('head')
+    <link rel="stylesheet" href="{{asset('js/plugins/select2/select2.min.css')}}">
+@endsection
 @section('content')
 @if (session('status'))
     <div class="alert alert-success alert-dismissible">
@@ -8,24 +11,34 @@
         {{ session('status') }}
     </div>
 @endif
-
+<h3>Add Company</h3>
 <div class="row" id="addNewCompany"> 
     <div class="col-md-12">
-        <form class="form-horizontal" method="post" action="/addCompany" enctype="multipart/form-data">
+        <form id="form_addCompany" class="form-horizontal" method="post" action="/addCompany" enctype="multipart/form-data" autocomplete="off">
             {{ csrf_field() }}
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-group">
-                        <label for="inputCompanyId" class="control-label">Company ID</label>
-                        <input type="text" class="form-control" id="inputCompanyId" placeholder="Company ID" name="company_id" value="{{old('company_id')}}">
+                        <label for="inputCompanyId" class="control-label">Company ID <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="inputCompanyId" placeholder="Company ID" name="company_id" value="{{old('company_id')}}" autocomplete="false" >
                         @if($errors->has('company_id'))
                             <p class="alert alert-danger">{{ $errors->first('company_id') }}</p>
                         @endif
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="select_company_type" class="control-label">Company Type <span class="required">*</span></label>
+                        <select id = "select_company_type" class="form-control select2" data-placeholder="Company Type" name="company_type">
+                            <option></option>
+                            <option value="business">Business</option>
+                            <option value="institute">Institution</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputName" class="control-label">Name</label>
+                        <label for="inputName" class="control-label">Name <span class="required">*</span></label>
                         <input type="text" class="form-control" id="inputName" placeholder="Name" name="company_name" value="{{old('company_name')}}">
                         @if($errors->has('company_name'))
                             <p class="alert alert-danger">{{ $errors->first('company_name') }}</p>
@@ -36,7 +49,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputWebsite" class="control-label">Website</label>
+                        <label for="inputWebsite" class="control-label">Website <span class="required">*</span></label>
                         <input type="text" class="form-control" id="inputWebsite" placeholder="Website" name="website" value="{{old('website')}}">
                         @if($errors->has('website'))
                             <p class="alert alert-danger">{{ $errors->first('website') }}</p>
@@ -45,7 +58,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputContactNumber" class="control-label">Contact Number</label>
+                        <label for="inputContactNumber" class="control-label">Contact Number <span class="required">*</span></label>
                         <input type="text" class="form-control" id="inputContactNumber" placeholder="Contact Number" name="contact" value="{{old('contact')}}">
                         @if($errors->has('contact'))
                             <p class="alert alert-danger">{{ $errors->first('contact') }}</p>
@@ -56,7 +69,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="inputCountry" class="control-label">Country</label>
+                        <label for="inputCountry" class="control-label">Country <span class="required">*</span></label>
                         <input type="text" class="form-control" id="inputCountry" placeholder="Country" name="country" value="{{old('country')}}">
                         @if($errors->has('country'))
                             <p class="alert alert-danger">{{ $errors->first('country') }}</p>
@@ -65,7 +78,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="inputState" class="control-label">State</label>
+                        <label for="inputState" class="control-label">State <span class="required">*</span></label>
                         <input type="text" class="form-control" id="inputState" placeholder="State" name="state" value="{{old('state')}}">
                         @if($errors->has('state'))
                             <p class="alert alert-danger">{{ $errors->first('state') }}</p>
@@ -74,7 +87,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="inputCity" class="control-label">City</label>
+                        <label for="inputCity" class="control-label">City <span class="required">*</span></label>
                         <input type="text" class="form-control" id="inputCity" placeholder="City" name="city" value="{{old('city')}}">
                         @if($errors->has('city'))
                             <p class="alert alert-danger">{{ $errors->first('city') }}</p>
@@ -85,7 +98,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="inputStreet_address_1" class="control-label">Street Address 1</label>
+                        <label for="inputStreet_address_1" class="control-label">Street Address 1 <span class="required">*</span></label>
                         <textarea class="form-control" id="inputStreet_address_1" placeholder="Street Address 1" name="street_address_1" value="{{old('street_address_1')}}"></textarea>
                         @if($errors->has('street_address_1'))
                             <p class="alert alert-danger">{{ $errors->first('street_address_1') }}</p>
@@ -94,7 +107,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="inputStreet_address_2" class="control-label">Street Address 2</label>
+                        <label for="inputStreet_address_2" class="control-label">Street Address 2 <span class="required">*</span></label>
                         <textarea class="form-control" id="inputStreet_address_2" placeholder="Street Address 2" name="street_address_2" value="{{old('street_address_2')}}"></textarea>
                         @if($errors->has('street_address_2'))
                             <p class="alert alert-danger">{{ $errors->first('street_address_2') }}</p>
@@ -103,7 +116,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="inputPostalCode" class="control-label">Postal Code</label>
+                        <label for="inputPostalCode" class="control-label">Postal Code <span class="required">*</span></label>
                         <input type="number" class="form-control" id="inputPostalCode" placeholder="Postal Code" name="postal_code" value="{{old('postal_code')}}"></textarea>
                         @if($errors->has('postal_code'))
                             <p class="alert alert-danger">{{ $errors->first('postal_code') }}</p>
@@ -164,7 +177,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputAdminName" class="control-label">Admin Name</label>
+                        <label for="inputAdminName" class="control-label">Admin Name <span class="required">*</span></label>
                         <input type="text" class="form-control" id="inputAdminName" placeholder="Admin Name" name="adminName" value="{{old('adminName')}}">
                         @if($errors->has('adminName'))
                             <p class="alert alert-danger">{{ $errors->first('adminName') }}</p>
@@ -173,7 +186,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="inputEmail" class="control-label">Admin Email</label>
+                        <label for="inputEmail" class="control-label">Admin Email <span class="required">*</span></label>
                         <input type="email" class="form-control" id="inputEmail" placeholder="Admin Email" name="email" value="{{old('email')}}">
                         @if($errors->has('email'))
                             <p class="alert alert-danger">{{ $errors->first('email') }}</p>
@@ -201,9 +214,13 @@
 @endsection
 
 @section('footer')
+<script src="{{asset('js/plugins/select2/select2.full.min.js')}}"></script>
+<script src="{{asset('js/plugins/jquery/jquery.validate.min.js')}}"></script>
 <script>
     $(document).ready(function(){
         $('#btn_submit').prop('disabled', true);
+        $('.select2').select2();
+        $('#form_addCompany').validate();
     });
 
     function userAgreed(value){

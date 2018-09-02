@@ -56,9 +56,9 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group" >
-                                            <label>Branch</label>
                                             <div class="row">
                                                 <div class="col-sm-12">
+                                                    <label>Branch <span class="required">*</span></label>
                                                     <select id="select_branch" class="form-control select2 percent100" multiple data-placeholder="Select Branches for generating roaster" name="selectedBranches[]" onchange="branchSelected(this.value)" required>
                                                         @foreach($allBranches as $branch)
                                                             <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
@@ -74,12 +74,12 @@
                                             <div class="row">
                                                 <div class="col-sm-4">
                                                     <div class="form-group">
-                                                        <label for="inputYear" class="control-label">Year</label>
+                                                        <label for="inputYear" class="control-label">Year <span class="required">*</span></label>
                                                         <input type="number" class="form-control" id="inputYear" placeholder="Year" name="year" min="2015" value="2018" required autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-8">
-                                                    <label for="select_month">Month</label>
+                                                    <label for="select_month">Month <span class="required">*</span></label>
                                                     <select id="select_month" class="form-control select2 " data-placeholder="Select Month" name="selectedMonth" required>
                                                         <option></option>
                                                         <option value="1">January</option>
@@ -133,7 +133,7 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group" >
-                                                    <label for="select_branch_view">Branch</label>
+                                                    <label for="select_branch_view">Branch <span class="required">*</span></label>
                                                     <div class="row">
                                                         <div class="col-sm-12">
                                                             <select id="select_branch_view" class="form-control select2 percent100"  data-placeholder="Select a Branch" name="selectedBranchView" onchange="populateEmployee(this.value)">
@@ -149,7 +149,7 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group" >
-                                                    <label for="select_employee_view">Employee</label>
+                                                    <label for="select_employee_view">Employee <span class="required">*</span></label>
                                                     <div class="row">
                                                         <div class="col-sm-12">
                                                             <select id="select_employee_view" class="form-control select2 percent100"  data-placeholder="Select an Employee" name="selectedEmployeeView">
@@ -280,26 +280,26 @@
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <div class="form-group" >
-                                            <label for="select_branch_edit" class="control-label">Branch</label>
+                                            <label for="select_branch_edit" class="control-label">Branch <span class="required">*</span></label>
                                             <input type="text" id="branch_edit" class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label for="select_employee_view" class="control-label">Employee</label>
+                                            <label for="select_employee_view" class="control-label">Employee <span class="required">*</span></label>
                                             <input type="text" id="employee_edit" class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label for="roster_date" class="control-label">Date</label>
+                                            <label for="roster_date" class="control-label">Date <span class="required">*</span></label>
                                             <input type="text" id="roster_date" class="form-control" disabled>
                                         </div> 
                                     </div> 
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-8">
-                                        <label for="select_shift" class="control-label">Roster Date</label>
+                                        <label for="select_shift" class="control-label">Roster Date <span class="required">*</span></label>
                                         <select id="select_shift" class="form-control select2 percent100"  data-placeholder="Select Shift" name="selectedShift">
                                             <option></option>
                                             @foreach($shifts as $shift)
@@ -308,7 +308,7 @@
                                         </select>
                                     </div>
                                     <div class="col-sm-4">
-                                        <label for="select_dayStatus" class="control-label">Day Status</label>
+                                        <label for="select_dayStatus" class="control-label">Day Status <span class="required">*</span></label>
                                         <select id="select_dayStatus" class="form-control select2 percent100"  data-placeholder="Select Day Status" name="selectedDayStatus">
                                             <option></option>
                                             <option value = "W">Work</option>

@@ -38,7 +38,7 @@ class EmployeeController extends Controller
     }
 
     public function getEmployees(){
-        $comp_id=Session::get('company_id');
+        $comp_id = Session::get('company_id');
         $branches = Branch::where('company_id',$comp_id)->get();
         $categories = Category::where('company_id',$comp_id)->get();
         $shifts = Shift::where('company_id',$comp_id)->get();

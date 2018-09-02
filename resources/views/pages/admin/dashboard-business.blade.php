@@ -30,7 +30,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Total</span>
-                <span class="info-box-number">{{$total}}</span>
+                <span class="info-box-number" id="employee-total">{{$total}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -43,7 +43,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Absent</span>
-                <span class="info-box-number">{{$total-$present}}</span>
+                <span class="info-box-number" id="employee-absent">{{$total-$present}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -60,7 +60,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Present</span>
-                <span class="info-box-number">{{$present}}</span>
+                <span class="info-box-number" id="employee-present">{{$present}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -73,7 +73,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Late</span>
-                <span class="info-box-number">{{$late}}</span>
+                <span class="info-box-number" id="employee-late">{{$late}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -231,7 +231,20 @@
 <script>
   $(document).ready(function(){
     $('.loading').hide();
+    // SET AUTOMATIC PAGE RELOAD TIME TO 1000 MILISECONDS (1 SECOND * seconds we want).
+    setInterval('refreshPageContents()', 1000*5);
   });
+  function refreshPageContents() { 
+    //location.reload(); 
+    //console.log('Reloading page contents');
+    $.get('/refreshDashboard/Business',function(data){
+      //console.log(data);
+      $('#employee-total').text(data.total).change();
+      $('#employee-present').text(data.present).change();
+      $('#employee-absent').text(data.total - data.present).change();
+      $('#employee-late').text(data.late).change();
+    });
+  }
 
 </script>
 @endsection

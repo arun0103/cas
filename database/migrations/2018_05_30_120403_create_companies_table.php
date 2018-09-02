@@ -16,6 +16,7 @@ class CreateCompaniesTable extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('company_id')->unique();
+            $table->string('company_type');
             $table->string('name');
             $table->string('country', 50);
             $table->string('state', 50);
@@ -28,8 +29,9 @@ class CreateCompaniesTable extends Migration
             $table->string('VAT_number')->nullable();
             $table->string('PAN_number')->nullable();
             $table->string('registration_number')->nullable();
-            $table->double('lat');
-            $table->double('lng');
+            $table->double('lat')->nullable();
+            $table->double('lng')->nullable();
+            $table->integer('added_by');
             $table->timestamps();
         });
     }
