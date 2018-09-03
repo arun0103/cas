@@ -232,13 +232,13 @@
                         </div> 
                         <hr>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="input_contactPersonName_1">Contact Person Name</label>
                                 <input type="text" class="form-control" id="input_contactPersonName_1" placeholder="Name of contact person" name="contact_1_name">
                             </div>
-                            <div class="col-md-3">
-                            <label for="input_contactPersonNumber_1">Contact Number</label>
-                                <input type="number" class="form-control" id="input_contactPersonNumber_1" placeholder="Contact Number" name="contact_1_number">
+                            <div class="col-md-5">
+                            <label for="input_contactPersonNumber_1">Mobile Number</label>
+                                <input type="text" class="form-control" id="input_contactPersonNumber_1" placeholder="Mobile Number with country code eg.+9779841000000" name="contact_1_number">
                             </div>
                             <div class="col-md-3">
                                 <label>SMS Punches</label><br>
@@ -246,13 +246,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="input_contactPersonName_2">Contact Person Name</label>
                                 <input type="text" class="form-control" id="input_contactPersonName_2" placeholder="Name of contact person" name="contact_2_name">
                             </div>
-                            <div class="col-md-3">
-                            <label for="input_contactPersonNumber_2">Contact Number</label>
-                                <input type="number" class="form-control" id="input_contactPersonNumber_2" placeholder="Contact Number" name="contact_2_number">
+                            <div class="col-md-5">
+                            <label for="input_contactPersonNumber_2">Mobile Number</label>
+                                <input type="number" class="form-control" id="input_contactPersonNumber_2" placeholder="Mobile Number with country code eg.+9779841000000" name="contact_2_number">
                             </div>
                             <div class="col-md-3">
                                 <label>SMS Punches</label><br>

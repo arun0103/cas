@@ -29,6 +29,9 @@ Route::get('index', 'EmployeeController@index');
 Route::get('/refreshDashboard/Institute', 'DashboardController@getNewDashboardContents_institute');
 Route::get('/refreshDashboard/Business', 'DashboardController@getNewDashboardContents_business');
 
+//////////////////////////////////// SMS ///////////////////////////////////////
+Route::post('/dlr/deliveryStatus','SMSController@postDeliveryStatus');
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Super Admins////////////////////////////////////
 Route::get('/super/companies/add', function () {

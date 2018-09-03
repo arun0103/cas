@@ -43,6 +43,18 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{{route('reportSelect')}}" class="nav-link">Reports</a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block dropdown" style="line-height:20px;padding:10px">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Dropdown <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+          <li class="divider"></li>
+          <li><a href="#">One more separated link</a></li>
+        </ul>
+      </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
       </li>
