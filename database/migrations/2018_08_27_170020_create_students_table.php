@@ -34,8 +34,8 @@ class CreateStudentsTable extends Migration
             $table->string('email')->nullable();
             $table->string('contact_1_name',40)->nullable();
             $table->string('contact_2_name',40)->nullable();
-            $table->string('contact_1_number',10)->nullable();
-            $table->string('contact_2_number',10)->nullable();
+            $table->string('contact_1_number',15)->nullable();
+            $table->string('contact_2_number',15)->nullable();
             $table->string('sms_option',1)->nullable();
 
             $table->timestamps();

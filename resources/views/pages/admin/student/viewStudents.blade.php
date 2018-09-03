@@ -252,7 +252,7 @@
                             </div>
                             <div class="col-md-5">
                             <label for="input_contactPersonNumber_2">Mobile Number</label>
-                                <input type="number" class="form-control" id="input_contactPersonNumber_2" placeholder="Mobile Number with country code eg.+9779841000000" name="contact_2_number">
+                                <input type="text" class="form-control" id="input_contactPersonNumber_2" placeholder="Mobile Number with country code eg.+9779841000000" name="contact_2_number">
                             </div>
                             <div class="col-md-3">
                                 <label>SMS Punches</label><br>
