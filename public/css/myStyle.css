@@ -16,6 +16,11 @@
   text-decoration: none;
   display: block;
 }
+#div-total-employees:hover, #div-absent-employees:hover, #div-present-employees:hover, #div-late-employees:hover,
+#div-total-students:hover, #div-absent-students:hover, #div-present-students:hover, #div-late-students:hover{
+  cursor: pointer;
+}
+
 .dropdown-content a:hover {background-color: #ddd;}
 
 .dropdown-submenu:hover .dropdown-content {display: block;}

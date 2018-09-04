@@ -47,6 +47,13 @@ Route::post('/addCompany', 'SuperController@addCompany');
 /////////////////////////// Company Admins ////////////////////////////////
 
 /////////////// Student
+/// for dashboard
+Route::get('/getTotalStudents/','StudentDashboardController@getTotalStudents');
+Route::get('/getAbsentStudents/','StudentDashboardController@getAbsentStudents');
+
+
+
+///
 
 Route::get('/admin/students','StudentController@getStudents')->name('viewStudents');
 Route::get('/getStudentById/{id}','StudentController@getStudentByid');

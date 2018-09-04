@@ -74,6 +74,29 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto fixed">
+      <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="dropdown" style="margin-right:20px;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li>
+                  <div class="dropdown-submenu">
+                    <a href="#" >Employee</a>
+                    <div class="dropdown-content"><a href="#">Absent</a> </div>
+                  </div>
+              </li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+              <li class="divider"></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul>
+          </li>
+          <li style="margin-right:20px;"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+          <li style="margin-right:20px;"><a href="#">Link</a></li>
+        </ul>
+      </div>
       <!-- Messages Dropdown Menu -->
       <!-- <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
