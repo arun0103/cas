@@ -16,8 +16,8 @@ class CreateStudentPunchRecordsTable extends Migration
         Schema::create('student_punch_records', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('student_id');
             $table->string('institution_id');
+            $table->string('student_id');
 
             $table->date('punch_date');
             $table->timestamp('punch_1');  // punch time to be recorded

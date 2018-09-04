@@ -15,10 +15,11 @@ class CreateDesignationsTable extends Migration
     {
         Schema::create('designations', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
             $table->string('company_id');
             $table->string('designation_id');
             $table->string('name');
+
+            $table->timestamps();
             $table->unique(array('company_id','designation_id'));
         });
     }

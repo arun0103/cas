@@ -19,7 +19,7 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <table id="leaveTable" class="table table-bordered table-striped">
+            <table id="leaveTable" class="table table-bordered table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th>Leave Name</th>

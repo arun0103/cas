@@ -64,7 +64,7 @@ class CreateEmployeesTable extends Migration
                         
             $table->integer('week_off_day')->nullable();
             $table->integer('additional_off_day')->nullable();
-            $table->json('additional_off_week')->nullable(); // [1,2,3,4]
+            $table->string('additional_off_week')->nullable(); // [1,2,3,4]
             $table->string('shift_1')->nullable();
             $table->string('shift_2')->nullable();
             $table->string('shift_3')->nullable();

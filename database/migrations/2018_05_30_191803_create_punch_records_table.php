@@ -17,8 +17,9 @@ class CreatePunchRecordsTable extends Migration
             $table->increments('id');
             
             $table->string('emp_id');
-            $table->string('dept_id');
             $table->string('company_id');
+            $table->string('branch_id');
+            $table->string('dept_id');
             $table->string('category_id'); 
 
             $table->integer('roster_id');

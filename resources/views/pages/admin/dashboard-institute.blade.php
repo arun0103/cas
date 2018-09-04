@@ -15,7 +15,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard | Admin</li>
+              <li class="breadcrumb-item active">Dashboard | Admin {{date('Y-m-d')}}</li>
             </ol>
           </div>
         </div>
@@ -132,70 +132,164 @@
         </div>
       </div>
     </section>
-    <section id="detail-table-employees" style="display:none">
-      <h4 id="heading-employee-table">Total Employees Table</h4>
-      <table id="employee-table" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Branch</th>
-            <th>Department</th>
-            <th>Designation</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-            
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Name</th>
-            <th>Branch</th>
-            <th>Department</th>
-            <th>Designation</th>
-            <th>Status</th>
-          </tr>
-        </tfoot>
-      </table>
-    </section>
-    <section id="detail-table-students" style="display:none">
-      <h4 id="heading-student-table">Total Students Table</h4>
-      <table id="students-table" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Grade</th>
-            <th>Section</th>
-            <th>Guardian Name</th>
-            <th>Contact #1</th>
-            <th>Contact #2</th>
-          </tr>
-        </thead>
-        <tbody id="table_row">
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Name</th>
-            <th>Grade</th>
-            <th>Section</th>
-            <th>Guardian Name</th>
-            <th>Contact #1</th>
-            <th>Contact #2</th>
-          </tr>
-        </tfoot>
-      </table>
-    </section>
+    
+    <div id="div-total-employees-container" class="no-display">
+      @include('pages.dashboard.employees.total-employees-table')
+    </div>
+    <div id="div-absent-employees-container" class="no-display">
+      @include('pages.dashboard.employees.absent-employees-table')
+    </div>
+    <div id="div-present-employees-container" class="no-display">
+      @include('pages.dashboard.employees.present-employees-table')
+    </div>
+    <div id="div-late-employees-container" class="no-display">
+      @include('pages.dashboard.employees.late-employees-table')
+    </div>
+
+
+    <div id="div-total-students-container" class="no-display">
+      @include('pages.dashboard.total-students-table')
+    </div>
+    <div id="div-absent-students-container" class="no-display">
+      @include('pages.dashboard.absent-students-table')
+    </div>
+    <div id="div-present-students-container" class="no-display">
+      @include('pages.dashboard.present-students-table')
+    </div>
+    <div id="div-late-students-container" class="no-display">
+      @include('pages.dashboard.late-students-table')
+    </div>
+  
 @endsection
 
 @section('footer')
 <script src="{{asset('js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.js')}}"></script>
 <script>
-  
-  
   $(document).ready(function(){
     $('.loading').hide();
-   // $('.table').DataTable();
+    // getting total students table data
+    $.ajax({
+      'url': "/getTotalStudents/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      $('#total-students-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "name" },
+            { "data": "grade.name" },
+            { "data": "section.name" },
+            { "data": "guardian_name" },
+            { "data": "contact_1_number" },
+            { "data": "contact_2_number" },
+        ]
+      });
+    });
+    $.ajax({
+      'url': "/getAbsentStudents/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      $('#absent-students-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "name" },
+            { "data": "grade.name" },
+            { "data": "section.name" },
+            { "data": "guardian_name" },
+            { "data": "contact_1_number" },
+            { "data": "contact_2_number" },
+        ]
+      });
+    });
+    $.ajax({
+      'url': "/getPresentStudents/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      console.log(data);
+      var p_s_t = $('#present-students-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "student.name" },
+            { "data": "student.grade.name" },
+            { "data": "student.section.name" },
+            { "data": "student.guardian_name" },
+            { "data": "student.contact_1_number" },
+            { "data": "student.contact_2_number" },
+            { "data": "punch_1" },
+        ]
+      });
+    });
+    $.ajax({
+      'url': "/getTotalEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      console.log(data);
+      $('#total-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "name" },
+            { "data": "branch.name" },
+            { "data": "department.name" },
+            { "data": "designation.name" },
+            { "data": "employee_id" }
+        ]
+      });
+    });
+    $.ajax({
+      'url': "/getPresentEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      console.log(data);
+      $('#present-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "employee.name" },
+            { "data": "employee.branch.name" },
+            { "data": "employee.department.name" },
+            { "data": "employee.designation.name" },
+            { "data": "punch_1" }
+        ]
+      });
+    });
+    $.ajax({
+      'url': "/getAbsentEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      console.log(data);
+      $('#absent-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "name" },
+            { "data": "branch.name" },
+            { "data": "department.name" },
+            { "data": "designation.name" },
+            { "data": "employee_id" }
+        ]
+      });
+    });
+    $.ajax({
+      'url': "/getLateEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      console.log("late employees: "+ data);
+      $('#late-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "employee.name" },
+            { "data": "employee.branch.name" },
+            { "data": "employee.department.name" },
+            { "data": "employee.designation.name" },
+            { "data": "late_in" }
+        ]
+      });
+    });
     
     // SET AUTOMATIC PAGE RELOAD TIME TO 1000 MILISECONDS (1 SECOND * seconds we want).
     setInterval('refreshPageContents()', 1000*60);
@@ -217,88 +311,123 @@
 
 
     });
+    //p_s_t.ajax.reload();
   }
 
   $('#div-total-employees').click(function (e){
+    $("#div-total-employees-container").addClass('display-block').removeClass('no-display');
+
+    $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('#div-total-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-students-container').addClass('no-display').removeClass('display-block');
     
-    $('#detail-table-employees').css('display','block');
-    $('#detail-table-students').css('display','none');
+
     $('html, body').animate({
-        scrollTop: $("#detail-table-employees").offset().top
+        scrollTop: $("#div-total-employees-container").offset().top
+    }, 1000);
+  });
+  $('#div-absent-employees').click(function (e){
+    $("#div-absent-employees-container").addClass('display-block').removeClass('no-display');
+
+    $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('#div-total-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-students-container').addClass('no-display').removeClass('display-block');
+    
+    $('html, body').animate({
+        scrollTop: $("#div-absent-employees-container").offset().top
+    }, 1000);
+  });
+  $('#div-present-employees').click(function (e){
+    $("#div-present-employees-container").addClass('display-block').removeClass('no-display');
+
+    $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('#div-total-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-students-container').addClass('no-display').removeClass('display-block');
+    
+    $('html, body').animate({
+        scrollTop: $("#div-present-employees-container").offset().top
+    }, 1000);
+  });
+  $('#div-late-employees').click(function (e){
+    $("#div-late-employees-container").addClass('display-block').removeClass('no-display');
+
+    $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('#div-total-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-students-container').addClass('no-display').removeClass('display-block');
+    
+    $('html, body').animate({
+        scrollTop: $("#div-late-employees-container").offset().top
     }, 1000);
   });
 
   $('#div-total-students').on('click',function(){
-    $('#detail-table-employees').css('display','none');
-    $.ajax({
-        'url': "/getTotalStudents/",
-        'method': "GET",
-        'contentType': 'application/json'
-    }).done( function(data) {
-      console.log(data);
-      
-      $('#students-table').dataTable( {
-          "aaData": data,
-          "columns": [
-              { "data": "name" },
-              { "data": "grade.name" },
-              { "data": "section.name" },
-              { "data": "guardian_name" },
-              { "data": "contact_1_number" },
-              { "data": "contact_2_number" },
-          ]
-      });
-      $('#detail-table-students').css('display','block');
-      $('html, body').animate({
-          scrollTop: $("#detail-table-students").offset().top
-      }, 1000);
-    });
-    // $.get('/getTotalStudents/',function(data){
-    //   console.log(data);
-    //   $("#students-table").find('tbody').empty();
-    //   console.log(t.data().count() + ' '+ data.length);
-    //   if(t.data().count()/6 != data.length){
-    //     console.log('Entered after length check');
-    //     $.each(data, function(index,value){
-    //       t.row.add( [
-    //         value.name,
-    //         value.grade['name'],
-    //         value.section['name'],
-    //         value.guardian_name,
-    //         value.contact_1_number + ',' +value.contact_2_number,
-    //         ' '
-    //       ]).draw();
-    //     });
-    //   }  
-    // });
-   
-    
+    $('#div-total-students-container').addClass('display-block').removeClass('no-display');
+
+    $('#div-present-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-students-container').addClass('no-display').removeClass('display-block');
+
+    $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('html, body').animate({
+        scrollTop: $("#div-total-students-container").offset().top
+    }, 1000);    
   });
+  $('#div-present-students').on('click',function(){
+    $('#div-present-students-container').addClass('display-block').removeClass('no-display');
+
+    $('#div-total-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-students-container').addClass('no-display').removeClass('display-block');
+
+    $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('html, body').animate({
+        scrollTop: $("#div-present-students-container").offset().top
+    }, 1000);    
+  });
+
   $('#div-absent-students').on('click',function(){
-    $('#detail-table-employees').css('display','none');
-    $.ajax({
-        'url': "/getAbsentStudents/",
-        'method': "GET",
-        'contentType': 'application/json'
-    }).done( function(data) {
-      console.log(data);
-      
-      $('#students-table').dataTable( {
-          "aaData": data,
-          "columns": [
-              { "data": "name" },
-              { "data": "grade.name" },
-              { "data": "section.name" },
-              { "data": "guardian_name" },
-              { "data": "contact_1_number" },
-              { "data": "contact_2_number" },
-          ]
-      });
-      $('#detail-table-students').css('display','block');
-      $('html, body').animate({
-          scrollTop: $("#detail-table-students").offset().top
-      }, 1000);
-    });
+    $('#div-absent-students-container').addClass('display-block').removeClass('no-display');
+
+    $('#div-total-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-students-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-students-container').addClass('no-display').removeClass('display-block');
+
+    $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('html, body').animate({
+        scrollTop: $("#div-absent-students-container").offset().top
+    }, 1000);
   });
 
 </script>

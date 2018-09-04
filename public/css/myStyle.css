@@ -1,6 +1,12 @@
 .required{
   color:red;
 }
+.no-display{
+  display:none;
+}
+.display-block{
+  display:block;
+}
 
 .dropdown-content{
   display:none;

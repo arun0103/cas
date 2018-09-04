@@ -16,10 +16,12 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('student_id');
             $table->string('institution_id');
-            $table->integer('card_number');
+            $table->string('student_id');
             $table->string('name',30);
+            $table->integer('card_number');
+            $table->string('grade_id');
+            $table->string('section_id')->nullable();
             $table->date('dob');
             $table->string('permanent_address',50);
             $table->string('temporary_address',50)->nullable();
@@ -28,8 +30,6 @@ class CreateStudentsTable extends Migration
             $table->string('mother_name',30);
             $table->string('guardian_name',30);
             $table->string('guardian_relation',20);
-            $table->string('grade_id');
-            $table->string('section_id')->nullable();
 
             $table->string('email')->nullable();
             $table->string('contact_1_name',40)->nullable();

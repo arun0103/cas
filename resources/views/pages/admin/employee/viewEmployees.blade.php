@@ -933,10 +933,10 @@
             $('#inputExperience').val(data.experience);
 
             $('#inputCardNumber').val(data.card_number);
-            $('#select_department').val(data.dept_id);
-            $('#select_category').val(data.category_id);
-            $('#select_branch').val(data.branch_id);
-            $('#select_designation').val(data.designation_id);
+            $('#select_department').val(data.dept_id).change();
+            $('#select_category').val(data.category_id).change();
+            $('#select_branch').val(data.branch_id).change();
+            $('#select_designation').val(data.designation_id).change();
             
             if(data.Permanent_Temporary ==0)
                 $('#radio_temporary').prop("checked",true);
@@ -945,9 +945,10 @@
             else
                 $('#radio_permanent').prop('checked',true);
             
-            $('#select_weekOffDay').val(data.week_off_day);
-            $('#select_additionalOffDay').val(data.additional_off_day);
-            $('#select_additionalOffWeek').val(data.additional_off_week);
+            $('#select_weekOffDay').val(data.week_off_day).change();
+            $('#select_additionalOffDay').val(data.additional_off_day).change();
+            var additional_off_week_array = data.additional_off_week.split(',');
+            $('#select_additionalOffWeek').val(additional_off_week_array).change();
             $('#select_shift_1').val(data.shift_1);
             $('#select_shift_2').val(data.shift_2);
             $('#select_shift_3').val(data.shift_3);
@@ -1039,6 +1040,14 @@
             }
         })
         e.preventDefault(); 
+        var additional_off_weeks_array = $('#select_additionalOffWeek').val();
+        var additional_off_weeks_string = '';
+        for(var i =0; i < additional_off_weeks_array.length; i++){
+            if(i>0)
+                additional_off_weeks_string +=',';
+            additional_off_weeks_string += additional_off_weeks_array[i];
+            
+        }
         var formData = {
             company_id                  : $('#inputCompanyId').val(),
             employee_id                 : $('#inputEmployeeId').val(),
@@ -1069,7 +1078,7 @@
             Permanent_Temporary         : $('#radio_temporary').prop("checked")==true?0:$('#radio_provasion').prop("checked")==true?1:2,
             week_off_day                : $('#select_weekOffDay').val(),
             additional_off_day          : $('#select_additionalOffDay').val(),
-            additional_off_week         : $('#select_additionalOffWeek').val(),
+            additional_off_week         : additional_off_weeks_string,
             shift_1                     : $('#select_shift_1').val()!="none"?$('#select_shift_1').val():null,
             shift_2                     : $('#select_shift_2').val()!="none"?$('#select_shift_2').val():null,
             shift_3                     : $('#select_shift_3').val()!="none"?$('#select_shift_3').val():null,

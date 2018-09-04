@@ -29,6 +29,10 @@ Route::get('index', 'EmployeeController@index');
 Route::get('/refreshDashboard/Institute', 'DashboardController@getNewDashboardContents_institute');
 Route::get('/refreshDashboard/Business', 'DashboardController@getNewDashboardContents_business');
 
+
+Route::get('/dashboard/absentStudents',function(){
+    return view('pages/dashboard/absent-students-table');
+});
 //////////////////////////////////// SMS ///////////////////////////////////////
 Route::post('/dlr/deliveryStatus','SMSController@postDeliveryStatus');
 
@@ -47,9 +51,17 @@ Route::post('/addCompany', 'SuperController@addCompany');
 /////////////////////////// Company Admins ////////////////////////////////
 
 /////////////// Student
+
+
 /// for dashboard
 Route::get('/getTotalStudents/','StudentDashboardController@getTotalStudents');
 Route::get('/getAbsentStudents/','StudentDashboardController@getAbsentStudents');
+Route::get('/getPresentStudents/','StudentDashboardController@getPresentStudents');
+
+Route::get('/getTotalEmployees/','DashboardController@getTotalEmployees');
+Route::get('/getAbsentEmployees/','DashboardController@getAbsentEmployees');
+Route::get('/getPresentEmployees/','DashboardController@getPresentEmployees');
+Route::get('/getLateEmployees/','DashboardController@getLateEmployees');
 
 
 

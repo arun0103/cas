@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Session;
 use Carbon\Carbon;
+use DateTime;
 
 use App\Company;
 use App\Employee;
 use App\Punch;
 use App\Student;
 use App\Student_Punch;
+use App\Shift;
 
 class DashboardController extends Controller
 {
@@ -67,5 +69,51 @@ class DashboardController extends Controller
             'late'=>$lateEmployees
         ];
         return response()->json($employeeDetails);
+    }
+
+    public function getTotalEmployees(){
+        $company_id = Session::get('company_id');
+        $allEmployees = Employee::where('company_id',$company_id)->with('branch','department','designation')->get();
+        return response()->json($allEmployees);
+    }
+    public function getAbsentEmployees(){
+        $company_id = Session::get('company_id');
+        $presentEmployees = Punch::where([['company_id',$company_id],['punch_date',date('Y-m-d')]])->pluck('emp_id');
+        $absentEmployees = Employee::where('company_id',$company_id)->whereNotIn('employee_id',$presentEmployees)->with('branch','department','designation')->get();
+        return response()->json($absentEmployees);
+    }
+    public function getPresentEmployees(){
+        $company_id = Session::get('company_id');
+        $presentEmployees = Punch::where([['company_id',$company_id],['punch_date',date('Y-m-d')]])->with(['employee'=>function($query){
+                                        $query->with('branch','department','designation');
+                                    }
+        ])->get();
+        return response()->json($presentEmployees);
+    }
+
+    public function getLateEmployees(){
+        $company_id = Session::get('company_id');
+        $lateEmployees = Punch::where([['company_id',$company_id],['punch_date',date('Y-m-d')],['late_in','>',0]])->with(['employee'=>function($query){
+            $query->with('branch','department','designation');
+        }
+        ])->get();
+        return $lateEmployees;
+    }
+
+    public function makeDateTime($date, $time){
+        $timeWithoutMeridian = substr($time,0,-3);
+        $timeToConcat = substr($time,0,-3);
+        $meridian = substr($time,-2);
+        $hr = substr($time,0,2);
+        
+        if($meridian =="AM"){
+            if($hr == "12")
+                $timeToConcat = "00".substr($timeWithoutMeridian,2);
+        }else{
+            if($hr !="12")
+                $hr = intVal($hr)+12;
+            $timeToConcat = $hr.substr($timeWithoutMeridian,2);
+        }
+        return $date." ".$timeToConcat.":00";
     }
 }

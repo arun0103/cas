@@ -1,4 +1,9 @@
 @extends('layouts.master')
+@section('head')
+  <link rel="stylesheet" href="{{asset('js/plugins/datatables/css/dataTables.bootstrap4.css')}}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+@endsection
 @section('content')
 <div class="loading">Loading&#8230;</div>
 <!-- Content Header (Page header) -->
@@ -25,7 +30,7 @@
         <!-- Info boxes -->
         <div class="row">
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
+            <div class="info-box" id="div-total-employees">
               <span class="info-box-icon bg-info elevation-1"><i class="fa fa-users"></i></span>
 
               <div class="info-box-content">
@@ -38,7 +43,7 @@
           </div>
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
+            <div class="info-box mb-3" id="div-absent-employees">
               <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-users"></i></span>
 
               <div class="info-box-content">
@@ -55,7 +60,7 @@
           <div class="clearfix hidden-md-up"></div>
 
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
+            <div class="info-box mb-3" id="div-present-employees">
               <span class="info-box-icon bg-success elevation-1"><i class="fa fa-users"></i></span>
 
               <div class="info-box-content">
@@ -68,7 +73,7 @@
           </div>
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
+            <div class="info-box mb-3" id="div-late-employees">
               <span class="info-box-icon bg-warning elevation-1"><i class="fa fa-users"></i></span>
 
               <div class="info-box-content">
@@ -82,6 +87,18 @@
           <!-- /.col -->
         </div>
         <!-- /.row -->
+        <div id="div-total-employees-container" class="no-display">
+          @include('pages.dashboard.employees.total-employees-table')
+        </div>
+        <div id="div-absent-employees-container" class="no-display">
+          @include('pages.dashboard.employees.absent-employees-table')
+        </div>
+        <div id="div-present-employees-container" class="no-display">
+          @include('pages.dashboard.employees.present-employees-table')
+        </div>
+        <div id="div-late-employees-container" class="no-display">
+          @include('pages.dashboard.employees.late-employees-table')
+        </div>
 
         <div class="row">
           <div class="col-md-12">
@@ -228,9 +245,79 @@
 @endsection
 
 @section('footer')
+<script src="{{asset('js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.js')}}"></script>
 <script>
   $(document).ready(function(){
     $('.loading').hide();
+    $.ajax({
+      'url': "/getTotalEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      console.log(data);
+      $('#total-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "name" },
+            { "data": "branch.name" },
+            { "data": "department.name" },
+            { "data": "designation.name" },
+            { "data": "employee_id" }
+        ]
+      });
+    });
+    $.ajax({
+      'url': "/getPresentEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      console.log(data);
+      $('#present-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "employee.name" },
+            { "data": "employee.branch.name" },
+            { "data": "employee.department.name" },
+            { "data": "employee.designation.name" },
+            { "data": "punch_1" }
+        ]
+      });
+    });
+    $.ajax({
+      'url': "/getAbsentEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      console.log(data);
+      $('#absent-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "name" },
+            { "data": "branch.name" },
+            { "data": "department.name" },
+            { "data": "designation.name" },
+            { "data": "employee_id" }
+        ]
+      });
+    });
+    $.ajax({
+      'url': "/getLateEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+    }).done( function(data) {
+      console.log("late employees: "+ data);
+      $('#late-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "employee.name" },
+            { "data": "employee.branch.name" },
+            { "data": "employee.department.name" },
+            { "data": "employee.designation.name" },
+            { "data": "late_in" }
+        ]
+      });
+    });
     // SET AUTOMATIC PAGE RELOAD TIME TO 1000 MILISECONDS (1 SECOND * seconds we want).
     setInterval('refreshPageContents()', 1000*5);
   });
@@ -245,6 +332,51 @@
       $('#employee-late').text(data.late).change();
     });
   }
+
+  $('#div-total-employees').click(function (e){
+    $("#div-total-employees-container").addClass('display-block').removeClass('no-display');
+
+    $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('html, body').animate({
+        scrollTop: $("#div-total-employees-container").offset().top
+    }, 1000);
+  });
+  $('#div-absent-employees').click(function (e){
+    $("#div-absent-employees-container").addClass('display-block').removeClass('no-display');
+
+    $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('html, body').animate({
+        scrollTop: $("#div-absent-employees-container").offset().top
+    }, 1000);
+  });
+  $('#div-present-employees').click(function (e){
+    $("#div-present-employees-container").addClass('display-block').removeClass('no-display');
+
+    $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('html, body').animate({
+        scrollTop: $("#div-present-employees-container").offset().top
+    }, 1000);
+  });
+  $('#div-late-employees').click(function (e){
+    $("#div-late-employees-container").addClass('display-block').removeClass('no-display');
+
+    $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
+    $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
+
+    $('html, body').animate({
+        scrollTop: $("#div-late-employees-container").offset().top
+    }, 1000);
+  });
 
 </script>
 @endsection

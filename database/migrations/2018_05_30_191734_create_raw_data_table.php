@@ -16,9 +16,9 @@ class CreateRawDataTable extends Migration
         Schema::create('raw_data', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->integer('machine_id');
             $table->integer('card_number');
             $table->timestamp('punch_time');
-            $table->integer('machine_id');
             $table->boolean('status'); //true = processed ,  false = not processed
             $table->string('in_out',1)->nullable;  // in = I , out = O
 
