@@ -73,21 +73,24 @@ class DashboardController extends Controller
 
     public function getTotalEmployees(){
         $company_id = Session::get('company_id');
-        $allEmployees = Employee::where('company_id',$company_id)->with('branch','department','designation')->get();
+        $allEmployees = Employee::where('company_id',$company_id)->with('branch','department','designation')->with(['punch_records'=>function($query){
+           $query->where('punch_date',date('Y-m-d'))->first(); 
+        }])->get();
         return response()->json($allEmployees);
     }
     public function getAbsentEmployees(){
         $company_id = Session::get('company_id');
         $presentEmployees = Punch::where([['company_id',$company_id],['punch_date',date('Y-m-d')]])->pluck('emp_id');
-        $absentEmployees = Employee::where('company_id',$company_id)->whereNotIn('employee_id',$presentEmployees)->with('branch','department','designation')->get();
+        $absentEmployees = Employee::where('company_id',$company_id)->whereNotIn('employee_id',$presentEmployees)->with('branch','department','designation')->with(['appliedLeaves'=>function($query){
+           $query->where([['leave_from','<=',date('Y-m-d')],['leave_to','>=',date('Y-m-d')]])->get();
+        }])->get();
         return response()->json($absentEmployees);
     }
     public function getPresentEmployees(){
         $company_id = Session::get('company_id');
         $presentEmployees = Punch::where([['company_id',$company_id],['punch_date',date('Y-m-d')]])->with(['employee'=>function($query){
-                                        $query->with('branch','department','designation');
-                                    }
-        ])->get();
+            $query->with('branch','department','designation');
+        }])->get();
         return response()->json($presentEmployees);
     }
 
@@ -95,8 +98,7 @@ class DashboardController extends Controller
         $company_id = Session::get('company_id');
         $lateEmployees = Punch::where([['company_id',$company_id],['punch_date',date('Y-m-d')],['late_in','>',0]])->with(['employee'=>function($query){
             $query->with('branch','department','designation');
-        }
-        ])->get();
+        }])->get();
         return $lateEmployees;
     }
 

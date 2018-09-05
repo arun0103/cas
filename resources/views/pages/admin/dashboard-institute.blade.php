@@ -235,7 +235,7 @@
             { "data": "branch.name" },
             { "data": "department.name" },
             { "data": "designation.name" },
-            { "data": "employee_id" }
+            { "data": "punch_records.punch_1","defaultContent":"<i style='color:red'>No Data</i>" }
         ]
       });
     });
@@ -269,7 +269,8 @@
             { "data": "branch.name" },
             { "data": "department.name" },
             { "data": "designation.name" },
-            { "data": "employee_id" }
+            { "data": "applied_leaves[0].leave_from","defaultContent":"<i style='color:red'>Not Applied</i>"},
+            { "data": "applied_leaves[0].leave_to","defaultContent":"<i style='color:red'>Not Applied</i>"}            
         ]
       });
     });

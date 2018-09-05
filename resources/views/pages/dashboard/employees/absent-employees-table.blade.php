@@ -7,7 +7,9 @@
                 <th>Branch</th>
                 <th>Department</th>
                 <th>Designation</th>
-                <th>Status</th>
+                <th>Leave From</th>
+                <th>Leave To</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -18,7 +20,9 @@
                 <th>Branch</th>
                 <th>Department</th>
                 <th>Designation</th>
-                <th>Status</th>
+                <th>Leave From</th>
+                <th>Leave To</th>
+                
             </tr>
         </tfoot>
     </table>
