@@ -425,7 +425,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label for="select_additionalOffWeek" class="control-label">Additional Off Week</label>
-                                                            <select id="select_additionalOffWeek" class="form-control select2" multiple data-placeholder="Select a Week">
+                                                            <select id="select_additionalOffWeek" class="form-control select2" multiple data-placeholder="Select Week(s)">
                                                                 <option></option>
                                                                 <option value="1">1st Week</option>
                                                                 <option value="2">2nd Week</option>
@@ -939,17 +939,17 @@
             $('#error_msg_id').removeClass('error').addClass('no-error');
 
             $('#form_addEmployee').trigger("reset");
-            $('#select_department').val(null).change();
-            $('#select_category').val(null).change();
-            $('#select_branch').val(null).change();
-            $('#select_designation').val(null).change();
-            $('#select_weekOffDay').val(null).change();
-            $('#select_additionalOffDay').val(null).change();
-            $('#select_additionalOffWeek').val(null).change();
-            $('#select_shift_1').val(null).change();
-            $('#select_shift_2').val(null).change();
-            $('#select_shift_3').val(null).change();
-            $('#select_shift_4').val(null).change();
+            $('#select_department').val([]).change();
+            $('#select_category').val([]).change();
+            $('#select_branch').val([]).change();
+            $('#select_designation').val([]).change();
+            $('#select_weekOffDay').val([]).change();
+            $('#select_additionalOffDay').val([]).change();
+            $('#select_additionalOffWeek').val([]).change();
+            $('#select_shift_1').val([]).change();
+            $('#select_shift_2').val([]).change();
+            $('#select_shift_3').val([]).change();
+            $('#select_shift_4').val([]).change();
 
             $('#btn_confirm').val("add");
             $('#btn_confirm').text("Add");
@@ -1037,8 +1037,10 @@
                 $('#select_weekOffDay').val(data.week_off_day).change();
                 $('#select_additionalOffDay').val(data.additional_off_day).change();
                 var additional_off_week_array;
-                if(data.addictional_off_week !=null)
+                if(data.additional_off_week !=null){
+                    console.log(data.additional_off_week)
                     additional_off_week_array= data.additional_off_week.split(',');
+                }
                 $('#select_additionalOffWeek').val(additional_off_week_array).change();
                 $('#select_shift_1').val(data.shift_1).change();
                 $('#select_shift_2').val(data.shift_2).change();
@@ -1173,7 +1175,6 @@
                     if(i>0)
                         additional_off_weeks_string +=',';
                     additional_off_weeks_string += additional_off_weeks_array[i];
-                    
                 }
                 var formData = {
                     company_id                  : $('#inputCompanyId').val(),

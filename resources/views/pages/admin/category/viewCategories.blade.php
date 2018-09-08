@@ -109,13 +109,13 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputMaxLateTime" class="control-label">Max Late Time Allowed <span class="required">*</span></label>
-                                            <input type="number" class="form-control" id="inputMaxLateTime" placeholder="Max Late Time Allowed (in minutes)" name="maxLateAllowed">
+                                            <input type="number" class="form-control" id="inputMaxLateTime" placeholder="Max Days Grace Late Allowed (Days)" name="maxLateAllowed">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputMaxEarlyTime" class="control-label">Max Early Time Allowed <span class="required">*</span></label>
-                                            <input type="number" class="form-control" id="inputMaxEarlyTime" placeholder="Max Early Time Allowed (in minutes)" name="maxEarlyAllowed">
+                                            <input type="number" class="form-control" id="inputMaxEarlyTime" placeholder="Max Days Grace Early Allowed (Days)" name="maxEarlyAllowed">
                                         </div>
                                     </div>
                                 </div>

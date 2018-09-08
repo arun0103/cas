@@ -84,7 +84,7 @@
             </ul>
           </li>
           <li style="margin-right:20px;"><a href="#">Contact Us<span class="sr-only">(current)</span></a></li>
-          <!-- <li style="margin-right:20px;"><a href="#">Contact Us</a></li> -->
+          <li style="margin-right:20px;"><a href="#"><i class="fa fa-info-circle"></i> Help</a></li>
         </ul>
       </div>
       <!-- Messages Dropdown Menu -->
