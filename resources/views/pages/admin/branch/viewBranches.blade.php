@@ -406,7 +406,7 @@
                 branch += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.branch_id + '"><i class="fa fa-edit"> </i></button>';
                 branch += ' <button class="btn btn-danger btn-delete delete-branch" value="' + data.branch_id + '"><i class="fa fa-trash"> </i></button></td></tr>';
                 if (state == "add"){ //if user added a new record
-                    $('#branches-list').append(branch);
+                    $('#branches-list').prepend(branch);
                 }else{ //if user updated an existing record
                     $("#branch" + original_branch_id).replaceWith( branch );
                 }

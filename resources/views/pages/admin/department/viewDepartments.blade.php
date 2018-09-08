@@ -106,8 +106,9 @@
   });
 </script>
 <script>
+    var dept_datatable;
     $(document).ready(function() {
-        $('#departmentTable').DataTable({
+        dept_datatable = $('#departmentTable').DataTable({
             'paging'      : true,
             'lengthChange': true,
             'searching'   : true,
@@ -233,7 +234,7 @@
                 department += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.department_id + '"><i class="fa fa-edit"> </i></button>';
                 department += ' <button class="btn btn-danger btn-delete delete-department" value="' + data.department_id + '"><i class="fa fa-trash"> </i></button></td></tr>';
                 if (state == "add"){ //if user added a new record
-                    $('#departments-list').append(department);
+                    $('#departments-list').prepend(department);
                 }else{ //if user updated an existing record
                     $("#department" + original_department_id).replaceWith( department );
                 }

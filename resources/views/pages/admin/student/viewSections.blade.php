@@ -215,7 +215,7 @@
                     section += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.section_id + '"><i class="fa fa-edit"> </i></button>';
                     section += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.section_id + '"><i class="fa fa-trash"> </i></button></td></tr>';
                     if (state == "add"){ //if user added a new record
-                        $('#sections-list').append(section);
+                        $('#sections-list').prepend(section);
                     }else{ //if user updated an existing record
                         $("#section" + original_section_id).replaceWith( section );
                     }

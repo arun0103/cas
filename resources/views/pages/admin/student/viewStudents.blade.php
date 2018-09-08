@@ -494,7 +494,7 @@
                     if (state == "add"){ //if user added a new record
                         console.log("Added");
                         console.log(data);
-                        $('#students-list').append(student);
+                        $('#students-list').prepend(student);
                     }else{ //if user updated an existing record
                         $("#student" + original_student_id).replaceWith( student );
                     }

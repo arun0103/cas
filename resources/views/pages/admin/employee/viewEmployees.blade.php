@@ -1125,9 +1125,9 @@
         function changed_reporting_officer1(selected){
             $.each($('#select_ReportingOfficer1 option[value]'),function(key,val){
                 if(employee_id == val.value){
-                    $('.reporting_officers option[value='+val.value+']').prop('disabled',true);
+                    $('.reporting_officers option[value='+val.value+']').prop('hidden',true);
                 }else
-                    $('.reporting_officers option[value='+val.value+']').prop('disabled',false);
+                    $('.reporting_officers option[value='+val.value+']').prop('hidden',false);
             });
             if(selected != "" && selected != null)
                 $('#select_ReportingOfficer2 option[value="'+selected+'"]').prop('disabled',true);
@@ -1263,7 +1263,7 @@
                         employee += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.orig_data.employee_id + '"><i class="fa fa-edit"></i></button>';
                         employee += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.orig_data.employee_id + '"><i class="fa fa-trash"></i></button></td></tr>';
                         if (state == "add"){ //if user added a new record
-                            $('#employees-list').append(employee);
+                            $('#employees-list').prepend(employee);
                             var newOption = new Option(data.orig_data.name +' ['+data.designation_name+']', data.orig_data.employee_id, false, false);
                             $('.reporting_officers').append(newOption).trigger('change');
                             //employee_table.row.add(employee).draw();

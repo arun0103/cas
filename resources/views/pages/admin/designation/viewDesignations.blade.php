@@ -223,7 +223,7 @@
                 designation += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.designation_id + '"><i class="fa fa-edit"></i></button>';
                 designation += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.designation_id + '"><i class="fa fa-trash"></i></button></td></tr>';
                 if (state == "add"){ //if user added a new record
-                    $('#designations-list').append(designation);
+                    $('#designations-list').prepend(designation);
                 }else{ //if user updated an existing record
                     $("#designation" + original_designation_id).replaceWith( designation );
                 }

@@ -208,7 +208,7 @@
                     grade += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.grade_id + '"><i class="fa fa-edit"> </i></button>';
                     grade += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.grade_id + '"><i class="fa fa-trash"> </i></button></td></tr>';
                     if (state == "add"){ //if user added a new record
-                        $('#grades-list').append(grade);
+                        $('#grades-list').prepend(grade);
                     }else{ //if user updated an existing record
                         $("#grade" + original_grade_id).replaceWith( grade );
                     }

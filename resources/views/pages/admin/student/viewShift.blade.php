@@ -313,7 +313,7 @@
                     shift += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.id + '"><i class="fa fa-edit"> </i></button>';
                     shift += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.id + '"><i class="fa fa-trash"> </i></button></td></tr>';
                     if (state == "add"){ //if user added a new record
-                        $('#institution-shifts-list').append(shift);
+                        $('#institution-shifts-list').prepend(shift);
                     }else{ //if user updated an existing record
                         $("#shift" + original_shift_id).replaceWith( shift );
                     }
