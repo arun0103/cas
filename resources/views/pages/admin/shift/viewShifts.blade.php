@@ -92,23 +92,23 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
+                                <label for="timePicker_start" class="control-label">Start Time <span class="required">*</span></label>
                                 <div class="bootstrap-timepicker">
-                                    <div class="form-group">
-                                        <label for="timePicker_start" class="control-label">Start Time <span class="required">*</span></label>
-                                        <div class="input-group-addon left-addon"> 
-                                            <input type="text" class="form-control timepicker pull-right" id="timePicker_start" name="start_time">
-                                            <i class="fa fa-clock-o"></i>
+                                    <div class="input-group">
+                                        <div class="input-group-addon left-addon">
+                                            <span class="fa fa-clock-o"></span>
+                                            <input type="text" class="form-control timepicker pull-right" id="timePicker_start" placeholder="HH:MM AM/PM">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
+                                <label for="timePicker_end" class="control-label">End Time <span class="required">*</span></label>
                                 <div class="bootstrap-timepicker">
-                                    <div class="form-group">
-                                        <label for="timePicker_end" class="control-label">End Time <span class="required">*</span></label>
+                                    <div class="input-group">
                                         <div class="input-group-addon left-addon">
-                                            <input type="text" class="form-control timepicker pull-right" id="timePicker_end" name="end_time">
-                                            <i class="fa fa-clock-o"></i>
+                                            <span class="fa fa-clock-o"></span>
+                                            <input type="text" class="form-control timepicker pull-right" id="timePicker_end" placeholder="HH:MM AM/PM">
                                         </div>
                                     </div>
                                 </div>
@@ -158,10 +158,15 @@
         'autoWidth'   : true
         });
         $('#timePicker_start').timepicker({
-            showInputs: false
+            showInputs: false,
+            showOn: "button",
+            buttonText: "Select time"
+
         });
         $('#timePicker_end').timepicker({
-            showInputs: false
+            showInputs: false,
+            showOn: "button",
+            buttonText: "Select time"
         });
         $('.loading').hide();
     });

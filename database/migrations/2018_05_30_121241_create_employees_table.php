@@ -26,7 +26,7 @@ class CreateEmployeesTable extends Migration
             $table->string('state', 50);
             $table->string('city', 50);
             $table->string('street_address_1', 50);
-            $table->string('street_address_2', 50);
+            $table->string('street_address_2', 50)->nullable();
             $table->unsignedInteger('postal_code');
             
             $table->date('dob');

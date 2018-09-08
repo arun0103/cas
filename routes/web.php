@@ -30,9 +30,7 @@ Route::get('/refreshDashboard/Institute', 'DashboardController@getNewDashboardCo
 Route::get('/refreshDashboard/Business', 'DashboardController@getNewDashboardContents_business');
 
 
-Route::get('/dashboard/absentStudents',function(){
-    return view('pages/dashboard/absent-students-table');
-});
+
 //////////////////////////////////// SMS ///////////////////////////////////////
 Route::post('/dlr/deliveryStatus','SMSController@postDeliveryStatus');
 
@@ -66,6 +64,12 @@ Route::get('/getLateEmployees/','DashboardController@getLateEmployees');
 
 
 ///
+
+Route::get('/admin/institute/shifts','InstituteController@getInstituteShifts')->name('viewInstitutionShifts');
+Route::get('/getInstitutionShiftById/{id}','InstituteController@getInstitutionShiftByid');
+Route::post('/addInstitutionShift','InstituteController@addInstitutionShift');
+Route::delete('/deleteInstitutionShift/{id}','InstituteController@deleteInstitutionShift');
+Route::put('/updateInstitutionShift/{id}','InstituteController@updateInstitutionShift');
 
 Route::get('/admin/students','StudentController@getStudents')->name('viewStudents');
 Route::get('/getStudentById/{id}','StudentController@getStudentByid');
@@ -109,6 +113,7 @@ Route::delete('/deleteEmployee/{id}','EmployeeController@deleteEmployee');
 Route::put('/updateEmployee/{id}','EmployeeController@updateEmployee');
 
 Route::get('/employees/branch/{id}','EmployeeController@getEmployeesByBranch');
+Route::get('/allEmployees','EmployeeController@getAllEmployeesOfCompany');
 
 
 //////////////// Branch

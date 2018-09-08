@@ -36,6 +36,14 @@ class EmployeeController extends Controller
     {
         return view('employees');
     }
+    public function getAllEmployeesOfCompany(){
+        $company_id =Session::get('company_id');
+        $employees =Employee::where('company_id',$company_id)->with(['designation'=>function($query){
+            $query->pluck('name');
+        }])->get();
+        
+        return response()->json($employees);
+    }
 
     public function getEmployees(){
         $comp_id = Session::get('company_id');
@@ -44,7 +52,7 @@ class EmployeeController extends Controller
         $shifts = Shift::where('company_id',$comp_id)->get();
         $companies = Company::all();
         $designations = Designation::where('company_id',$comp_id)->get();
-        $employees = Employee::where('company_id',$comp_id)->with('department')->with('designation','branch')->get();
+        $employees = Employee::where('company_id',$comp_id)->with('department')->with('designation','branch','first_shift')->get();
         
         $departments = Department::where('company_id',$comp_id)->get();
         return view('pages/admin/employee/viewEmployees',['employees'=>$employees,'branches'=>$branches, 'companies'=>$companies,'categories'=>$categories,'shifts'=>$shifts ,'designations'=>$designations, 'departments'=>$departments]);
@@ -122,7 +130,7 @@ class EmployeeController extends Controller
                 'branch_name'=>Branch::where('branch_id',$e->branch_id)->pluck('name'),
                 'department_name'=>Department::where('department_id',$e->dept_id)->pluck('name'),
                 'designation_name'=>Designation::where('designation_id',$e->designation_id)->pluck('name'),
-                'shift_name'=>Shift::where('shift_id',$e->shift_id)->pluck('name')
+                'shift_name'=>Shift::where('shift_id',$e->shift_1)->pluck('name')->first()
             ];
             return response()->json($dataToSend);
         }
@@ -141,7 +149,7 @@ class EmployeeController extends Controller
             'branch_name'=>Branch::where('branch_id',$new->branch_id)->pluck('name'),
             'department_name'=>Department::where('department_id',$new->dept_id)->pluck('name'),
             'designation_name'=>Designation::where('designation_id',$new->designation_id)->pluck('name'),
-            'shift_name'=>Shift::where('shift_id',$new->shift_1)->pluck('name')
+            'shift_name'=>Shift::where('shift_id',$new->shift_1)->pluck('name')->first()
         ];
         return response()->json($dataToSend);
         

@@ -184,6 +184,7 @@ class AdminController extends Controller
 
         $punchToInsert = new Punch([
             'emp_id'=>$employeeDetails->employee_id,
+            'branch_id'=>$employeeDetails->branch_id,
             'dept_id'=>$employeeDetails->dept_id,
             'company_id'=>$employeeDetails->company_id,
             'category_id'=>$employeeDetails->category_id,

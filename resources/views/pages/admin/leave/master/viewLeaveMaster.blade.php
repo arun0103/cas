@@ -176,7 +176,6 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <select id="select_can_club" class="form-control select2 percent100" multiple="multiple" data-placeholder="Select Leave(s) that can be clubbed with" name="selectedClubWith[]">
-                                                        
                                                         @foreach($allLeaves as $leave)
                                                         <option value="{{$leave->leave_id}}">{{$leave->name}}</option>
                                                         @endforeach
@@ -281,15 +280,16 @@
     //Opening Add Modal
     $('#btn_add').click(function(){
         state="add";
-            $('#error_msg_id').removeClass('error').addClass('no-error');
-            $('#btn_confirm').val("add");
-            $('#btn_confirm').text("Add");
-            $('#modal-title').text('Add Leave Master');
-            $('#form_addLeaveMaster').trigger("reset");
-            $('#select_can_club').val("").trigger("change");
-            $('#select_cannot_club').val("").trigger("change");
-            $('#modal-add').modal('show');
-        });
+        
+        $('#error_msg_id').removeClass('error').addClass('no-error');
+        $('#btn_confirm').val("add");
+        $('#btn_confirm').text("Add");
+        $('#modal-title').text('Add Leave Master');
+        $('#form_addLeaveMaster').trigger("reset");
+        $('#select_can_club').val("").trigger("change");
+        $('#select_cannot_club').val("").trigger("change");
+        $('#modal-add').modal('show');
+    });
     //Opening Edit Modal
     $(document).on('click', '.open_modal', function(){
         state="update";

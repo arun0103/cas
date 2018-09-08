@@ -20,7 +20,7 @@
                     <div class="col-sm-12" id="branch_div">
                         <select id="select_branch" class="form-control select2 percent100"  data-placeholder="Select Branch" name="selectedBranchView" onchange="populateEmployee(this.value)">
                         <option></option>    
-                        @foreach($branches as $branch)
+                            @foreach($branches as $branch)
                                 <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
                             @endforeach
                         </select>
@@ -393,16 +393,10 @@
     <script src="{{asset('js/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
     <script src="{{asset('js/plugins/timepicker/bootstrap-timepicker.js')}}"></script>
     <script src="{{asset('js/plugins/bootstrap-datetimepicker-0.0.11/js/bootstrap-datetimepicker.min.js')}}"></script>
-    <script type="text/javascript">
-        $(function() {
-            $('#datetimepicker1').datetimepicker({
-                language: 'en',
-                pick12HourFormat: true
-            });
-        });
-    </script>
+    
     <script>
     var dataFrom, id;
+    var branch_id, emp_id;
     $(document).ready(function () {
         $('.select2').select2();
         $('.date').datepicker({
@@ -419,13 +413,11 @@
         });
         $('#form_manualEntrySearch').trigger("reset");
         $(".timepicker").val("");
-        $('#select_branch').val("");
         $('.loading').hide();
-        //$('.select2').addClass('error');
     });
     $('#btn_search').click(function(){
-        var branch_id = $('#select_branch').val();
-        var emp_id = $('#select_employee').val();
+        branch_id = $('#select_branch').val();
+        emp_id = $('#select_employee').val();
         var date = $('#datepicker_punch_date').val();
         if(branch_id!="" && emp_id !="" && date !=""){
             $('#modal-title').text("Add/Edit Punch Detail of "+date);
@@ -538,10 +530,11 @@
     $('#btn_save').click(function(){
         //alert("Save button clicked");
         console.log($('#select_dayStatus').val());
+        console.log(branch_id);
         var formData = {
             'roster_id'         :$('#inputRosterId').val(),
-            'branch_id'         :$('#select_branch').val(),
-            'employee_id'       :$('#select_employee').val(),
+            'branch_id'         :branch_id,
+            'employee_id'       :emp_id,
             'shift_id'          :$('#select_shift').val(),
             'status'            :$('#select_dayStatus').val(),
             'punch_date'        :$('#datepicker_punch_date').val(),
@@ -843,6 +836,7 @@
         $('.loading').show();
         //var selectedBranch = $("#select_branch_view option:selected").val();
         console.log("Branch selected = "+branch);
+        branch_id = branch;
         $.get("/employees/branch/"+branch, function(data){
             console.log(data);
             $("#select_employee").empty();

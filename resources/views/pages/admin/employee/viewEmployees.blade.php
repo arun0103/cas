@@ -58,7 +58,7 @@
                     <td>{{$emp->department->name}}</td>
                     <td>{{$emp->designation->name}}</td>
                     <td>{{$emp->branch->name}}</td>
-                    <td>{{$emp->shift_1}}</td>
+                    <td>{{$emp->first_shift->name}}</td>
                     <td>
                         <button class="btn btn-warning open_modal" value="{{$emp->employee_id}}"><i class="fa fa-edit"></i></button>
                         <button class="btn btn-danger delete-row" value="{{$emp->employee_id}}"><i class="fa fa-trash"></i></button>
@@ -87,7 +87,7 @@
     <div class="modal fade" id="modal-add">
         <form id="form_addEmployee" class="form-horizontal" method="post" action="" enctype="multipart/form-data">
             {{ csrf_field() }}
-            <div class="modal-dialog modal-lg" style="width:90% !important;height:90% !important; padding:0;margin:0 auto">
+            <div class="modal-dialog modal-lg" style="width:95% !important;height:95% !important; padding:0;margin:0 auto">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="modal-title">Add Employee</h4>
@@ -97,9 +97,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="row ml-3" id="addNewEmployee">
-                            <div class="nav-tabs-custom">
-                                <ul class="nav nav-tabs">
-                                    <li class="nav-item  active"><a id="a_tab_1" class="nav-item nav-link  active" data-toggle="tab" href="#tab_1" aria-expanded="true">Personal Info</a></li>
+                            <div class="nav-tabs-custom" id="tabs">
+                                <ul class="nav nav-tabs mr-auto">
+                                    <li class="nav-item  active"><a id="a_tab_1" class="nav-item nav-link active" data-toggle="tab" href="#tab_1" aria-expanded="true">Personal Info</a></li>
                                     <li class="nav-item"><a id="a_tab_2" class="nav-item nav-link" data-toggle="tab" href="#tab_2" aria-expanded="false">Official Info</a></li>
                                     <li class="nav-item"><a id="a_tab_3" class="nav-item nav-link" data-toggle="tab" href="#tab_3" aria-expanded="false">Bank Info</a></li>
                                     <!-- <li class="nav-item pull-right"><a class="nav-link" href="#" class="text-muted"><i class="fa fa-gear"></i></a></li> -->
@@ -112,11 +112,11 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="inputEmployeeId" class="control-label">Employee ID <span class="required">*</span></label>
-                                                            <input type="text" class="form-control" id="inputEmployeeId" placeholder="Employee ID" name="employee_id" >
+                                                            <input type="text" class="form-control" id="inputEmployeeId" placeholder="Employee ID" name="employee_id" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="inputName" class="control-label">Name <span class="required">*</span></label>
-                                                            <input type="text" class="form-control" id="inputName" placeholder="Name" name="employee_name">
+                                                            <input type="text" class="form-control" id="inputName" placeholder="Name" name="employee_name" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="control-label">Gender <span class="required">*</span></label>
@@ -153,8 +153,9 @@
                                                             <div><label for="datepicker_DOB" class="control-label">D.O.B <span class="required">*</span></label></div>
                                                             <div class="input-group date">
                                                                 <div class="input-group-addon left-addon">
-                                                                    <input type="text" class="form-control pull-right" id="datepicker_DOB" autocomplete="off">
                                                                     <i class="fa fa-calendar"></i>
+                                                                    <input type="text" class="form-control pull-right" id="datepicker_DOB" autocomplete="off" required>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -191,18 +192,20 @@
                                                             <div>
                                                                 <div class="input-group date">
                                                                     <div class="input-group-addon left-addon">
-                                                                        <input type="text" class="form-control pull-right" id="datepicker_anniversary" autocomplete="off">
                                                                         <i class="fa fa-calendar"></i>
+                                                                        <input type="text" class="form-control pull-right" id="datepicker_anniversary" autocomplete="off">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="inputFatherName" class="control-label">Father Name <span class="required">*</span></label>
-                                                    <div>
-                                                        <input type="text" class="form-control" id="inputFatherName" placeholder="Father's Name">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label for="inputFatherName" class="control-label">Father Name <span class="required">*</span></label>
+                                                            <input type="text" class="form-control" id="inputFatherName" placeholder="Father's Name" name="father_name" required>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -210,7 +213,7 @@
                                                         <div class="form-group">
                                                             <label for="inputEducationalQualification" class="control-label">Educational Qualification <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="inputEducationalQualification" placeholder="Educational Qualification">
+                                                                <input type="text" class="form-control" id="inputEducationalQualification" placeholder="Educational Qualification" name="educational_qualification" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -218,7 +221,7 @@
                                                         <div class="form-group">
                                                             <label for="inputProfessionalQualification" class="control-label">Professional Qualification <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="inputProfessionalQualification" placeholder="Professional Qualification">
+                                                                <input type="text" class="form-control" id="inputProfessionalQualification" placeholder="Professional Qualification" name="professional_qualification" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -228,7 +231,7 @@
                                                         <div class="form-group">
                                                             <label for="inputMobile1" class="control-label">Mobile Number 1 <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="inputMobile1" placeholder="Mobile Number with country code">
+                                                                <input type="text" class="form-control" id="inputMobile1" placeholder="Mobile Number with country code" name="mobile1" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -244,7 +247,7 @@
                                                 <div class="form-group">
                                                     <label for="inputExperience" class="control-label">Experience <span class="required">*</span></label>
                                                     <div>
-                                                        <input type="text" class="form-control" id="inputExperience" placeholder="Experience (in years)">
+                                                        <input type="text" class="form-control" id="inputExperience" placeholder="Experience (in years)" name="experience" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -258,7 +261,7 @@
                                                         <div class="form-group">
                                                             <label for="inputCountry" class="control-label">Country <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text"  class="form-control" id="inputCountry" placeholder="Country" name="country">
+                                                                <input type="text"  class="form-control" id="inputCountry" placeholder="Country" name="country" required>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -266,7 +269,7 @@
                                                         <div class="form-group">
                                                             <label for="inputState" class="control-label">State <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text"  class="form-control" id="inputState" placeholder="State" name="state">
+                                                                <input type="text"  class="form-control" id="inputState" placeholder="State" name="state" required>
                                                             </div>
                                                         </div>                                                     
                                                     </div>
@@ -274,7 +277,7 @@
                                                         <div class="form-group">
                                                             <label for="inputCity" class="control-label">City <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text"  class="form-control" id="inputCity" placeholder="City" name="city">
+                                                                <input type="text"  class="form-control" id="inputCity" placeholder="City" name="city" required>
                                                             </div>
                                                         </div> 
                                                     </div>   
@@ -284,7 +287,7 @@
                                                         <div class="form-group">
                                                             <label for="inputStreet_address_1" class="control-label">Street Address 1 <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text"  class="form-control" id="inputStreet_address_1" placeholder="Street Address 1" name="street_address_1">
+                                                                <input type="text"  class="form-control" id="inputStreet_address_1" placeholder="Street Address 1" name="street_address_1" required>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -300,7 +303,7 @@
                                                         <div class="form-group">
                                                             <label for="inputPostalCode" class="control-label">Postal Code <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="number" class="form-control" id="inputPostalCode" placeholder="Postal Code" name="postal_code">
+                                                                <input type="number" class="form-control" id="inputPostalCode" placeholder="Postal Code" name="postal_code" required>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -319,14 +322,14 @@
                                                         <div class="form-group">
                                                             <label for="inputCardNumber" class="control-label">Card Number <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="number" class="form-control" id="inputCardNumber" placeholder="Employee Card Number">
+                                                                <input type="number" class="form-control" id="inputCardNumber" placeholder="Employee Card Number" name="employee_card_number" required>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="select_department" class="control-label">Department <span class="required">*</span></label>
-                                                            <select id="select_department" class="form-control select2" data-placeholder="Select a Department">
+                                                            <select id="select_department" class="form-control select2" data-placeholder="Select a Department" name="department" required>
                                                                 <option></option>
                                                                 @foreach($departments as $department)
                                                                 <option value="{{$department->department_id}}">{{$department->name}}</option>
@@ -339,7 +342,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="select_category" class="control-label">Category <span class="required">*</span></label>
-                                                            <select id="select_category" class="form-control select2" data-placeholder="Select a Category">
+                                                            <select id="select_category" class="form-control select2" data-placeholder="Select a Category" name="category" required>
                                                                 <option></option>
                                                                 @foreach($categories as $category)
                                                                 <option value="{{$category->category_id}}">{{$category->name}}</option>
@@ -350,7 +353,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="select_branch" class="control-label">Branch <span class="required">*</span></label>
-                                                            <select id="select_branch" class="form-control select2" data-placeholder="Select a Branch">
+                                                            <select id="select_branch" class="form-control select2" data-placeholder="Select a Branch" name="branch" required>
                                                                 <option></option>
                                                                 @foreach($branches as $branch)
                                                                     <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
@@ -363,7 +366,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="select_designation" class="control-label">Designation <span class="required">*</span></label>
-                                                            <select id="select_designation" class="form-control select2" data-placeholder="Select a Designation">
+                                                            <select id="select_designation" class="form-control select2" data-placeholder="Select a Designation" name="designation" required>
                                                                 <option></option>
                                                                 @foreach($designations as $designation)
                                                                 <option value="{{$designation->designation_id}}">{{$designation->name}}</option>
@@ -392,7 +395,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label for="select_weekOffDay" class="control-label">Week Off on <span class="required">*</span></label>
-                                                            <select id="select_weekOffDay" class="form-control select2" data-placeholder="Select a Day">
+                                                            <select id="select_weekOffDay" class="form-control select2" data-placeholder="Select a Day" name="week_off_day" required>
                                                                 <option></option>
                                                                 <option value="7">Sunday</option>
                                                                 <option value="1">Monday</option>
@@ -428,6 +431,7 @@
                                                                 <option value="2">2nd Week</option>
                                                                 <option value="3">3rd Week</option>
                                                                 <option value="4">4th Week</option>
+                                                                <option value="5">5th Week</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -436,7 +440,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="select_shift_1" class="control-label">Shift 1 <span class="required">*</span></label>
-                                                            <select id="select_shift_1" class="form-control select2" data-placeholder="Select a Shift">
+                                                            <select id="select_shift_1" class="form-control select2" data-placeholder="Select a Shift" name="shift_1" required>
                                                                 <option></option>
                                                                 @foreach($shifts as $shift)
                                                                 <option value="{{$shift->shift_id}}">
@@ -603,14 +607,15 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="select_ReportingOfficer1" class="control-label">Reporting Officer 1</label>
-                                                            <select id="select_ReportingOfficer1" class="form-control select2"  data-placeholder="Select reporting officer">
+                                                            <select id="select_ReportingOfficer1" class="form-control select2 reporting_officers"  data-placeholder="Select reporting officer" onchange="changed_reporting_officer1(this.value)">
                                                                 <option></option>
                                                                 @foreach($employees as $employee)
-                                                                <option value="{{$employee->employee_id}}">
-                                                                <div>
-                                                                    <h4>{{$employee->name}}</h4><br/>
-                                                                    <span>[{{$employee->designation_id}}]</span>
-                                                                </option>
+                                                                    <option value="{{$employee->employee_id}}">
+                                                                        <div>
+                                                                            <h4>{{$employee->name}}</h4><br/>
+                                                                            <span>[{{$employee->designation->name}}]</span>
+                                                                        </div>
+                                                                    </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -618,14 +623,15 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                         <label for="select_ReportingOfficer2" class="control-label">Reporting Officer 2</label>
-                                                            <select id="select_ReportingOfficer2" class="form-control select2" data-placeholder="Select reporting officer">
+                                                            <select id="select_ReportingOfficer2" class="form-control select2 reporting_officers" data-placeholder="Select reporting officer" onchange="changed_reporting_officer2(this.value)">
                                                                 <option></option>
                                                                 @foreach($employees as $employee)
-                                                                <option value="{{$employee->employee_id}}">
-                                                                <div>
-                                                                    <h4>{{$employee->name}}</h4><br/>
-                                                                    <span>[$employee->designation_id]</span>
-                                                                </option>
+                                                                    <option value="{{$employee->employee_id}}">
+                                                                        <div>
+                                                                            <h4>{{$employee->name}}</h4><br/>
+                                                                            <span>[{{$employee->designation->name}}]</span>
+                                                                        </div>
+                                                                    </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -637,8 +643,8 @@
                                                             <div><label for="datepicker_joiningDate" class="control-label">Joining Date <span class="required">*</span></label></div>
                                                             <div class="input-group date">
                                                                 <div class="input-group-addon left-addon">
-                                                                    <input type="text" class="form-control pull-right" id="datepicker_joiningDate" autocomplete="off">
                                                                     <i class="fa fa-calendar"></i>
+                                                                    <input type="text" class="form-control pull-right" id="datepicker_joiningDate" autocomplete="off" name="joining_date" required>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -674,7 +680,7 @@
                                                         <div class="form-group">
                                                             <label for="input_ESI_number" class="control-label">ESI Number <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="input_ESI_number" placeholder="ESI Number">
+                                                                <input type="text" class="form-control" id="input_ESI_number" placeholder="ESI Number" name="esi" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -682,7 +688,7 @@
                                                         <div class="form-group">
                                                             <label for="input_PF_number" class="control-label">PF Number <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="input_PF_number" placeholder="PF Number">
+                                                                <input type="text" class="form-control" id="input_PF_number" placeholder="PF Number" name="pf" required>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -690,7 +696,7 @@
                                                         <div class="form-group">
                                                             <label for="input_PAN_number" class="control-label">PAN Number <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="input_PAN_number" placeholder="PAN Number">
+                                                                <input type="text" class="form-control" id="input_PAN_number" placeholder="PAN Number" name="pan" required>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -700,7 +706,7 @@
                                                         <div class="form-group">
                                                             <label for="input_UAN_number" class="control-label">UAN Number <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="input_UAN_number" placeholder="UAN Number">
+                                                                <input type="text" class="form-control" id="input_UAN_number" placeholder="UAN Number" name="uan" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -723,7 +729,7 @@
                                                         <div class="form-group">
                                                             <label for="input_bank_name" class="control-label">Bank Name <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="input_bank_name" placeholder="Bank Name">
+                                                                <input type="text" class="form-control" id="input_bank_name" placeholder="Bank Name" name="bank_name" required>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -731,7 +737,7 @@
                                                         <div class="form-group">
                                                             <label for="input_bank_branch" class="control-label">Branch <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="input_bank_branch" placeholder="Branch">
+                                                                <input type="text" class="form-control" id="input_bank_branch" placeholder="Branch" name="bank_branch" required>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -741,7 +747,7 @@
                                                         <div class="form-group">
                                                             <label for="input_IFSC_code" class="control-label">IFSC Code <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="input_IFSC_code" placeholder="IFSC Code">
+                                                                <input type="text" class="form-control" id="input_IFSC_code" placeholder="IFSC Code" name="ifsc_code" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -749,7 +755,7 @@
                                                         <div class="form-group">
                                                             <label for="input_account_number" class="control-label">Account Number <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="text" class="form-control" id="input_account_number" placeholder="Account Number">
+                                                                <input type="text" class="form-control" id="input_account_number" placeholder="Account Number" name="account_number" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -788,367 +794,497 @@
 @endsection
 
 @section('footer')
-<script src="{{asset('js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.js')}}"></script>
-<script src="{{asset('js/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
-<script src="{{asset('js/plugins/select2/select2.full.min.js')}}"></script>
-<script>
-    $(document).ready(function () {
-        $('#employeeTable').DataTable({
-            'paging'        : true,
-            'lengthChange'  : true,
-            'searching'     : true,
-            'ordering'      : true,
-            'info'          : true,
-            'autoWidth'     : true,
-            'scrollX'       : true
-        });
-        
-        $('#btn_tab_1_next').click(function(e){
-            $('#tab_2').addClass('active').attr('aria-expanded','true');
-            $('#tab_1').removeClass('active').attr('aria-expanded','false');
-            $('#a_tab_1').removeClass('active');
-            $('#a_tab_2').addClass('active');
+    <script src="{{asset('js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.js')}}"></script>
+    <script src="{{asset('js/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
+    <script src="{{asset('js/plugins/select2/select2.full.min.js')}}"></script>
+    <script src="{{asset('js/plugins/jquery/jquery.validate.min.js')}}"></script>
+    <script>
+        var employee_table;
+        var employee_id;
+        $(document).ready(function () {
+            $("#form_addEmployee").validate({
+                ignore: "",
+                //put error message behind each form element
+                errorPlacement: function (error, element) {
+                    var elem = $(element);
+                    if (element.parent('.input-group').length) { 
+                        error.insertAfter(element.parent());      // radio/checkbox?
+                    } else if (element.hasClass('select2')) {     
+                        error.insertAfter(element.next('span'));  // select2
+                    } else {                                      
+                        error.insertAfter(element);               // default
+                    }; 
+                }
+            });
 
-            $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+            employee_table = $('#employeeTable').DataTable({
+                'paging'        : true,
+                'lengthChange'  : true,
+                'searching'     : true,
+                'ordering'      : true,
+                'info'          : true,
+                'autoWidth'     : true,
+                'scrollX'       : true
+            });
+            $('#tabs').tabs();
             
-        });
-        $('#btn_tab_2_next').click(function(e){
-            $('#tab_3').addClass('active').attr('aria-expanded','true');
-            $('#tab_2').removeClass('active').attr('aria-expanded','false');
-            $('#a_tab_2').removeClass('active');
-            $('#a_tab_3').addClass('active');
+            $('#btn_tab_1_next').click(function(e){
+                $( "#tabs" ).tabs({
+                    active: 1
+                });
+                // $('#tab_2').addClass('active').attr('aria-expanded','true');
+                // $('#tab_1').removeClass('active').attr('aria-expanded','false');
+                // $('#a_tab_1').removeClass('active');
+                // $('#a_tab_2').addClass('active');
 
-            $('#modal-add').animate({ scrollTop: 0 }, 'slow');
-            
+                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                
+            });
+            $('#btn_tab_2_next').click(function(e){
+                $( "#tabs" ).tabs({
+                    active: 2
+                });
+                // $('#tab_3').addClass('active').attr('aria-expanded','true');
+                // $('#tab_2').removeClass('active').attr('aria-expanded','false');
+                // $('#a_tab_2').removeClass('active');
+                // $('#a_tab_3').addClass('active');
+
+                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                
+            });
+            $('#btn_tab_2_back').click(function(e){
+                $( "#tabs" ).tabs({
+                    active: 0
+                });
+                // $('#tab_1').addClass('active').attr('aria-expanded','true');
+                // $('#tab_2').removeClass('active').attr('aria-expanded','false');
+                // $('#a_tab_2').removeClass('active');
+                // $('#a_tab_1').addClass('active');
+
+                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                
+            });
+            $('#btn_tab_3_back').click(function(e){
+                $( "#tabs" ).tabs({
+                    active: 1
+                });
+                // $('#tab_2').addClass('active').attr('aria-expanded','true');
+                // $('#tab_3').removeClass('active').attr('aria-expanded','false');
+                // $('#a_tab_3').removeClass('active');
+                // $('#a_tab_2').addClass('active');
+
+                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                
+            });
+            $('.date').datepicker({
+                format: "yyyy-mm-dd",
+                weekStart: 0,
+                //calendarWeeks: true,
+                autoclose: true,
+                todayHighlight: true,
+                //rtl: true,
+                orientation: "auto"
+            });
+            //Initialize Select2 Elements
+            $('.select2').select2({
+                allowClear: true
+            });
+            $('.loading').hide();
+            // Function to preview image after validation
+            $(function() {
+                $("#inputEmployeePhoto").change(function() {
+                    //$("#message").empty(); // To remove the previous error message
+                    var file = this.files[0];
+                    var imagefile = file.type;
+                    var match= ["image/jpeg","image/png","image/jpg"];
+                    if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2])))
+                    {
+                        $('#previewing').attr('src','noimage.png');
+                        //$("#message").html("<p id='error'>Please Select A valid Image File</p>"+"<h4>Note</h4>"+"<span id='error_message'>Only jpeg, jpg and png Images type allowed</span>");
+                        return false;
+                    }
+                    else
+                    {
+                        var reader = new FileReader();
+                        reader.onload = imageIsLoaded;
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                });
+            });
+            function imageIsLoaded(e) {
+                $("#inputEmployeePhoto").css("color","green");
+                //$('#image_preview').css("display", "block");
+                $('#previewing').attr('src', e.target.result);
+                $('#previewing').attr('width', '250px');
+                $('#previewing').attr('height', '230px');
+            };
+
         });
-        $('#btn_tab_2_back').click(function(e){
-            $('#tab_1').addClass('active').attr('aria-expanded','true');
-            $('#tab_2').removeClass('active').attr('aria-expanded','false');
-            $('#a_tab_2').removeClass('active');
+        $('#btn_add').click(function(){
+            state="add";
+            $( "#tabs" ).tabs( "destroy" );
+            $( "#tabs" ).tabs({
+                active: 0
+            });
+            
             $('#a_tab_1').addClass('active');
 
-            $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+            // $('#tab_2').removeClass('active').attr('aria-expanded','false');
+            // $('#tab_3').removeClass('active').attr('aria-expanded','false');
             
-        });
-        $('#btn_tab_3_back').click(function(e){
-            $('#tab_2').addClass('active').attr('aria-expanded','true');
-            $('#tab_3').removeClass('active').attr('aria-expanded','false');
+            $('#a_tab_2').removeClass('active');
             $('#a_tab_3').removeClass('active');
-            $('#a_tab_2').addClass('active');
 
-            $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+            $('#error_msg_id').removeClass('error').addClass('no-error');
+
+            $('#form_addEmployee').trigger("reset");
+            $('#select_department').val(null).change();
+            $('#select_category').val(null).change();
+            $('#select_branch').val(null).change();
+            $('#select_designation').val(null).change();
+            $('#select_weekOffDay').val(null).change();
+            $('#select_additionalOffDay').val(null).change();
+            $('#select_additionalOffWeek').val(null).change();
+            $('#select_shift_1').val(null).change();
+            $('#select_shift_2').val(null).change();
+            $('#select_shift_3').val(null).change();
+            $('#select_shift_4').val(null).change();
+
+            $('#btn_confirm').val("add");
+            $('#btn_confirm').text("Add");
+            $('#modal-title').text('Add Employee');
+            $('#modal-add').modal('show');   
             
         });
-        $('.date').datepicker({
-            format: "yyyy-mm-dd",
-            weekStart: 0,
-            //calendarWeeks: true,
-            autoclose: true,
-            todayHighlight: true,
-            //rtl: true,
-            orientation: "auto"
-        });
-        //Initialize Select2 Elements
-        $('.select2').select2();
-        $('.loading').hide();
-        // Function to preview image after validation
-        $(function() {
-            $("#inputEmployeePhoto").change(function() {
-                //$("#message").empty(); // To remove the previous error message
-                var file = this.files[0];
-                var imagefile = file.type;
-                var match= ["image/jpeg","image/png","image/jpg"];
-                if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2])))
-                {
-                    $('#previewing').attr('src','noimage.png');
-                    //$("#message").html("<p id='error'>Please Select A valid Image File</p>"+"<h4>Note</h4>"+"<span id='error_message'>Only jpeg, jpg and png Images type allowed</span>");
-                    return false;
+        //Opening Edit Modal
+        $(document).on('click', '.open_modal', function(){
+            console.log("edit clicked");
+            state="update";
+            employee_id = $(this).val();
+
+            $( "#tabs" ).tabs( "destroy" );
+            $( "#tabs" ).tabs({
+                active: 0
+            });
+
+            $('#a_tab_2').removeClass('active');
+            $('#a_tab_3').removeClass('active');
+
+            $.each($('#select_ReportingOfficer1 option[value]'),function(key,val){
+                if(employee_id == val.value){
+                    $('.reporting_officers option[value='+val.value+']').prop('disabled',true);
                 }
                 else
-                {
-                    var reader = new FileReader();
-                    reader.onload = imageIsLoaded;
-                    reader.readAsDataURL(this.files[0]);
-                }
+                    $('.reporting_officers option[value='+val.value+']').prop('disabled',false);
             });
-        });
-        function imageIsLoaded(e) {
-            $("#inputEmployeePhoto").css("color","green");
-            //$('#image_preview').css("display", "block");
-            $('#previewing').attr('src', e.target.result);
-            $('#previewing').attr('width', '250px');
-            $('#previewing').attr('height', '230px');
-        };
-    });
-    $('#btn_add').click(function(){
-            state="add";
-        $("#tab_1").tab('show').addClass('active');
-        $('#error_msg_id').removeClass('error').addClass('no-error');
-        $('#form_addEmployee').trigger("reset");
-        $('#btn_confirm').val("add");
-        $('#btn_confirm').text("Add");
-        $('#modal-title').text('Add Employee');
-        $('#modal-add').modal('show');    
-    });
-    //Opening Edit Modal
-    $(document).on('click', '.open_modal', function(){
-        state="update";
-        $('#error_msg_id').removeClass('error').addClass('no-error');
-        var employee_id = $(this).val();
-        $.get('/getEmployeeById/' + employee_id, function (data) {
-            //success data
-            original_employee_id = employee_id;
-            console.log(data);
-            $('#inputEmployeeId').val(data.employee_id);
-            $('#inputName').val(data.name);
-            
-            $('#inputEmail').val(data.email);
-            $('#inputMobile1').val(data.mobileNumber1);
-            $('#inputMobile2').val(data.mobileNumber2);
-            $('#inputCountry').val(data.country);
-            $('#inputState').val(data.state);
-            $('#inputCity').val(data.city);
-            $('#inputStreet_address_1').val(data.street_address_1);
-            $('#inputStreet_address_2').val(data.street_address_2);
-            $('#inputPostalCode').val(data.postal_code);
-            $('#datepicker_DOB').val(data.dob);
-            
-            if(data.gender==1)
-                $('#radio_male').prop("checked", true);
-            else
-                $('#radio_female').prop("checked", true);
-
-            if(data.marital_status == 'single')
-                $('#radio_single').prop("checked", true);
-            else if(data.marital_status == 'married')
-                $('#radio_married').prop("checked", true);
-            else
-                $('#radio_divorced').prop("checked",true);
-            
-            $('#datepicker_anniversary').val(data.anniversary);
-            $('#inputFatherName').val(data.father_name);
-            $('#inputEducationalQualification').val(data.educational_qualification);
-            $('#inputProfessionalQualification').val(data.professional_qualification);
-            $('#inputExperience').val(data.experience);
-
-            $('#inputCardNumber').val(data.card_number);
-            $('#select_department').val(data.dept_id).change();
-            $('#select_category').val(data.category_id).change();
-            $('#select_branch').val(data.branch_id).change();
-            $('#select_designation').val(data.designation_id).change();
-            
-            if(data.Permanent_Temporary ==0)
-                $('#radio_temporary').prop("checked",true);
-            else if(data.Permanent_Temporary == 1)
-                $('#radio_provasion').prop("checked",true);
-            else
-                $('#radio_permanent').prop('checked',true);
-            
-            $('#select_weekOffDay').val(data.week_off_day).change();
-            $('#select_additionalOffDay').val(data.additional_off_day).change();
-            var additional_off_week_array = data.additional_off_week.split(',');
-            $('#select_additionalOffWeek').val(additional_off_week_array).change();
-            $('#select_shift_1').val(data.shift_1);
-            $('#select_shift_2').val(data.shift_2);
-            $('#select_shift_3').val(data.shift_3);
-            $('#select_shift_4').val(data.shift_4);
-            
-            if(data.change_by_week==1)
-                $('#radio_changeByWeek_yes').prop("checked",true);
-            else
-                $('#radio_changeByWeek_no').prop('checked',true);
-
-            if(data.change_after_days ==1)
-                $('#radio_changeAfterDay_yes').prop("checked",true);
-            else
-                $('#radio_changeAfterDay_no').prop("checked",true);
-            
-            $('#select_changed_on_day').val(data.changed_on_day);
-            $('#select_half_day_shift').val(data.half_day_shift);
-            $('#select_half_day_on').val(data.half_day_on);
-            
-            if(data.comp_off_applicable==1)
-                $('#radio_comp_off_yes').prop("checked",true);
-            else
-                $('#radio_comp_off_no').prop('checked',true);
-            if(data.overtime_applicable==1)
-                $('#radio_overtime_yes').prop("checked",true);
-            else
-                $('#radio_overtime_no').prop('checked',true);
-            
-            $('#select_ReportingOfficer1').val(data.reporting_officer_1);
-            $('#select_ReportingOfficer2').val(data.reporting_officer_2);
-            $('#datepicker_joiningDate').val(data.joining_date);
-            $('#datepicker_leavingDate').val(data.leaving_date);
-            $('#inputReferredBy').val(data.referred_by);
-
-            $('#input_ESI_number').val(data.ESI_number);
-            $('#input_PF_number').val(data.PF_number);
-            $('#input_UAN_number').val(data.UAN_number);
-            $('#input_PAN_number').val(data.PAN_number);
-            
-            if(data.wage_type==1)
-                $('#radio_daily').prop("checked",true);
-            else
-                $('#radio_monthly').prop('checked',true);
-            
-            $('#input_bank_name').val(data.bank_name);
-            $('#input_IFSC_code').val(data.IFSC_code);
-            $('#input_bank_branch').val(data.bank_branch);
-            $('#input_account_number').val(data.bank_account_number);
-            
-
-            $('#btn_confirm').val("update");
-            $('#btn_confirm').text("Update");
-            $('#modal-title').text('Edit Employee');
-            $('#modal-add').modal('show');
-        }); 
-    });
-    //delete shift and remove it from list
-    $(document).on('click','.delete-row',function(){
-        if(confirm('You are about to delete an employee. Are you sure?')){
-            var employee_id = $(this).val();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
+            $('.reporting_officers').select2({
+                allowClear:true
             });
-            $.ajax({
-                type: "DELETE",
-                url: '/deleteEmployee/' + employee_id,
-                success: function (data) {
-                    $("#employee" + employee_id).remove();
-                },
-                error: function (data) {
-                    console.error('Error:', data.responseJSON);
-                }
-            });
-        }
-        
-    });
-
-    
-    //create new product / update existing product
-    $("#btn_confirm").click(function (e) {
-        var type = "POST"; //for creating new resource
-        var employee_id = $('#inputEmployeeId').val();
-        var url = '/addEmployee'; // by default add shift
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        })
-        e.preventDefault(); 
-        var additional_off_weeks_array = $('#select_additionalOffWeek').val();
-        var additional_off_weeks_string = '';
-        for(var i =0; i < additional_off_weeks_array.length; i++){
-            if(i>0)
-                additional_off_weeks_string +=',';
-            additional_off_weeks_string += additional_off_weeks_array[i];
             
-        }
-        var formData = {
-            company_id                  : $('#inputCompanyId').val(),
-            employee_id                 : $('#inputEmployeeId').val(),
-            name                        : $('#inputName').val(),
-            mobileNumber1               : $('#inputMobile1').val(),
-            mobileNumber2               : $('#inputMobile2').val(),
-            email                       : $('#inputEmail').val(),
-            country                     : $('#inputCountry').val(),
-            state                       : $('#inputState').val(),
-            city                        : $('#inputCity').val(),
-            street_address_1            : $('#inputStreet_address_1').val(),
-            street_address_2            : $('#inputStreet_address_2').val(),
-            postal_code                 : $('#inputPostalCode').val(),
-            dob                         : $('#datepicker_DOB').val(),
-            gender                      : $('#radio_male').prop("checked")==true?1:0,
-            marital_status              : $('#radio_single').prop("checked")==true?'single':$('#radio_married').prop("checked")==true?'married':'divorced',
-            anniversary                 : $('#datepicker_anniversary').val(),
-            father_name                 : $('#inputFatherName').val(),
-            educational_qualification   : $('#inputEducationalQualification').val(),
-            professional_qualification  : $('#inputProfessionalQualification').val(),
-            experience                  : $('#inputExperience').val(),
 
-            card_number                 : $('#inputCardNumber').val(),
-            dept_id                     : $('#select_department').val(),
-            category_id                 : $('#select_category').val(),
-            branch_id                   : $('#select_branch').val(),
-            designation_id              : $('#select_designation').val(),
-            Permanent_Temporary         : $('#radio_temporary').prop("checked")==true?0:$('#radio_provasion').prop("checked")==true?1:2,
-            week_off_day                : $('#select_weekOffDay').val(),
-            additional_off_day          : $('#select_additionalOffDay').val(),
-            additional_off_week         : additional_off_weeks_string,
-            shift_1                     : $('#select_shift_1').val()!="none"?$('#select_shift_1').val():null,
-            shift_2                     : $('#select_shift_2').val()!="none"?$('#select_shift_2').val():null,
-            shift_3                     : $('#select_shift_3').val()!="none"?$('#select_shift_3').val():null,
-            shift_4                     : $('#select_shift_4').val()!="none"?$('#select_shift_4').val():null,
-            change_by_week              : $('#radio_changeByWeek_yes').prop("checked")==true?1:0,
-            change_after_days           : $('#radio_changeAfterDay_yes').prop("checked")==true?1:0,
-            changed_on_day              : $('#select_changed_on_day').val(),
-            half_day_shift              : $('#select_half_day_shift').val(),
-            half_day_on                 : $('#select_half_day_on').val(),
-            comp_off_applicable         : $('#radio_comp_off_yes').prop("checked")==true?1:0,
-            overtime_applicable         : $('#radio_overtime_yes').prop("checked")==true?1:0, 
-            reporting_officer_1         : $('#select_ReportingOfficer1').val(),
-            reporting_officer_2         : $('#select_ReportingOfficer2').val(),
-            joining_date                : $('#datepicker_joiningDate').val(),
-            leaving_date                : $('#datepicker_leavingDate').val(),
-            referred_by                 : $('#inputReferredBy').val(),
-
-            ESI_number                  : $('#input_ESI_number').val(),
-            PF_number                   : $('#input_PF_number').val(),
-            UAN_number                  : $('#input_UAN_number').val(),
-            PAN_number                  : $('#input_PAN_number').val(),
-            wage_type                   : $('#radio_daily').prop("checked")==true?0:1,
-            bank_name                   : $('#input_bank_name').val(),
-            IFSC_code                   : $('#input_IFSC_code').val(),
-            bank_branch                 : $('#input_bank_branch').val(),
-            bank_account_number         : $('#input_account_number').val()
-   
-        }
-        //used to determine the http verb to use [add=POST], [update=PUT]
-        var state = $('#btn_confirm').val();
-        if(state=="add"){
-            type = "POST"; 
-            url = '/addEmployee';
-        }else if (state == "update"){
-            type = "PUT"; //for updating existing resource
-            url = '/updateEmployee/' + original_employee_id;
-        }
-        console.log(formData);
-        $.ajax({
-            type: type,
-            url: url,
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
+            $('#error_msg_id').removeClass('error').addClass('no-error');
+            
+            $.get('/getEmployeeById/' + employee_id, function (data) {
+                //success data
+                original_employee_id = employee_id;
                 console.log(data);
-                var employee = '<tr id="employee'+data.orig_data.employee_id +'"><td>' +
-                                    + data.orig_data.name + '</td><td>'
-                                    + data.orig_data.father_name + '</td><td>' 
-                                    + data.orig_data.employee_id + '</td><td>' 
-                                    + data.orig_data.card_number + '</td><td>' 
-                                    + data.department_name + '</td><td>' 
-                                    + data.designation_name + '</td><td>' 
-                                    + data.branch_name + '</td><td>' 
-                                    + data.shift_name + '</td>' ;
-                employee += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.orig_data.employee_id + '"><i class="fa fa-edit"></i></button>';
-                employee += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.orig_data.employee_id + '"><i class="fa fa-trash"></i></button></td></tr>';
-                if (state == "add"){ //if user added a new record
-                    $('#employees-list').append(employee);
-                }else{ //if user updated an existing record
-                    $("#employee" + original_employee_id).replaceWith( employee );
+                $('#inputEmployeeId').val(data.employee_id);
+                $('#inputName').val(data.name);
+                
+                $('#inputEmail').val(data.email);
+                $('#inputMobile1').val(data.mobileNumber1);
+                $('#inputMobile2').val(data.mobileNumber2);
+                $('#inputCountry').val(data.country);
+                $('#inputState').val(data.state);
+                $('#inputCity').val(data.city);
+                $('#inputStreet_address_1').val(data.street_address_1);
+                $('#inputStreet_address_2').val(data.street_address_2);
+                $('#inputPostalCode').val(data.postal_code);
+                $('#datepicker_DOB').val(data.dob);
+                
+                if(data.gender==1)
+                    $('#radio_male').prop("checked", true);
+                else
+                    $('#radio_female').prop("checked", true);
+
+                if(data.marital_status == 'single')
+                    $('#radio_single').prop("checked", true);
+                else if(data.marital_status == 'married')
+                    $('#radio_married').prop("checked", true);
+                else
+                    $('#radio_divorced').prop("checked",true);
+                
+                $('#datepicker_anniversary').val(data.anniversary);
+                $('#inputFatherName').val(data.father_name);
+                $('#inputEducationalQualification').val(data.educational_qualification);
+                $('#inputProfessionalQualification').val(data.professional_qualification);
+                $('#inputExperience').val(data.experience);
+
+                $('#inputCardNumber').val(data.card_number);
+                $('#select_department').val(data.dept_id).change();
+                $('#select_category').val(data.category_id).change();
+                $('#select_branch').val(data.branch_id).change();
+                $('#select_designation').val(data.designation_id).change();
+                
+                if(data.Permanent_Temporary ==0)
+                    $('#radio_temporary').prop("checked",true);
+                else if(data.Permanent_Temporary == 1)
+                    $('#radio_provasion').prop("checked",true);
+                else
+                    $('#radio_permanent').prop('checked',true);
+                
+                $('#select_weekOffDay').val(data.week_off_day).change();
+                $('#select_additionalOffDay').val(data.additional_off_day).change();
+                var additional_off_week_array;
+                if(data.addictional_off_week !=null)
+                    additional_off_week_array= data.additional_off_week.split(',');
+                $('#select_additionalOffWeek').val(additional_off_week_array).change();
+                $('#select_shift_1').val(data.shift_1).change();
+                $('#select_shift_2').val(data.shift_2).change();
+                $('#select_shift_3').val(data.shift_3).change();
+                $('#select_shift_4').val(data.shift_4).change();
+                
+                if(data.change_by_week==1)
+                    $('#radio_changeByWeek_yes').prop("checked",true);
+                else
+                    $('#radio_changeByWeek_no').prop('checked',true);
+
+                if(data.change_after_days ==1)
+                    $('#radio_changeAfterDay_yes').prop("checked",true);
+                else
+                    $('#radio_changeAfterDay_no').prop("checked",true);
+                
+                $('#select_changed_on_day').val(data.changed_on_day).change();
+                $('#select_half_day_shift').val(data.half_day_shift).change();
+                $('#select_half_day_on').val(data.half_day_on).change();
+                
+                if(data.comp_off_applicable==1)
+                    $('#radio_comp_off_yes').prop("checked",true);
+                else
+                    $('#radio_comp_off_no').prop('checked',true);
+                if(data.overtime_applicable==1)
+                    $('#radio_overtime_yes').prop("checked",true);
+                else
+                    $('#radio_overtime_no').prop('checked',true);
+                
+                $('#select_ReportingOfficer1').val(data.reporting_officer_1).change();
+                $('#select_ReportingOfficer2').val(data.reporting_officer_2).change();
+                $('#datepicker_joiningDate').val(data.joining_date);
+                $('#datepicker_leavingDate').val(data.leaving_date);
+                $('#inputReferredBy').val(data.referred_by);
+
+                $('#input_ESI_number').val(data.ESI_number);
+                $('#input_PF_number').val(data.PF_number);
+                $('#input_UAN_number').val(data.UAN_number);
+                $('#input_PAN_number').val(data.PAN_number);
+                
+                if(data.wage_type==1)
+                    $('#radio_daily').prop("checked",true);
+                else
+                    $('#radio_monthly').prop('checked',true);
+                
+                $('#input_bank_name').val(data.bank_name);
+                $('#input_IFSC_code').val(data.IFSC_code);
+                $('#input_bank_branch').val(data.bank_branch);
+                $('#input_account_number').val(data.bank_account_number);
+                
+
+                $('#btn_confirm').val("update");
+                $('#btn_confirm').text("Update");
+                $('#modal-title').text('Edit Employee');
+                $('#modal-add').modal('show');
+            }); 
+        });
+
+        //delete employee and remove it from list
+        $(document).on('click','.delete-row',function(){
+            if(confirm('You are about to delete an employee. Are you sure?')){
+                var employee_id = $(this).val();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: "DELETE",
+                    url: '/deleteEmployee/' + employee_id,
+                    success: function (data) {
+                        $("#employee" + employee_id).remove();
+                        $(".reporting_officers option[value='"+employee_id+"']").remove();
+                    },
+                    error: function (data) {
+                        alert("Something went wrong while deleting an employee!\nPlease refresh the page and try again!")
+                        console.error('Error:', data.responseJSON);
+                    }
+                });
+            }
+            
+        });
+
+        function changed_reporting_officer1(selected){
+            $.each($('#select_ReportingOfficer1 option[value]'),function(key,val){
+                if(employee_id == val.value){
+                    $('.reporting_officers option[value='+val.value+']').prop('disabled',true);
+                }else
+                    $('.reporting_officers option[value='+val.value+']').prop('disabled',false);
+            });
+            if(selected != "" && selected != null)
+                $('#select_ReportingOfficer2 option[value="'+selected+'"]').prop('disabled',true);
+            setTimeout(function () {
+                $('.reporting_officers').select2({
+                    allowClear: true
+                });
+            });
+        }
+        function changed_reporting_officer2(selected){
+            $.each($('#select_ReportingOfficer2 option[value]'),function(key,val){
+                if(employee_id == val.value){
+                    $('.reporting_officers option[value='+val.value+']').prop('disabled',true);
+                }else
+                    $('.reporting_officers option[value='+val.value+']').prop('disabled',false);
+            });
+            if(selected != "" && selected != null)
+                $('#select_ReportingOfficer1 option[value="'+selected+'"]').prop('disabled',true);
+            setTimeout(function () {
+                $('.reporting_officers').select2({
+                    allowClear: true
+                });
+            });
+        }
+
+        
+        //create new product / update existing product
+        $("#btn_confirm").click(function (e) {
+            e.preventDefault(); 
+            if($("#form_addEmployee").valid()){
+                var type = "POST"; //for creating new resource
+                var employee_id = $('#inputEmployeeId').val();
+                var url = '/addEmployee'; // by default add shift
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                
+                var additional_off_weeks_array = $('#select_additionalOffWeek').val();
+                var additional_off_weeks_string = '';
+                for(var i =0; i < additional_off_weeks_array.length; i++){
+                    if(i>0)
+                        additional_off_weeks_string +=',';
+                    additional_off_weeks_string += additional_off_weeks_array[i];
+                    
                 }
-                $('#form_addEmployee').trigger("reset");
-                $('#modal-add').modal('hide');
-            },
-            error: function (data) {
-                alert('Error: '+JSON.stringify(data['responseJSON']));
-                console.log('Error:', data);
+                var formData = {
+                    company_id                  : $('#inputCompanyId').val(),
+                    employee_id                 : $('#inputEmployeeId').val(),
+                    name                        : $('#inputName').val(),
+                    mobileNumber1               : $('#inputMobile1').val(),
+                    mobileNumber2               : $('#inputMobile2').val(),
+                    email                       : $('#inputEmail').val(),
+                    country                     : $('#inputCountry').val(),
+                    state                       : $('#inputState').val(),
+                    city                        : $('#inputCity').val(),
+                    street_address_1            : $('#inputStreet_address_1').val(),
+                    street_address_2            : $('#inputStreet_address_2').val(),
+                    postal_code                 : $('#inputPostalCode').val(),
+                    dob                         : $('#datepicker_DOB').val(),
+                    gender                      : $('#radio_male').prop("checked")==true?1:0,
+                    marital_status              : $('#radio_single').prop("checked")==true?'single':$('#radio_married').prop("checked")==true?'married':'divorced',
+                    anniversary                 : $('#datepicker_anniversary').val(),
+                    father_name                 : $('#inputFatherName').val(),
+                    educational_qualification   : $('#inputEducationalQualification').val(),
+                    professional_qualification  : $('#inputProfessionalQualification').val(),
+                    experience                  : $('#inputExperience').val(),
+
+                    card_number                 : $('#inputCardNumber').val(),
+                    dept_id                     : $('#select_department').val(),
+                    category_id                 : $('#select_category').val(),
+                    branch_id                   : $('#select_branch').val(),
+                    designation_id              : $('#select_designation').val(),
+                    Permanent_Temporary         : $('#radio_temporary').prop("checked")==true?0:$('#radio_provasion').prop("checked")==true?1:2,
+                    week_off_day                : $('#select_weekOffDay').val(),
+                    additional_off_day          : $('#select_additionalOffDay').val(),
+                    additional_off_week         : additional_off_weeks_string,
+                    shift_1                     : $('#select_shift_1').val()!="none"?$('#select_shift_1').val():null,
+                    shift_2                     : $('#select_shift_2').val()!="none"?$('#select_shift_2').val():null,
+                    shift_3                     : $('#select_shift_3').val()!="none"?$('#select_shift_3').val():null,
+                    shift_4                     : $('#select_shift_4').val()!="none"?$('#select_shift_4').val():null,
+                    change_by_week              : $('#radio_changeByWeek_yes').prop("checked")==true?1:0,
+                    change_after_days           : $('#radio_changeAfterDay_yes').prop("checked")==true?1:0,
+                    changed_on_day              : $('#select_changed_on_day').val(),
+                    half_day_shift              : $('#select_half_day_shift').val(),
+                    half_day_on                 : $('#select_half_day_on').val(),
+                    comp_off_applicable         : $('#radio_comp_off_yes').prop("checked")==true?1:0,
+                    overtime_applicable         : $('#radio_overtime_yes').prop("checked")==true?1:0, 
+                    reporting_officer_1         : $('#select_ReportingOfficer1').val(),
+                    reporting_officer_2         : $('#select_ReportingOfficer2').val(),
+                    joining_date                : $('#datepicker_joiningDate').val(),
+                    leaving_date                : $('#datepicker_leavingDate').val(),
+                    referred_by                 : $('#inputReferredBy').val(),
+
+                    ESI_number                  : $('#input_ESI_number').val(),
+                    PF_number                   : $('#input_PF_number').val(),
+                    UAN_number                  : $('#input_UAN_number').val(),
+                    PAN_number                  : $('#input_PAN_number').val(),
+                    wage_type                   : $('#radio_daily').prop("checked")==true?0:1,
+                    bank_name                   : $('#input_bank_name').val(),
+                    IFSC_code                   : $('#input_IFSC_code').val(),
+                    bank_branch                 : $('#input_bank_branch').val(),
+                    bank_account_number         : $('#input_account_number').val()
+        
+                }
+                //used to determine the http verb to use [add=POST], [update=PUT]
+                var state = $('#btn_confirm').val();
+                if(state=="add"){
+                    type = "POST"; 
+                    url = '/addEmployee';
+                }else if (state == "update"){
+                    type = "PUT"; //for updating existing resource
+                    url = '/updateEmployee/' + original_employee_id;
+                }
+                //console.log(formData);
+                $.ajax({
+                    type: type,
+                    url: url,
+                    data: formData,
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        var employee = '<tr id="employee'+data.orig_data.employee_id +'"><td>' +
+                                            + data.orig_data.name + '</td><td>'
+                                            + data.orig_data.father_name + '</td><td>' 
+                                            + data.orig_data.employee_id + '</td><td>' 
+                                            + data.orig_data.card_number + '</td><td>' 
+                                            + data.department_name + '</td><td>' 
+                                            + data.designation_name + '</td><td>' 
+                                            + data.branch_name + '</td><td>' 
+                                            + data.shift_name + '</td>' ;
+                        employee += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.orig_data.employee_id + '"><i class="fa fa-edit"></i></button>';
+                        employee += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.orig_data.employee_id + '"><i class="fa fa-trash"></i></button></td></tr>';
+                        if (state == "add"){ //if user added a new record
+                            $('#employees-list').append(employee);
+                            var newOption = new Option(data.orig_data.name +' ['+data.designation_name+']', data.orig_data.employee_id, false, false);
+                            $('.reporting_officers').append(newOption).trigger('change');
+                            //employee_table.row.add(employee).draw();
+                        }else{ //if user updated an existing record
+                            $("#employee" + original_employee_id).replaceWith( employee );
+                        }
+                        $('#form_addEmployee').trigger("reset");
+                        $('#modal-add').modal('hide');
+                    },
+                    error: function (data) {
+                        //alert('Error: '+JSON.stringify(data['responseJSON']));
+                        console.log('Error:', data);
+                    }
+                });    
+            }else{
+                alert("Data Missing!\n\nPlease verify and try again");
             }
         });
-    });
-    
-</script>
+        //Function to mark the select valid as some value is selected
+        $('.select2').on('change', function() {
+            $(this).valid();
+        });
+    </script>
 @endsection

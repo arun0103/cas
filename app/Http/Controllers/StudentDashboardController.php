@@ -14,9 +14,7 @@ class StudentDashboardController extends Controller
 {
     public function getTotalStudents(){
         $institution_id = Session::get('company_id');
-        $allStudents = Student::where('institution_id',$institution_id)->with('grade','section')->get();//->with(['punches'=> function ($query) {
-        //     $query->where('punch_date',Carbon::today('Y-m-d')->first())->get();
-        // }]);
+        $allStudents = Student::where('institution_id',$institution_id)->with('grade','section')->get();
         return response()->json($allStudents);
     }
     public function getAbsentStudents(){

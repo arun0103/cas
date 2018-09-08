@@ -60,7 +60,8 @@ class LeaveMasterController extends Controller
         return $leaveMaster;
     }
     public function deleteLeaveMaster($id){
-        $leaveMaster = LeaveMaster::where('leave_id',$id)->delete();
+        $company_id = Session::get('company_id');
+        $leaveMaster = LeaveMaster::where([['company_id',$company_id],['leave_id',$id]])->delete();
         return response()->json($leaveMaster);
         
     }

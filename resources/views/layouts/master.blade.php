@@ -24,6 +24,8 @@
   <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/> -->
   
   <link rel="stylesheet" href="{{asset('js/plugins/datepicker/datepicker3.css')}}">
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <!-- Custom CSS Files -->
   <link rel="stylesheet" href="{{asset('css/myStyle.css')}}">
   @yield('head')
@@ -42,18 +44,6 @@
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{{route('reportSelect')}}" class="nav-link">Reports</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block dropdown" style="line-height:20px;padding:10px">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Dropdown <span class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li class="divider"></li>
-          <li><a href="#">Separated link</a></li>
-          <li class="divider"></li>
-          <li><a href="#">One more separated link</a></li>
-        </ul>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
@@ -93,8 +83,8 @@
               <li><a href="#">One more separated link</a></li>
             </ul>
           </li>
-          <li style="margin-right:20px;"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-          <li style="margin-right:20px;"><a href="#">Link</a></li>
+          <li style="margin-right:20px;"><a href="#">Contact Us<span class="sr-only">(current)</span></a></li>
+          <!-- <li style="margin-right:20px;"><a href="#">Contact Us</a></li> -->
         </ul>
       </div>
       <!-- Messages Dropdown Menu -->
@@ -482,6 +472,16 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item ">
+                    <a href="{{ route('viewInstitutionShifts') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-pagelines"></i>
+                      <p>
+                        Shifts
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item ">
                     <a href="{{ route('viewGrades') }}" class="nav-link ">
                       <i class="nav-icon fa fa-pagelines"></i>
                       <p>
@@ -574,7 +574,8 @@
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="{{asset('js/plugins/jquery/jquery-3.3.1.js')}}"></script>
-<script src="{{asset('js/plugins/fullcalendar/lib/jquery-ui.min.js')}}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- <script src="{{asset('js/plugins/fullcalendar/lib/jquery-ui.min.js')}}"></script> -->
 <script src="{{asset('js/plugins/bootstrap/js/bootstrap.js')}}"></script>
 <!-- <script src="{{asset('js/plugins/fastclick/fastclick.js')}}"></script> -->
 @yield('footer')

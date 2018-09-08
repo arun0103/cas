@@ -51,8 +51,17 @@ class Employee extends Model
     public function rosters(){
         return $this->hasMany('App\Roster','employee_id','employee_id');
     }
-    public function shifts(){
-        return $this->hasMany('App\Shift','shift_id','shift_1');
+    public function first_shift(){
+        return $this->hasOne('App\Shift','shift_id','shift_1');
+    }
+    public function second_shift(){
+        return $this->hasOne('App\Shift','shift_id','shift_2');
+    }
+    public function third_shift(){
+        return $this->hasOne('App\Shift','shift_id','shift_3');
+    }
+    public function fourth_shift(){
+        return $this->hasOne('App\Shift','shift_id','shift_4');
     }
 
     public function appliedLeaves(){
