@@ -13,6 +13,7 @@ class CreateClassRoutinesTable extends Migration
      */
     public function up()
     {
+        Schema::defaultStringLength(191);
         Schema::create('class_routines', function (Blueprint $table) {
             $table->increments('id');
 
