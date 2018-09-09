@@ -250,76 +250,7 @@
 <script>
   $(document).ready(function(){
     $('.loading').hide();
-    $.ajax({
-      'url': "/getTotalEmployees/",
-      'method': "GET",
-      'contentType': 'application/json'
-    }).done( function(data) {
-      console.log(data);
-      $('#total-employees-table').dataTable({
-        "aaData": data,
-        "columns": [
-            { "data": "name" },
-            { "data": "branch.name" },
-            { "data": "department.name" },
-            { "data": "designation.name" },
-            { "data": "punch_records.punch_1","defaultContent":"<i style='color:red'>No Data</i>" }
-        ]
-      });
-    });
-    $.ajax({
-      'url': "/getPresentEmployees/",
-      'method': "GET",
-      'contentType': 'application/json'
-    }).done( function(data) {
-      console.log(data);
-      $('#present-employees-table').dataTable({
-        "aaData": data,
-        "columns": [
-            { "data": "employee.name" },
-            { "data": "employee.branch.name" },
-            { "data": "employee.department.name" },
-            { "data": "employee.designation.name" },
-            { "data": "punch_1" }
-        ]
-      });
-    });
-    $.ajax({
-      'url': "/getAbsentEmployees/",
-      'method': "GET",
-      'contentType': 'application/json'
-    }).done( function(data) {
-      console.log(data);
-      $('#absent-employees-table').dataTable({
-        "aaData": data,
-        
-        "columns": [
-            { "data": "name" },
-            { "data": "branch.name" },
-            { "data": "department.name" },
-            { "data": "designation.name" },
-            { "data": "applied_leaves[0].leave_from","defaultContent":"<i style='color:red'>Not Applied</i>"},
-            { "data": "applied_leaves[0].leave_to","defaultContent":"<i style='color:red'>Not Applied</i>"}            
-        ]
-      });
-    });
-    $.ajax({
-      'url': "/getLateEmployees/",
-      'method': "GET",
-      'contentType': 'application/json'
-    }).done( function(data) {
-      console.log("late employees: "+ data);
-      $('#late-employees-table').dataTable({
-        "aaData": data,
-        "columns": [
-            { "data": "employee.name" },
-            { "data": "employee.branch.name" },
-            { "data": "employee.department.name" },
-            { "data": "employee.designation.name" },
-            { "data": "late_in" }
-        ]
-      });
-    });
+    
     // SET AUTOMATIC PAGE RELOAD TIME TO 1000 MILISECONDS (1 SECOND * seconds we want).
     setInterval('refreshPageContents()', 1000*5);
   });
@@ -336,6 +267,23 @@
   }
 
   $('#div-total-employees').click(function (e){
+    $.ajax({
+      'url': "/getTotalEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+      }).done( function(data) {
+      console.log(data);
+      $('#total-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "name" },
+            { "data": "branch.name" },
+            { "data": "department.name" },
+            { "data": "designation.name" },
+            { "data": "punch_records.punch_1","defaultContent":"<i style='color:red'>No Data</i>" }
+        ]
+      });
+    });
     $("#div-total-employees-container").addClass('display-block').removeClass('no-display');
 
     $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
@@ -347,6 +295,25 @@
     }, 1000);
   });
   $('#div-absent-employees').click(function (e){
+    $.ajax({
+      'url': "/getAbsentEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+      }).done( function(data) {
+      console.log(data);
+      $('#absent-employees-table').dataTable({
+        "aaData": data,
+        
+        "columns": [
+            { "data": "name" },
+            { "data": "branch.name" },
+            { "data": "department.name" },
+            { "data": "designation.name" },
+            { "data": "applied_leaves[0].leave_from","defaultContent":"<i style='color:red'>Not Applied</i>"},
+            { "data": "applied_leaves[0].leave_to","defaultContent":"<i style='color:red'>Not Applied</i>"}            
+        ]
+      });
+    });
     $("#div-absent-employees-container").addClass('display-block').removeClass('no-display');
 
     $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
@@ -358,6 +325,23 @@
     }, 1000);
   });
   $('#div-present-employees').click(function (e){
+    $.ajax({
+      'url': "/getPresentEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+      }).done( function(data) {
+      console.log(data);
+      $('#present-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "employee.name" },
+            { "data": "employee.branch.name" },
+            { "data": "employee.department.name" },
+            { "data": "employee.designation.name" },
+            { "data": "punch_1" }
+        ]
+      });
+    });
     $("#div-present-employees-container").addClass('display-block').removeClass('no-display');
 
     $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
@@ -369,6 +353,23 @@
     }, 1000);
   });
   $('#div-late-employees').click(function (e){
+    $.ajax({
+      'url': "/getLateEmployees/",
+      'method': "GET",
+      'contentType': 'application/json'
+      }).done( function(data) {
+      console.log("late employees: "+ data);
+      $('#late-employees-table').dataTable({
+        "aaData": data,
+        "columns": [
+            { "data": "employee.name" },
+            { "data": "employee.branch.name" },
+            { "data": "employee.department.name" },
+            { "data": "employee.designation.name" },
+            { "data": "late_in" }
+        ]
+      });
+    });
     $("#div-late-employees-container").addClass('display-block').removeClass('no-display');
 
     $('#div-total-employees-container').addClass('no-display').removeClass('display-block');

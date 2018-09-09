@@ -40,48 +40,73 @@ class AdminController extends Controller
         $contents = File::get(storage_path('app/'.$fileName));
         $rows =explode("\n", $contents);
         $index = 0;
-        echo count($rows);
+        $totalRows = count($rows)-1;
+        $addedRows = 0;
+        $rejectedRows = 0;
         foreach($rows as $row){
-            if($index>0){
+            if($index>0 && $index<count($rows)){
+                $row = substr($row,0,strlen($row)-1); // removing \r from row
                 $rowData = explode("\t",$row);
-                $data = new RawData([
-                    'card_number'=>$rowData[0],
-                    'machine_id'=>$rowData[1],
-                    'in_out'=>'D',
-                    'punch_time'=>str_replace('/','-',$rowData[6]),
-                    'status'=> false
-                ]);
-                $data->save();
+                if(count($rowData)==7){ // verifying that row contains 7 columns
+                    $punchTime = str_replace('/','-',$rowData[6]);
+                    $check = RawData::where([['card_number',$rowData[0]],['machine_id',$rowData[1]],['punch_time',str_replace('/','-',$rowData[6])]])->get();
+                    if(count($check)==0){
+                        $data = new RawData([
+                            'card_number'=>$rowData[0],
+                            'machine_id'=>$rowData[1],
+                            'in_out'=>'U',
+                            'punch_time'=>$punchTime,
+                            'status'=> false
+                        ]);
+                        $data->save();
+                        $addedRows++;
+                    }else{
+                        $rejectedRows++;
+                    }
+                }
             }
             $index++;
         }
+        $message = [
+            'name'=>$file->getClientOriginalName(),
+            'extension'=>$file->getClientOriginalExtension(),
+            'mimeType'=>$file->getMimeType(),
+            'total'=>$totalRows,
+            'added'=>$addedRows,
+            'rejected'=>$rejectedRows
+        ];
+        Storage::delete($fileName);
+        
+        return back()->with('message',$message);
         //$openFile = fopen($path.'\\'.$fileName,'r');
 
         //echo 'Content: '.$openFile;
 
         //Display File Name
         
-        echo 'File Name: '.$file->getClientOriginalName();
-        echo '<br>';
+        // echo 'File Name: '.$file->getClientOriginalName();
+        // echo '<br>';
     
-        //Display File Extension
-        echo 'File Extension: '.$file->getClientOriginalExtension();
-        echo '<br>';
+        // //Display File Extension
+        // echo 'File Extension: '.$file->getClientOriginalExtension();
+        // echo '<br>';
     
-        //Display File Real Path
-        echo 'File Real Path: '.$file->getRealPath();
-        echo '<br>';
+        // //Display File Real Path
+        // echo 'File Real Path: '.$file->getRealPath();
+        // echo '<br>';
     
-        //Display File Size
-        echo 'File Size: '.$file->getSize();
-        echo '<br>';
+        // //Display File Size
+        // echo 'File Size: '.$file->getSize();
+        // echo '<br>';
     
-        //Display File Mime Type
-        echo 'File Mime Type: '.$file->getMimeType();
-    
+        // //Display File Mime Type
+        // echo 'File Mime Type: '.$file->getMimeType();
+        
         //Move Uploaded File
-        $destinationPath = 'uploads';
-        $file->move($destinationPath,$file->getClientOriginalName());
+        //$destinationPath = 'uploads';
+        //$file->move($destinationPath,$file->getClientOriginalName());
+        
+        
     }
 
     // public function addHoliday(){
