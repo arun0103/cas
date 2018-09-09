@@ -47,6 +47,7 @@ class AdminController extends Controller
                 $data = new RawData([
                     'card_number'=>$rowData[0],
                     'machine_id'=>$rowData[1],
+                    'in_out'=>'D',
                     'punch_time'=>str_replace('/','-',$rowData[6]),
                     'status'=> false
                 ]);
