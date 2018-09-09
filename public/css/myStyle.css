@@ -25,6 +25,7 @@
 #div-total-employees:hover, #div-absent-employees:hover, #div-present-employees:hover, #div-late-employees:hover,
 #div-total-students:hover, #div-absent-students:hover, #div-present-students:hover, #div-late-students:hover{
   cursor: pointer;
+  background-color: rgb(171, 171, 177);
 }
 
 .dropdown-content a:hover {background-color: #ddd;}

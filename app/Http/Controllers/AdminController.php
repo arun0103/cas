@@ -49,10 +49,10 @@ class AdminController extends Controller
                 $rowData = explode("\t",$row);
                 if(count($rowData)==7){ // verifying that row contains 7 columns
                     $punchTime = str_replace('/','-',$rowData[6]);
-                    $check = RawData::where([['card_number',$rowData[0]],['machine_id',$rowData[1]],['punch_time',str_replace('/','-',$rowData[6])]])->get();
+                    $check = RawData::where([['card_number',$rowData[2]],['machine_id',$rowData[1]],['punch_time',str_replace('/','-',$rowData[6])]])->get();
                     if(count($check)==0){
                         $data = new RawData([
-                            'card_number'=>$rowData[0],
+                            'card_number'=>$rowData[2],
                             'machine_id'=>$rowData[1],
                             'in_out'=>'U',
                             'punch_time'=>$punchTime,
