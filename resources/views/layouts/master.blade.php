@@ -75,12 +75,8 @@
                     <div class="dropdown-content"><a href="#">Absent</a> </div>
                   </div>
               </li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
               <li class="divider"></li>
-              <li><a href="#">Separated link</a></li>
-              <li class="divider"></li>
-              <li><a href="#">One more separated link</a></li>
+              <li><a href="#">Student</a></li>
             </ul>
           </li>
           <li style="margin-right:20px;"><a href="#">Contact Us<span class="sr-only">(current)</span></a></li>
@@ -285,6 +281,14 @@
                 </a>
               </li>
               <li class="nav-item ">
+                <a href="{{ route('leaveQuotas') }}" class="nav-link ">
+                  <i class="nav-icon fa fa-home"></i>
+                  <p>
+                  Leave Quota
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item ">
                 <a href="{{ route('holidays') }}" class="nav-link ">
                   <i class="nav-icon fa fa-home"></i>
                   <p>
@@ -407,6 +411,14 @@
                       <i class="nav-icon fa fa-home"></i>
                       <p>
                       Employees
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a href="{{ route('leaveQuotas') }}" class="nav-link ">
+                      <i class="nav-icon fa fa-home"></i>
+                      <p>
+                      Leave Quota
                       </p>
                     </a>
                   </li>

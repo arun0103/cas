@@ -164,6 +164,28 @@ Route::delete('/deleteLeaveType/{leave_id}/{branch_id}','LeaveTypeController@del
 
 Route::get('/admin/leave/type/add','LeaveTypeController@addLeaveTypes')->name('addLeaveType');
 //////////////////////////////////////////////////////////////////////////////////////////////
+//Leave quota
+Route::get('/admin/leave/quota/view','LeaveQuotaController@getAllEmployeesLeaveQuota')->name('leaveQuotas');
+
+Route::get('/getLeaveQuotaById/{id}','LeaveQuotaController@getLeaveQuotaById');
+Route::post('/addLeaveQuota', 'LeaveQuotaController@addLeaveQuota');
+Route::put('/updateLeaveQuota/{id}', 'LeaveQuotaController@updateLeaveQuota');
+Route::delete('/deleteLeaveQuota/{id}','LeaveQuotaController@deleteLeaveQuota');
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+//////////// Leave Requests
+
+Route::get('/leaveRequests','AdminController@getLeaveRequests')->name('leaveRequests');
+Route::get('/employee/leaveTypes/{id}','AdminController@getEmployeeLeaveDetails');
+Route::get('/employee/leaveStatus/{eId}/{lId}','AdminController@getEmployeeLeaveStatus');
+
+Route::delete('/deleteAppliedLeave/{id}','AdminController@deleteAppliedLeave');
+Route::put('/updateLeave','AdminController@updateAppliedLeave');
+Route::get('/getAppliedLeave/{id}','AdminController@getAppliedLeaveById');
+Route::post('/applyLeave','AdminController@applyLeaveOfEmployee');
+
+
+//////////////////////////////////////////////////////////////////////
 ////////////////////// Category
 
 Route::get('/admin/category/add', function () {
@@ -243,19 +265,6 @@ Route::post('/updatePunchRecord/{id}', 'AdminController@updatePunch');
 Route::post('/insertPunchRecord', 'AdminController@insertPunchRecord');
 Route::delete('/deletePunchRecord/{id}', 'AdminController@deletePunch');
 ///////////////////////////////////////////////////////////////////////////////
-//////////// Leave Requests
-
-Route::get('/leaveRequests','AdminController@getLeaveRequests')->name('leaveRequests');
-Route::get('/employee/leaveTypes/{id}','AdminController@getEmployeeLeaveDetails');
-Route::get('/employee/leaveStatus/{eId}/{lId}','AdminController@getEmployeeLeaveStatus');
-
-Route::delete('/deleteAppliedLeave/{id}','AdminController@deleteAppliedLeave');
-Route::put('/updateLeave','AdminController@updateAppliedLeave');
-Route::get('/getAppliedLeave/{id}','AdminController@getAppliedLeaveById');
-Route::post('/applyLeave','AdminController@applyLeaveOfEmployee');
-
-
-//////////////////////////////////////////////////////////////////////
 /////////////// File Upload
 Route::get('/file/upload',function (){
     return view('pages/admin/upload/upload');

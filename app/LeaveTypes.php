@@ -17,4 +17,7 @@ class LeaveTypes extends Model
         
         'updated_at','created_at'
     ];
+    public function leaveDetail(){
+        return $this->belongsTo('App\LeaveMaster','leave_id','leave_id');
+    }
 }

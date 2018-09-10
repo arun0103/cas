@@ -67,4 +67,7 @@ class Employee extends Model
     public function appliedLeaves(){
         return $this->hasMany('App\AppliedLeave','emp_id','employee_id');
     }
+    public function leaveQuotas(){
+        return $this->hasMany('App\LeaveQuota','employee_id','employee_id');
+    }
 }

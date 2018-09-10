@@ -134,16 +134,16 @@
     $('#btn_add').click(function(){
         state="add";
         
-            $('#error_msg_id').removeClass('error').addClass('no-error');
+        $('#error_msg_id').removeClass('error').addClass('no-error');
 
-            $('#select_leave_id').val("none").trigger('change');
-            $('#select_branch_id').val("none").trigger('change');
-            $('#btn_confirm').val("add");
-            $('#btn_confirm').text("Add");
-            $('#modal-title').text('Add Leave Type');
-            $('#form_addLeaveType').trigger("reset");
-            $('#modal-add').modal('show');
-        });
+        $('#select_leave_id').val([]).trigger('change');
+        $('#select_branch_id').val([]).trigger('change');
+        $('#btn_confirm').val("add");
+        $('#btn_confirm').text("Add");
+        $('#modal-title').text('Add Leave Type');
+        $('#form_addLeaveType').trigger("reset");
+        $('#modal-add').modal('show');
+    });
     //Opening Edit Modal
     $(document).on('click', '.open_modal', function(){
         state="update";
