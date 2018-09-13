@@ -97,7 +97,7 @@
     </div>
     
     <div class="modal fade" id="modal-add">
-        <form id="form_addLeaveMaster" class="form-horizontal" method="post" action="/addLeaveMaster">
+        <form id="form_addLeaveMaster" class="form-horizontal">
             {{ csrf_field() }}
             <div class="modal-dialog modal-lg" >
                 <div class="modal-content">
@@ -115,13 +115,14 @@
                                         <div class="form-group">
                                             <label for="inputLeaveId" class="control-label">Leave ID <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputLeaveId" placeholder="Leave ID" name="leave_id">
-                                            <span id="error_msg_id">Leave ID must be unique!</span>
+                                            <span id="error_msg_id" class="no-error"></span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputName" class="control-label">Name <span class="required">*</span></label>
                                             <input type="text" class="form-control" id="inputName" placeholder="Name" name="leave_name">
+                                            <span id="error_name" class="no-error"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -129,13 +130,15 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputMaxLeaveAllowed" class="control-label">Maximum Leave Allowed <span class="required">*</span></label>
-                                            <input type="number" class="form-control" id="inputMaxLeaveAllowed" placeholder="Max Leave Allowed (in days)" name="maxLeaveAllowed"> 
+                                            <input type="number" class="form-control" id="inputMaxLeaveAllowed" placeholder="Max Leave Allowed (in days)" name="maxLeaveAllowed" min="1">
+                                            <span id="error_MaxLeaveAllowed" class="no-error"></span> 
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputMinLeaveAllowed" class="control-label">Minimum Leave Allowed <span class="required">*</span> </label>
-                                            <input type="number" class="form-control" id="inputMinLeaveAllowed" placeholder="Mininum Leave Allowed (in days)" name="minLeaveAllowed">
+                                            <input type="number" class="form-control" id="inputMinLeaveAllowed" placeholder="Mininum Leave Allowed (in days)" name="minLeaveAllowed" min="1">
+                                            <span id="error_MinLeaveAllowed" class="no-error"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -246,7 +249,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
+                        <button type="button" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
                     </div>
                 </div>
             </div>
@@ -286,8 +289,8 @@
     //Opening Add Modal
     $('#btn_add').click(function(){
         state="add";
-        
-        $('#error_msg_id').removeClass('error').addClass('no-error');
+        $('#inputLeaveId').prop('disabled',false);
+        $('.error').removeClass('error').addClass('no-error');
         $('#btn_confirm').val("add");
         $('#btn_confirm').text("Add");
         $('#modal-title').text('Add Leave Master');
@@ -300,12 +303,11 @@
     //Opening Edit Modal
     $(document).on('click', '.open_modal', function(){
         state="update";
-        $('#error_msg_id').removeClass('error').addClass('no-error');
+        $('.error').removeClass('error').addClass('no-error');
         var leave_master_id = $(this).val();
         $('#select_balance_adjusted_from option[value="'+leave_master_id+'"]').prop("disabled",true);
         
         $.get('/getLeaveMasterById/' + leave_master_id, function (data) {
-            //success data
             original_leave_master_id = leave_master_id;
             
             $('#inputLeaveId').val(data.leave_id).prop('disabled',true);
@@ -379,14 +381,14 @@
             var current = $(this).val();
             if(state=="update"){
                 if($('[id=leaveMaster'+original_leave_master_id+']').length>0 && original_leave_master_id !=current && $('[id=leaveMaster'+current+']').length>0){
-                    $('#error_msg_id').removeClass('no-error').addClass('error');
+                    $('#error_msg_id').removeClass('no-error').addClass('error').text('ID already Exists!');
                 }
                 else{
                     $('#error_msg_id').removeClass('error').addClass('no-error');
                 }
             }else if(state=="add"){
                 if($('[id=leaveMaster'+current+']').length>0){
-                    $('#error_msg_id').removeClass('no-error').addClass('error');
+                    $('#error_msg_id').removeClass('no-error').addClass('error').text('ID already Exists!');
                 }
                 else{
                     $('#error_msg_id').removeClass('error').addClass('no-error');
@@ -397,118 +399,184 @@
     
     //create new product / update existing product
     $("#btn_confirm").click(function (e) {
-        var type = "POST"; //for creating new resource
-        var leave_master_id = $('#inputLeaveId').val();
-        var url = '/addLeaveMaster'; // by default add department
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        e.preventDefault(); 
-        var selected_can_club='';
-        $.each($('#select_can_club').val(), function(index, value){
-            if(index !=0)
-                selected_can_club += ',';
-            selected_can_club += value;
-            
-        });
-        var selected_cannot_club='';
-        $.each($('#select_cannot_club').val(), function(index, value){
-            if(index !=0)
-                selected_cannot_club += ',';
-            selected_cannot_club +=value;
-        });
-
-        var checked_weekly_off_cover, checked_paid_holiday_cover, checked_treat_present, checked_treat_absent;
-        if($('#radio_weekly_off_cover_false').prop("checked")==true)
-            checked_weekly_off_cover = 0;
-        else   
-            checked_weekly_off_cover = 1;
-        if($('#radio_paid_holiday_cover_false').prop("checked")==true)
-            checked_paid_holiday_cover = 0;
-        else   
-            checked_paid_holiday_cover = 1;
-        if($('#radio_treat_present_false').prop("checked")==true)
-            checked_treat_present = 0;
-        else   
-            checked_treat_present = 1;
-        if($('#radio_treat_absent_false').prop("checked")==true)
-            checked_treat_absent = 0;
-        else   
-            checked_treat_absent = 1;
-
-        var formData = {
-            leave_id                : $('#inputLeaveId').val(),
-            name                    : $('#inputName').val(),
-            company_id              : $('#inputCompanyId').val(),
-            max_leave_allowed       : $('#inputMaxLeaveAllowed').val(),
-            min_leave_allowed       : $('#inputMinLeaveAllowed').val(),
-            club_with_leaves        : selected_can_club,
-            cant_club_with_leaves   : selected_cannot_club,
-            balance_adjusted_from   : $('#select_balance_adjusted_from').val(),
-            weekly_off_cover        : checked_weekly_off_cover,
-            paid_holiday_cover      : checked_paid_holiday_cover,
-            treat_present           : checked_treat_present,
-            treat_absent            : checked_treat_absent,
-            
-        }
-        //used to determine the http verb to use [add=POST], [update=PUT]
-        var state = $('#btn_confirm').val();
-        if(state=="add"){
-            type = "POST"; 
-            url = '/addLeaveMaster';
-        }else if (state == "update"){
-            type = "PUT"; //for updating existing resource
-            url = '/updateLeaveMaster/' + original_leave_master_id;
-        }
-        $.ajax({
-            type: type,
-            url: url,
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
-                var isWeeklyOffCoverTrue, isPaidHolidaCoverTrue, isTreatPresentTrue, isTreatAbsentTrue;
-                if(data.weekly_off_cover==1)
-                    isWeeklyOffCoverTrue = 'TRUE';
-                else
-                    isWeeklyOffCoverTrue = 'FALSE';
-                if(data.paid_holiday_cover==1)
-                    isPaidHolidaCoverTrue = 'TRUE';
-                else
-                    isPaidHolidaCoverTrue = 'FALSE';
-                if(data.treat_present==1)
-                    isTreatPresentTrue = 'TRUE';
-                else
-                    isTreatPresentTrue = 'FALSE';
-                if(data.treat_absent==1)
-                    isTreatAbsentTrue = 'TRUE';
-                else
-                    isTreatAbsentTrue = 'FALSE';
-                var newRow = '<tr id="leaveMaster' + data.leave_id + '"><td>' + data.leave_id + '</td><td>'
-                        + data.name + '</td><td>'+data.max_leave_allowed+'</td>'
-                        +'<td>'+data.min_leave_allowed+'</td>'
-                        +'<td>'+isWeeklyOffCoverTrue+'</td>'
-                        +'<td>'+isPaidHolidaCoverTrue+'</td>'
-                        +'<td>'+data.club_with_leaves+'</td>'
-                        +'<td>'+data.cant_club_with_leaves+'</td>'
-                        +'<td>'+data.balance_adjusted_from+'</td>'
-                        +'<td>'+isTreatPresentTrue+'</td>'
-                        +'<td>'+isTreatAbsentTrue+'</td>';
-                newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.leave_id + '"><i class="fa fa-edit"></i></button>';
-                newRow += ' <button class="btn btn-danger btn-delete delete-leaveMaster" value="' + data.leave_id + '"><i class="fa fa-trash"></i></button></td></tr>';
-                if (state == "add"){ 
-                    $('#leaveMaster-list').prepend(newRow);
-                }else{
-                    $("#leaveMaster" + original_leave_master_id).replaceWith( newRow );
+        if(validate()){
+            var type = "POST"; //for creating new resource
+            var leave_master_id = $('#inputLeaveId').val();
+            var url = '/addLeaveMaster'; // by default add department
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-                $('#form_addLeaveMaster').trigger("reset");
-                $('#modal-add').modal('hide');
-            },
-            error: function (data) {
-                alert("Something went wrong! Please Try Again!");
+            });
+            e.preventDefault(); 
+            var selected_can_club='';
+            $.each($('#select_can_club').val(), function(index, value){
+                if(index !=0)
+                    selected_can_club += ',';
+                selected_can_club += value;
+                
+            });
+            var selected_cannot_club='';
+            $.each($('#select_cannot_club').val(), function(index, value){
+                if(index !=0)
+                    selected_cannot_club += ',';
+                selected_cannot_club +=value;
+            });
+
+            var checked_weekly_off_cover, checked_paid_holiday_cover, checked_treat_present, checked_treat_absent;
+            if($('#radio_weekly_off_cover_false').prop("checked")==true)
+                checked_weekly_off_cover = 0;
+            else   
+                checked_weekly_off_cover = 1;
+            if($('#radio_paid_holiday_cover_false').prop("checked")==true)
+                checked_paid_holiday_cover = 0;
+            else   
+                checked_paid_holiday_cover = 1;
+            if($('#radio_treat_present_false').prop("checked")==true)
+                checked_treat_present = 0;
+            else   
+                checked_treat_present = 1;
+            if($('#radio_treat_absent_false').prop("checked")==true)
+                checked_treat_absent = 0;
+            else   
+                checked_treat_absent = 1;
+
+            var formData = {
+                leave_id                : $('#inputLeaveId').val(),
+                name                    : $('#inputName').val(),
+                company_id              : $('#inputCompanyId').val(),
+                max_leave_allowed       : $('#inputMaxLeaveAllowed').val(),
+                min_leave_allowed       : $('#inputMinLeaveAllowed').val(),
+                club_with_leaves        : selected_can_club,
+                cant_club_with_leaves   : selected_cannot_club,
+                balance_adjusted_from   : $('#select_balance_adjusted_from').val(),
+                weekly_off_cover        : checked_weekly_off_cover,
+                paid_holiday_cover      : checked_paid_holiday_cover,
+                treat_present           : checked_treat_present,
+                treat_absent            : checked_treat_absent,
+                
             }
-        });
+            //used to determine the http verb to use [add=POST], [update=PUT]
+            var state = $('#btn_confirm').val();
+            if(state=="add"){
+                type = "POST"; 
+                url = '/addLeaveMaster';
+            }else if (state == "update"){
+                type = "PUT"; //for updating existing resource
+                url = '/updateLeaveMaster/' + original_leave_master_id;
+            }
+            $.ajax({
+                type: type,
+                url: url,
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    var isWeeklyOffCoverTrue, isPaidHolidaCoverTrue, isTreatPresentTrue, isTreatAbsentTrue;
+                    if(data.weekly_off_cover==1)
+                        isWeeklyOffCoverTrue = 'TRUE';
+                    else
+                        isWeeklyOffCoverTrue = 'FALSE';
+                    if(data.paid_holiday_cover==1)
+                        isPaidHolidaCoverTrue = 'TRUE';
+                    else
+                        isPaidHolidaCoverTrue = 'FALSE';
+                    if(data.treat_present==1)
+                        isTreatPresentTrue = 'TRUE';
+                    else
+                        isTreatPresentTrue = 'FALSE';
+                    if(data.treat_absent==1)
+                        isTreatAbsentTrue = 'TRUE';
+                    else
+                        isTreatAbsentTrue = 'FALSE';
+                    var newRow = '<tr id="leaveMaster' + data.leave_id + '"><td>' + data.leave_id + '</td><td>'
+                            + data.name + '</td><td>'+data.max_leave_allowed+'</td>'
+                            +'<td>'+data.min_leave_allowed+'</td>'
+                            +'<td>'+isWeeklyOffCoverTrue+'</td>'
+                            +'<td>'+isPaidHolidaCoverTrue+'</td>'
+                            +'<td>'+data.club_with_leaves+'</td>'
+                            +'<td>'+data.cant_club_with_leaves+'</td>'
+                            +'<td>'+data.balance_adjusted_from+'</td>'
+                            +'<td>'+isTreatPresentTrue+'</td>'
+                            +'<td>'+isTreatAbsentTrue+'</td>';
+                    newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.leave_id + '"><i class="fa fa-edit"></i></button>';
+                    newRow += ' <button class="btn btn-danger btn-delete delete-leaveMaster" value="' + data.leave_id + '"><i class="fa fa-trash"></i></button></td></tr>';
+                    if (state == "add"){ 
+                        $('#leaveMaster-list').prepend(newRow);
+                    }else{
+                        $("#leaveMaster" + original_leave_master_id).replaceWith( newRow );
+                    }
+                    $('#form_addLeaveMaster').trigger("reset");
+                    $('#modal-add').modal('hide');
+                },
+                error: function (data) {
+                    alert("Something went wrong! Please Try Again!");
+                }
+            });
+        }
+    });
+    function validate(){
+        var validated = true;
+        if($('#inputLeaveId').val()==''){
+            validated = false;
+            $('#error_msg_id').removeClass('no-error').addClass('error').text('Required!');
+        }else{
+            $('#error_msg_id').removeClass('error').addClass('no-error');
+            var current = $('#inputLeaveId').val();
+            if(state=="update"){
+                if($('[id=leaveMaster'+original_leave_master_id+']').length>0 && original_leave_master_id !=current && $('[id=leaveMaster'+current+']').length>0){
+                    $('#error_msg_id').removeClass('no-error').addClass('error').text('ID already Exists!');
+                    validated = false;
+                }
+                else{
+                    $('#error_msg_id').removeClass('error').addClass('no-error');
+                }
+            }else if(state=="add"){
+                if($('[id=leaveMaster'+current+']').length>0){
+                    $('#error_msg_id').removeClass('no-error').addClass('error').text('ID already Exists!');
+                    validated = false;
+                }
+                else{
+                    $('#error_msg_id').removeClass('error').addClass('no-error');
+                }
+            }
+        }
+        if($('#inputName').val()==''){
+            validated = false;
+            $('#error_name').removeClass('no-error').addClass('error').text('Required!');
+        }else{
+            $('#error_name').removeClass('error').addClass('no-error');
+        }
+        if($('#inputMaxLeaveAllowed').val()==''){
+            validated = false;
+            $('#error_MaxLeaveAllowed').removeClass('no-error').addClass('error').text('Required!');
+        }else{
+            $('#error_MaxLeaveAllowed').removeClass('error').addClass('no-error');
+        }
+        if($('#inputMinLeaveAllowed').val()==''){
+            validated = false;
+            $('#error_MinLeaveAllowed').removeClass('no-error').addClass('error').text('Required!');
+        }else{
+            $('#error_MinLeaveAllowed').removeClass('error').addClass('no-error');
+        }
+        return validated;
+    }
+    $('#inputName').keyup(function(){
+        if($('#inputName').val()!='')
+            $('#error_name').removeClass('error').addClass('no-error');
+        else
+            $('#error_name').removeClass('no-error').addClass('error');
+    });
+    $('#inputMaxLeaveAllowed').keyup(function(){
+        if($('#inputMaxLeaveAllowed').val()!='')
+            $('#error_MaxLeaveAllowed').removeClass('error').addClass('no-error');
+        else
+            $('#error_MaxLeaveAllowed').removeClass('no-error').addClass('error');
+    });
+    $('#inputMinLeaveAllowed').keyup(function(){
+        if($('#inputMinLeaveAllowed').val()!='')
+            $('#error_MinLeaveAllowed').removeClass('error').addClass('no-error');
+        else
+            $('#error_MinLeaveAllowed').removeClass('no-error').addClass('error');
     });
 
 </script>

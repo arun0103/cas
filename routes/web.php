@@ -115,6 +115,8 @@ Route::put('/updateEmployee/{id}','EmployeeController@updateEmployee');
 Route::get('/employees/branch/{id}','EmployeeController@getEmployeesByBranch');
 Route::get('/allEmployees','EmployeeController@getAllEmployeesOfCompany');
 
+Route::get('/findCardNumber/{number}','EmployeeController@findCardNumber');
+
 
 //////////////// Branch
 Route::get('/admin/branch/add', function () {
@@ -153,9 +155,7 @@ Route::delete('/deleteLeaveMaster/{id}', 'LeaveMasterController@deleteLeaveMaste
 Route::post('/addLeaveMaster','LeaveMasterController@addLeaveMaster');
 ///////////////////////////////////////////////////////////////
 /////////////////// Leave Type
-Route::get('/admin/leave/type/add',function(){
-    return view('pages/admin/leave/types/addLeaveType');
-})->name('leaveTypes');
+
 Route::get('/admin/leave/types/view','LeaveTypeController@getLeaveTypes')->name('leaveTypes');
 Route::get('/getLeaveTypeById/{leave_id}/{branch_id}','LeaveTypeController@getLeaveTypeById');
 Route::post('/addLeaveToBranch', 'LeaveTypeController@addLeaveToBranch');

@@ -13,6 +13,7 @@ use App\Department;
 use App\Company;
 use App\Employee;
 use App\Shift;
+use App\Student;
 
 class EmployeeController extends Controller
 {
@@ -127,10 +128,10 @@ class EmployeeController extends Controller
         if($e->save()){
             $dataToSend = [
                 'orig_data'=>$e,
-                'branch_name'=>Branch::where('branch_id',$e->branch_id)->pluck('name'),
-                'department_name'=>Department::where('department_id',$e->dept_id)->pluck('name'),
-                'designation_name'=>Designation::where('designation_id',$e->designation_id)->pluck('name'),
-                'shift_name'=>Shift::where('shift_id',$e->shift_1)->pluck('name')->first()
+                'branch_name'=>Branch::where([['branch_id',$e->branch_id],['company_id',$e->company_id]])->pluck('name'),
+                'department_name'=>Department::where([['department_id',$e->dept_id],['company_id',$e->company_id]])->pluck('name'),
+                'designation_name'=>Designation::where([['designation_id',$e->designation_id],['company_id',$e->company_id]])->pluck('name'),
+                'shift_name'=>Shift::where([['shift_id',$e->shift_1],['company_id',$e->company_id]])->pluck('name')->first()
             ];
             return response()->json($dataToSend);
         }
@@ -146,13 +147,23 @@ class EmployeeController extends Controller
         $new  = Employee::create($request->input());
         $dataToSend = [
             'orig_data'=>$new,
-            'branch_name'=>Branch::where('branch_id',$new->branch_id)->pluck('name'),
-            'department_name'=>Department::where('department_id',$new->dept_id)->pluck('name'),
-            'designation_name'=>Designation::where('designation_id',$new->designation_id)->pluck('name'),
-            'shift_name'=>Shift::where('shift_id',$new->shift_1)->pluck('name')->first()
+            'branch_name'=>Branch::where([['branch_id',$new->branch_id],['company_id',$new->company_id]])->pluck('name'),
+            'department_name'=>Department::where([['department_id',$new->dept_id],['company_id',$new->company_id]])->pluck('name'),
+            'designation_name'=>Designation::where([['designation_id',$new->designation_id],['company_id',$new->company_id]])->pluck('name'),
+            'shift_name'=>Shift::where([['shift_id',$new->shift_1],['company_id',$new->company_id]])->pluck('name')->first()
         ];
         return response()->json($dataToSend);
         
+    }
+    public function findCardNumber($number){
+        $findEmployee = Employee::where('card_number',$number)->first();
+        $findStudent = Student::where('card_number',$number)->first();
+        if($findEmployee!=null || $findStudent !=null){
+            $message = "duplicate";
+        }else{
+            $message = "no-duplicate";
+        }
+        return $message;
     }
 
 }

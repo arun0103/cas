@@ -85,27 +85,27 @@
     </div>
     <!-- /.box -->
     <div class="modal fade" id="modal-add">
-        <form id="form_addEmployee" class="form-horizontal" method="post" action="" enctype="multipart/form-data">
-            {{ csrf_field() }}
-            <div class="modal-dialog modal-lg" style="width:95% !important;height:95% !important; padding:0;margin:0 auto">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="modal-title">Add Employee</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row ml-3" id="addNewEmployee">
-                            <div class="nav-tabs-custom" id="tabs">
-                                <ul class="nav nav-tabs mr-auto">
-                                    <li class="nav-item  active"><a id="a_tab_1" class="nav-item nav-link active" data-toggle="tab" href="#tab_1" aria-expanded="true">Personal Info</a></li>
-                                    <li class="nav-item"><a id="a_tab_2" class="nav-item nav-link" data-toggle="tab" href="#tab_2" aria-expanded="false">Official Info</a></li>
-                                    <li class="nav-item"><a id="a_tab_3" class="nav-item nav-link" data-toggle="tab" href="#tab_3" aria-expanded="false">Bank Info</a></li>
-                                    <!-- <li class="nav-item pull-right"><a class="nav-link" href="#" class="text-muted"><i class="fa fa-gear"></i></a></li> -->
-                                </ul>
-                                <div class="tab-content" style="padding:25px">
-                                    <div class="tab-pane active" id="tab_1">
+        <div class="modal-dialog modal-lg" style="width:95% !important;height:95% !important; padding:0;margin:0 auto">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-title">Add Employee</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row ml-3" id="addNewEmployee">
+                        <div class="nav-tabs-custom" id="tabs">
+                            <ul class="nav nav-tabs mr-auto">
+                                <li id="tab_1_li" class="nav-item  active"><a id="a_tab_1" class="nav-item nav-link active" data-toggle="tab" href="#tab_1" aria-expanded="true">Personal Info</a></li>
+                                <li id="tab_2_li" class="nav-item disabled" ><a id="a_tab_2" class="nav-item nav-link" data-toggle="tab" href="#tab_2" aria-expanded="false">Official Info</a></li>
+                                <li id="tab_3_li" class="nav-item disabled" ><a id="a_tab_3" class="nav-item nav-link" data-toggle="tab" href="#tab_3" aria-expanded="false">Bank Info</a></li>
+                                <!-- <li class="nav-item pull-right"><a class="nav-link" href="#" class="text-muted"><i class="fa fa-gear"></i></a></li> -->
+                            </ul>
+                            <div class="tab-content" style="padding:25px">
+                                <div class="tab-pane active" id="tab_1">
+                                    <form id="form_addEmployee_t1" class="form-horizontal" enctype="multipart/form-data">
+                                        {{ csrf_field() }}
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="row">
@@ -113,6 +113,7 @@
                                                         <div class="form-group">
                                                             <label for="inputEmployeeId" class="control-label">Employee ID <span class="required">*</span></label>
                                                             <input type="text" class="form-control" id="inputEmployeeId" placeholder="Employee ID" name="employee_id" required>
+                                                            <span id="error_employee_id" class="no-error">ID already exists!</span>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="inputName" class="control-label">Name <span class="required">*</span></label>
@@ -154,7 +155,7 @@
                                                             <div class="input-group date">
                                                                 <div class="input-group-addon left-addon">
                                                                     <i class="fa fa-calendar"></i>
-                                                                    <input type="text" class="form-control pull-right" id="datepicker_DOB" autocomplete="off" required>
+                                                                    <input type="text" class="form-control pull-right datePicker" id="datepicker_DOB" autocomplete="off" required>
                                                                     
                                                                 </div>
                                                             </div>
@@ -193,7 +194,7 @@
                                                                 <div class="input-group date">
                                                                     <div class="input-group-addon left-addon">
                                                                         <i class="fa fa-calendar"></i>
-                                                                        <input type="text" class="form-control pull-right" id="datepicker_anniversary" autocomplete="off">
+                                                                        <input type="text" class="form-control pull-right datePicker" id="datepicker_anniversary" autocomplete="off">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -303,7 +304,7 @@
                                                         <div class="form-group">
                                                             <label for="inputPostalCode" class="control-label">Postal Code <span class="required">*</span></label>
                                                             <div>
-                                                                <input type="number" class="form-control" id="inputPostalCode" placeholder="Postal Code" name="postal_code" required>
+                                                                <input type="number" class="form-control" id="inputPostalCode" placeholder="Postal Code" name="postal_code" min="1" required>
                                                             </div>
                                                         </div> 
                                                     </div>
@@ -312,18 +313,19 @@
                                                 <button type="button" class="btn btn-warning right" id="btn_tab_1_next">Next</button>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- /.tab-pane -->
-                                    <div class="tab-pane" id="tab_2">
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="tab_2">
+                                    <form id="form_addEmployee_t2" class="form-horizontal" enctype="multipart/form-data">
+                                        {{ csrf_field() }}
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="inputCardNumber" class="control-label">Card Number <span class="required">*</span></label>
-                                                            <div>
-                                                                <input type="number" class="form-control" id="inputCardNumber" placeholder="Employee Card Number" name="employee_card_number" required>
-                                                            </div>
+                                                            <input type="number" class="form-control" id="inputCardNumber" placeholder="Employee Card Number" name="employee_card_number" min="1" required>
+                                                            <span id="error_cardNumber" class="no-error">Card Number is Duplicate!</span>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
@@ -644,7 +646,7 @@
                                                             <div class="input-group date">
                                                                 <div class="input-group-addon left-addon">
                                                                     <i class="fa fa-calendar"></i>
-                                                                    <input type="text" class="form-control pull-right" id="datepicker_joiningDate" autocomplete="off" name="joining_date" required>
+                                                                    <input type="text" class="form-control pull-right datePicker" id="datepicker_joiningDate" autocomplete="off" name="joining_date" required>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -670,9 +672,11 @@
                                         <hr>
                                         <button type="button" class="btn btn-warning" id="btn_tab_2_back">Back</button>
                                         <button type="button" class="btn btn-warning right" id="btn_tab_2_next">Next</button>
-                                    </div>
-                                    <!-- /.tab-pane -->
-                                    <div class="tab-pane" id="tab_3">
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="tab_3">
+                                    <form id="form_addEmployee_t3" class="form-horizontal" enctype="multipart/form-data">
+                                        {{ csrf_field() }}
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="row">
@@ -774,22 +778,18 @@
                                         </div> 
                                         <hr>
                                         <button type="button" class="btn btn-warning" id="btn_tab_3_back">Back</button>
-                                    </div>
-                                    <!-- /.tab-pane -->
+                                    </form>
                                 </div>
-                                <!-- /.tab-content -->
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
-                    </div>
                 </div>
-                <!-- /.modal-content -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
+                </div>
             </div>
-            <!-- /.modal-dialog -->"
-        </form>
+        </div>
     </div>
 @endsection
 
@@ -802,22 +802,8 @@
     <script>
         var employee_table;
         var employee_id;
+        var validate = true;
         $(document).ready(function () {
-            $("#form_addEmployee").validate({
-                ignore: "",
-                //put error message behind each form element
-                errorPlacement: function (error, element) {
-                    var elem = $(element);
-                    if (element.parent('.input-group').length) { 
-                        error.insertAfter(element.parent());      // radio/checkbox?
-                    } else if (element.hasClass('select2')) {     
-                        error.insertAfter(element.next('span'));  // select2
-                    } else {                                      
-                        error.insertAfter(element);               // default
-                    }; 
-                }
-            });
-
             employee_table = $('#employeeTable').DataTable({
                 'paging'        : true,
                 'lengthChange'  : true,
@@ -827,53 +813,48 @@
                 'autoWidth'     : true,
                 'scrollX'       : true
             });
+            
             $('#tabs').tabs();
             
             $('#btn_tab_1_next').click(function(e){
-                $( "#tabs" ).tabs({
-                    active: 1
-                });
-                // $('#tab_2').addClass('active').attr('aria-expanded','true');
-                // $('#tab_1').removeClass('active').attr('aria-expanded','false');
-                // $('#a_tab_1').removeClass('active');
-                // $('#a_tab_2').addClass('active');
+                
+                if($('#form_addEmployee_t1').valid() && validated == true){
+                    $( "#tabs" ).tabs({
+                        active: 1
+                    });
+                    $("label.error").hide();
+                    $(".error").removeClass("error");
 
-                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                    $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                    $('#tab_2_li').removeClass('disabled');
+                }else{
+                    alert('Some values are missing! \nPlease Check!');
+                }
+                
                 
             });
             $('#btn_tab_2_next').click(function(e){
-                $( "#tabs" ).tabs({
-                    active: 2
-                });
-                // $('#tab_3').addClass('active').attr('aria-expanded','true');
-                // $('#tab_2').removeClass('active').attr('aria-expanded','false');
-                // $('#a_tab_2').removeClass('active');
-                // $('#a_tab_3').addClass('active');
-
-                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
                 
+                if($('#form_addEmployee_t2').valid()){
+                    $( "#tabs" ).tabs({
+                        active: 2
+                    });
+                    $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                }else{
+                    alert('Some values are missing! \nPlease Check!');
+                }
             });
             $('#btn_tab_2_back').click(function(e){
                 $( "#tabs" ).tabs({
                     active: 0
                 });
-                // $('#tab_1').addClass('active').attr('aria-expanded','true');
-                // $('#tab_2').removeClass('active').attr('aria-expanded','false');
-                // $('#a_tab_2').removeClass('active');
-                // $('#a_tab_1').addClass('active');
-
-                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                 $('#modal-add').animate({ scrollTop: 0 }, 'slow');
                 
             });
             $('#btn_tab_3_back').click(function(e){
                 $( "#tabs" ).tabs({
                     active: 1
                 });
-                // $('#tab_2').addClass('active').attr('aria-expanded','true');
-                // $('#tab_3').removeClass('active').attr('aria-expanded','false');
-                // $('#a_tab_3').removeClass('active');
-                // $('#a_tab_2').addClass('active');
-
                 $('#modal-add').animate({ scrollTop: 0 }, 'slow');
                 
             });
@@ -923,6 +904,8 @@
         });
         $('#btn_add').click(function(){
             state="add";
+            $("label.error").hide();
+            $(".error").removeClass("error");
             $( "#tabs" ).tabs( "destroy" );
             $( "#tabs" ).tabs({
                 active: 0
@@ -959,9 +942,10 @@
         });
         //Opening Edit Modal
         $(document).on('click', '.open_modal', function(){
-            console.log("edit clicked");
             state="update";
             employee_id = $(this).val();
+            $("label.error").hide();
+            $(".error").removeClass("error");
 
             $( "#tabs" ).tabs( "destroy" );
             $( "#tabs" ).tabs({
@@ -1158,8 +1142,9 @@
         
         //create new product / update existing product
         $("#btn_confirm").click(function (e) {
+                    
             e.preventDefault(); 
-            if($("#form_addEmployee").valid()){
+            if($("#form_addEmployee_t1").valid() && $("#form_addEmployee_t2").valid() && $("#form_addEmployee_t3").valid() ){
                 var type = "POST"; //for creating new resource
                 var employee_id = $('#inputEmployeeId').val();
                 var url = '/addEmployee'; // by default add shift
@@ -1244,7 +1229,6 @@
                     type = "PUT"; //for updating existing resource
                     url = '/updateEmployee/' + original_employee_id;
                 }
-                //console.log(formData);
                 $.ajax({
                     type: type,
                     url: url,
@@ -1267,7 +1251,6 @@
                             $('#employees-list').prepend(employee);
                             var newOption = new Option(data.orig_data.name +' ['+data.designation_name+']', data.orig_data.employee_id, false, false);
                             $('.reporting_officers').append(newOption).trigger('change');
-                            //employee_table.row.add(employee).draw();
                         }else{ //if user updated an existing record
                             $("#employee" + original_employee_id).replaceWith( employee );
                         }
@@ -1286,6 +1269,72 @@
         //Function to mark the select valid as some value is selected
         $('.select2').on('change', function() {
             $(this).valid();
+        });
+        $('.datePicker').on('change',function(){
+            $(this).valid();
+        });
+        $('.nav-tabs li.disabled > a[data-toggle=tab]').on('click', function(e) {
+            if(state=='add'){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        });
+        $("#form_addEmployee_t1").validate({
+            ignore: "",
+        });
+        
+        $("#form_addEmployee_t3").validate({
+            ignore: ""
+        });
+        $("#form_addEmployee_t2").validate({
+            ignore: "",
+            //put error message behind each form element
+            errorPlacement: function (error, element) {
+                var elem = $(element);
+                if (element.parent('.input-group').length) { 
+                    error.insertAfter(element.parent());      // radio/checkbox?
+                } else if (element.hasClass('select2')) {     
+                    error.insertAfter(element.next('span'));  // select2
+                } else {                                      
+                    error.insertAfter(element);               // default
+                }; 
+            }
+        });
+        $(document).on('focusin', '#inputEmployeeId', function(){
+            $(this).data('val', $(this).val());
+        }).on('change','#inputEmployeeId', function(){
+            var current = $(this).val();
+            if(state=="update"){
+                if($('[id=employee'+employee_id+']').length>0 && employee_id !=current && $('[id=employee'+current+']').length>0){
+                    $('#error_employee_id').removeClass('no-error').addClass('error');
+                    validated = false;
+                }
+                else{
+                    $('#error_employee_id').removeClass('error').addClass('no-error');
+                    validated = true;
+                }
+            }else if(state=="add"){
+                if($('[id=employee'+current+']').length>0){
+                    $('#error_employee_id').removeClass('no-error').addClass('error');
+                    validated = false;
+                }
+                else{
+                    $('#error_employee_id').removeClass('error').addClass('no-error');
+                    validated = true;
+                }
+            }
+        });
+        $(document).on('change','#inputCardNumber', function(){
+            var current = $(this).val();
+            $.get('/findCardNumber/'+current, function(result){
+                if(result=="duplicate"){
+                    validated = false;
+                    $('#error_cardNumber').removeClass('no-error').addClass('error');
+                }else{
+                    validated = true;
+                    $('#error_cardNumber').removeClass('error').addClass('no-error');
+                }
+            });
         });
     </script>
 @endsection

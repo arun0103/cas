@@ -54,7 +54,7 @@
     </div>
     <!-- /.box -->
     <div class="modal fade" id="modal-add">
-        <form id="form_addLeaveType" class="form-horizontal" method="post" action="/addLeaveType">
+        <form id="form_addLeaveType" class="form-horizontal">
             {{ csrf_field() }}
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -70,23 +70,25 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="select_branch_id">Branch <span class="required">*</span></label>
-                                            <select id="select_branch_id" class="form-control select2" data-placeholder="Select Branch" name="selectedBranch">
+                                            <select id="select_branch_id" class="form-control select2" data-placeholder="Select Branch" name="selectedBranch" required>
                                                 <option></option>    
                                                 @foreach($branches as $branch)
                                                     <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
                                                 @endforeach
                                             </select>
+                                            <span id="error_branch" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group" >
                                             <label for="select_leave_id">Leave <span class="required">*</span></label>
-                                                <select id="select_leave_id" class="form-control select2" data-placeholder="Select Leave" name="selectedLeave">
+                                                <select id="select_leave_id" class="form-control select2" data-placeholder="Select Leave" name="selectedLeave" required>
                                                     <option></option>
                                                     @foreach($leaves as $leave)
                                                         <option value="{{$leave->leave_id}}">{{$leave->name}}</option>
                                                     @endforeach
                                             </select>
+                                            <span id="error_leave" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                 </div>
@@ -95,7 +97,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
+                        <button type="button" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -129,13 +131,9 @@
     
     var state;
     var original_leave_id, orginal_branch_id;
-    
-    //Opening Add Modal
     $('#btn_add').click(function(){
         state="add";
-        
-        $('#error_msg_id').removeClass('error').addClass('no-error');
-
+        $('.error').removeClass('error').addClass('no-error');
         $('#select_leave_id').val([]).trigger('change');
         $('#select_branch_id').val([]).trigger('change');
         $('#btn_confirm').val("add");
@@ -148,31 +146,23 @@
     $(document).on('click', '.open_modal', function(){
         state="update";
         $('#form_addLeaveType').trigger("reset");
-        $('#error_msg_id').removeClass('error').addClass('no-error');
+        $('.error').removeClass('error').addClass('no-error');
         var combined_id = $(this).val();
         var id = combined_id.split('___');
         var leave_type_id = id[0];
         var branch_id = id[1];
-
-        //console.log(id);
         $.get('/getLeaveTypeById/' + leave_type_id+'/'+branch_id, function (data) {
-            
-            //success data
             original_leave_id = leave_type_id;
             original_branch_id = branch_id;
-            //console.log(data);
             
             $('#select_leave_id').val(data.leave_id).trigger("change");
             $('#select_branch_id').val(data.branch_id).trigger("change");
-            // $('#select_leave_id').text(data.leave_name).trigger("change");
-            // $('#select_branch_id').text(data.branch_name).trigger("change");
             
             $('#btn_confirm').val("update");
             $('#btn_confirm').text("Update");
             $('#modal-title').text('Edit Leave Master');
-            $('#modal-add').modal('show');
-            
-        }) 
+            $('#modal-add').modal('show'); 
+        }); 
     });
 
     //delete department and remove it from list
@@ -198,55 +188,23 @@
                 }
             });
         }
-        
     });
-    
     
     var old_leave_type_id;
-    //Detecting change on edit
-    $(document).on('focusin', '#inputLeaveId', function(){
-            //console.log("Saving value " + $(this).val());
-            $(this).data('val', $(this).val());
-        }).on('change','#inputLeaveId', function(){
-            var current = $(this).val();
-            if(state=="update"){
-                if($('[id=leaveMaster'+original_leave_id+']').length>0 && original_leave_id !=current && $('[id=leaveMaster'+current+']').length>0){
-                    $('#error_msg_id').removeClass('no-error').addClass('error');
-                }
-                else{
-                    $('#error_msg_id').removeClass('error').addClass('no-error');
-                }
-            }else if(state=="add"){
-                if($('[id=leaveMaster'+current+']').length>0){
-                    $('#error_msg_id').removeClass('no-error').addClass('error');
-                }
-                else{
-                    $('#error_msg_id').removeClass('error').addClass('no-error');
-                }
-            }
-        
-    });
     
     //create new product / update existing product
     $("#btn_confirm").click(function (e) {
-        if($('#select_branch_id').val()=="none" ){
-            alert("Select Branch");
-            e.preventDefault();
-        }
-        else if($('#select_leave_id').val()=="none"){
-            alert('Select Leave');
-            e.preventDefault();
-        }
-        else{
+        e.preventDefault(); 
+        if(validate()==true){
             var type = "POST"; //for creating new resource
             var leave_type_id = $('#select_leave_id').val();
-            var url = '/addLeaveToBranch'; // by default add department
+            var url = '/addLeaveToBranch'; // by default add 
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            e.preventDefault(); 
+            
             var formData = {
                 leave_id                : $('#select_leave_id').val(),
                 company_id              : $('#inputCompanyId').val(),
@@ -261,15 +219,12 @@
                 type = "PUT"; //for updating existing resource
                 url = '/updateLeaveType/' + original_leave_id+'/'+original_branch_id;
             }
-            //console.log(formData);
             $.ajax({
                 type: type,
                 url: url,
                 data: formData,
                 dataType: 'json',
                 success: function (data) {
-                    //console.log(data);
-                    
                     var newRow = '<tr id="leave' + data.data.leave_id+'___'+data.data.branch_id + '"><td>' + data.names.leave_name + '</td><td>'
                                 + data.names.branch_name + '</td>';
                         newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.data.leave_id+'___'+data.data.branch_id + '"><i class="fa fa-edit"> </i></button>';
@@ -281,20 +236,41 @@
                         $('#leave' + original_leave_id+'___'+original_branch_id).replaceWith( newRow );
                     }
                     $('#form_addLeaveType').trigger("reset");
-                    $('#modal-add').modal('hide');
-                    
+                    $('#modal-add').modal('hide');    
                 },
                 error: function (data) {
-                    alert(JSON.stringify(data));
-                    // alert('Error: '+JSON.stringify(data));
-                    // console.log('Error:', JSON.stringify(data));
+                    alert("Error: Please Try Again later!");
                 }
             });
-
-        }
-
-        
+        }     
     });
-
+    function validate(){
+        var validated = true;
+        if($('#select_branch_id').val()==[]){
+            validated = false;
+            $('#error_branch').removeClass('no-error').addClass('error');
+        }else{
+            $('#error_branch').removeClass('error').addClass('no-error');
+        }
+        if($('#select_leave_id').val()==[]){
+            validated = false;
+            $('#error_leave').removeClass('no-error').addClass('error');
+        }else{
+            $('#error_leave').removeClass('error').addClass('no-error');
+        }
+        if($('#select_branch_id').val()!='' && $('#select_leave_id').val()!=''){
+            if($('[id=leave'+$('#select_leave_id').val()+'___'+$('#select_branch_id').val()+']').length>0){
+                validated = false;
+                alert('Duplicate Entry Found!');
+            }
+        }
+        return validated;
+    }
+    $('#select_branch_id').change(function(){
+        $('#error_branch').removeClass('error').addClass('no-error');
+    });
+    $('#select_leave_id').change(function(){
+        $('#error_leave').removeClass('error').addClass('no-error');
+    });
 </script>
 @endsection

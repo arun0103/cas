@@ -72,7 +72,7 @@
         <!-- /.box-body -->
     </div>
     <div class="modal fade" id="modal-add">
-        <form id="form_applyLeave" class="form-horizontal" method="post" action="/applyLeave">
+        <form id="form_applyLeave" class="form-horizontal">
             {{ csrf_field() }}
             <div class="modal-dialog modal-lg" >
                 <div class="modal-content">
@@ -94,10 +94,8 @@
                                                 @foreach($companyBranches as $branch)
                                                     <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
                                                 @endforeach
-                                                <!-- @foreach($companyLeaves as $leave)
-                                                <option value="{{$leave->leave_id}}">{{$leave->leaveMaster->name}}</option>
-                                                @endforeach -->
                                             </select>
+                                            <span id="error_branch" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -105,6 +103,7 @@
                                             <label for="select_employee" class="control-label">Employee <span class="required">*</span></label>
                                             <select id="select_employee" class="form-control select2" data-placeholder="Select Employee" name="selectedEmployee" onchange="populateLeaveTypes(this.value)">
                                             </select>
+                                            <span id="error_employee" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                 </div>
@@ -114,12 +113,14 @@
                                             <label for="select_leaveType" class="control-label">Leave Type <span class="required">*</span></label>
                                             <select id="select_leaveType" class="form-control select2" data-placeholder="Select Leave Type" name="selectedLeaveType" onchange="checkLeaveBalance(this.value)">
                                             </select>
+                                            <span id="error_leaveType" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputLeaveStatus_add" class="control-label">Status <span class="required">*</span></label>
                                             <input type="text" class="form-control inputLeaveStatus" id="inputLeaveStatus_add" placeholder="Select Leave First" name="leaveStatus" disabled>
+                                            <span id="error_status" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                 </div>
@@ -128,6 +129,7 @@
                                         <div class="form-group">
                                             <label for="inputLeaveDays" class="control-label">Leave Days <span class="required">*</span></label>
                                             <input type="number" class="form-control" id="inputLeaveDays" placeholder="Leave Days" name="leaveDays" min="1">
+                                            <span id="error_leaveDays" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                     
@@ -135,11 +137,12 @@
                                         <div class="form-group">
                                             <label for="select_leavePart" class="control-label">Day Part <span class="required">*</span></label>
                                             <select id="select_leavePart" class="form-control select2" data-placeholder="Select Day Part" name="selectedLeavePart">
-                                            <option></option>
-                                            <option value=3>Full Day</option>
-                                            <option value=1>1st Half</option>
-                                            <option value=2>2nd Half</option>
+                                                <option></option>
+                                                <option value=3>Full Day</option>
+                                                <option value=1>1st Half</option>
+                                                <option value=2>2nd Half</option>
                                             </select>
+                                            <span id="error_leavePart" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                 </div>
@@ -149,8 +152,9 @@
                                             <div><label for="datepicker_from" class="control-label">From <span class="required">*</span></label></div>
                                             <div class="input-group date">
                                                 <div class="input-group-addon left-addon">
-                                                    <input type="text" class="form-control pull-right" id="datepicker_from" autocomplete="off" onchange="fromDateSelected(this.value)">
                                                     <i class="fa fa-calendar"></i>
+                                                    <input type="text" class="form-control pull-right" id="datepicker_from" autocomplete="off" onchange="fromDateSelected(this.value)">
+                                                    <span id="error_leaveFrom" class="no-error">Required!</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,8 +164,9 @@
                                             <div><label for="datepicker_to" class="control-label">To <span class="required">*</span></label></div>
                                             <div class="input-group date">
                                                 <div class="input-group-addon left-addon">
-                                                    <input type="text" class="form-control pull-right" data-date-format="yyyy-mm-dd" id="datepicker_to" autocomplete="off" >
                                                     <i class="fa fa-calendar"></i>
+                                                    <input type="text" class="form-control pull-right" data-date-format="yyyy-mm-dd" id="datepicker_to" autocomplete="off" >
+                                                    <span id="error_leaveTo" class="no-error">Required!</span>
                                                 </div>
                                             </div>
                                         </div> 
@@ -178,7 +183,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
+                        <button type="button" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -405,7 +410,6 @@
         
         //Detecting change on edit
         $(document).on('focusin', '#inputLeaveId', function(){
-                //console.log("Saving value " + $(this).val());
                 $(this).data('val', $(this).val());
             }).on('change','#inputLeaveId', function(){
                 var current = $(this).val();
@@ -426,60 +430,111 @@
                 }
             
         });
+        function validate(){
+            var validated = true;
+            if($('#select_branch').val()==[]){
+                validated = false;
+                $('#error_branch').removeClass('no-error').addClass('error');
+                $('#error_employee').removeClass('no-error').addClass('error');
+                $('#error_leaveType').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_branch').removeClass('error').addClass('no-error');
+                if($('#select_employee').val()==[]){
+                    validated = false;
+                    $('#error_employee').removeClass('no-error').addClass('error');
+                }else{
+                    $('#error_employee').removeClass('error').addClass('no-error');
+                }
+                if($('#select_leaveType').val()==[]){
+                    validated = false;
+                    $('#error_leaveType').removeClass('no-error').addClass('error');
+                }else{
+                    $('#error_leaveType').removeClass('error').addClass('no-error');
+                }
+            }
+            if($('#select_leavePart').val().length<1){
+                validated = false;
+                $('#error_leavePart').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_leavePart').removeClass('error').addClass('no-error');
+            }
+            
+            if($('#inputLeaveDays').val()<1){
+                validated = false;
+                $('#error_leaveDays').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_leaveDays').removeClass('error').addClass('no-error');
+            }
+            if($('#datepicker_from').val()==''){
+                validated = false;
+                $('#error_leaveFrom').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_leaveFrom').removeClass('error').addClass('no-error');
+            }
+            if($('#datepicker_to').val()==''){
+                validated = false;
+                $('#error_leaveTo').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_leaveTo').removeClass('error').addClass('no-error');
+            }
+            return validated;
+        }
         
         //create new product / update existing product
         $("#btn_confirm").click(function (e) {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            if(validate()){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                })
+                e.preventDefault(); 
+                
+                var formData = {
+                    leave_id                : $('#select_leaveType').val(),
+                    emp_id                  : $('#select_employee').val(),
+                    company_id              : $('#inputCompanyId').val(),
+                    applied_days            : $('#inputLeaveDays').val(),
+                    posted_days             : $('#inputLeaveDays').val(),
+                    leave_from              : $('#datepicker_from').val(),
+                    leave_to                : $('#datepicker_to').val(),
+                    day_part                : $('#select_leavePart').val(),
+                    comp_off_date_1         : null,
+                    comp_off_date_2         : null,
+                    remarks                 : $('#inputRemarks').val(),
+                    status                  : 1,
+                    approved_by             : $('#inputUserId').val(), 
                 }
-            })
-            e.preventDefault(); 
-            
-            var formData = {
-                leave_id                : $('#select_leaveType').val(),
-                emp_id                  : $('#select_employee').val(),
-                company_id              : $('#inputCompanyId').val(),
-                applied_days            : $('#inputLeaveDays').val(),
-                posted_days             : $('#inputLeaveDays').val(),
-                leave_from              : $('#datepicker_from').val(),
-                leave_to                : $('#datepicker_to').val(),
-                day_part                : $('#select_leavePart').val(),
-                comp_off_date_1         : null,
-                comp_off_date_2         : null,
-                remarks                 : $('#inputRemarks').val(),
-                status                  : 1,
-                approved_by             : $('#inputUserId').val(), 
+                $.ajax({
+                    type: 'POST',
+                    url: '/applyLeave',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        var newRow = '<tr id="appliedLeave' + data.id + '">'
+                                +'<td>' + data.leave_id + '</td>'
+                                +'<td>' + data.employee['name'] + '</td>'
+                                +'<td>' + data.leave['name']+'</td>'
+                                +'<td>' + data.remarks+'</td>'
+                                +'<td>' + data.applied_days+'</td>'
+                                +'<td>' + data.leave_from+'</td>'
+                                +'<td>' + data.leave_to+'</td>'
+                                +'<td>' + data.day_part+'</td>'
+                                +'<td>' + data.approved_by+'</td>';
+                        newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.id + '"><i class="fa fa-edit"></i></button>';
+                        newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.id + '"><i class="fa fa-trash"></i></button></td></tr>';
+                        $('#appliedLeaves-list').prepend(newRow);
+                        
+                        $('#form_applyLeave').trigger("reset");
+                        $('#modal-add').modal('hide');
+                    },
+                    error: function (data) {
+                        alert('Error: '+JSON.stringify(data));
+                        console.log('Error:', JSON.stringify(data));
+                    }
+                });
             }
-            $.ajax({
-                type: 'POST',
-                url: '/applyLeave',
-                data: formData,
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data);
-                    var newRow = '<tr id="appliedLeave' + data.id + '">'
-                            +'<td>' + data.leave_id + '</td>'
-                            +'<td>' + data.employee['name'] + '</td>'
-                            +'<td>' + data.leave['name']+'</td>'
-                            +'<td>' + data.remarks+'</td>'
-                            +'<td>' + data.applied_days+'</td>'
-                            +'<td>' + data.leave_from+'</td>'
-                            +'<td>' + data.leave_to+'</td>'
-                            +'<td>' + data.day_part+'</td>'
-                            +'<td>' + data.approved_by+'</td>';
-                    newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.id + '"><i class="fa fa-edit"></i></button>';
-                    newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.id + '"><i class="fa fa-trash"></i></button></td></tr>';
-                    $('#appliedLeaves-list').prepend(newRow);
-                    
-                    $('#form_applyLeave').trigger("reset");
-                    $('#modal-add').modal('hide');
-                },
-                error: function (data) {
-                    alert('Error: '+JSON.stringify(data));
-                    console.log('Error:', JSON.stringify(data));
-                }
-            });
         });
         $('#btn_confirm_edit').click(function(e){
             $.ajaxSetup({
@@ -600,6 +655,14 @@
                 }
             }
         }
+        $(document).on('change','#inputLeaveDays',function(){
+            $('#datepicker_from').val([]);
+            $('#datepicker_to').val([]);   
+        });
+        $(document).on('change','#inputLeaveDays_edit',function(){
+            $('#datepicker_from_edit').val([]);
+            $('#datepicker_to_edit').val([]);   
+        });
         
         function fromDateSelected(fromDate){
             //console.log("From Date : "+fromDate);
@@ -609,10 +672,9 @@
                 if(days>1){
                     var fromDate = new Date($('#datepicker_from').val());
                     
-                    fromDate.setDate(fromDate.getDate()+days); 
+                    fromDate.setDate(fromDate.getDate()+days-1); 
                     fromDate.toString("yyyy-mm-dd");
-                    console.log(fromDate);
-
+                    
                     $('#datepicker_to').datepicker('setDate',fromDate);
                     //$( "#datepicker_to" ).datepicker( "option", "dateFormat", "yyyy-mm-dd" ).trigger('change');
 
@@ -629,7 +691,7 @@
                 if(days>1){
                     var fromDate = new Date($('#datepicker_from_edit').val());
                     
-                    fromDate.setDate(fromDate.getDate()+days); 
+                    fromDate.setDate(fromDate.getDate()+days-1); 
                     fromDate.toString("yyyy-mm-dd");
                     console.log(fromDate);
 

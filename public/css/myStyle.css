@@ -1,5 +1,13 @@
 .required{
   color:red;
+  font-weight: bolder;
+}
+.disabled{
+  cursor: not-allowed;
+}
+.has-error .select2-selection {
+  border: 1px solid #a94442;
+  border-radius: 4px;
 }
 .no-display{
   display:none;
@@ -75,8 +83,12 @@
 .error{
     display:block;
     color:red;
+    font-weight: bold;
     /* border: 3px solid red; */
     border-radius:6px;
+}
+.error-border{
+  border: 3px solid red;
 }
 
 

@@ -35,16 +35,12 @@
                   </div>
                   <div class="modal-body">
                     <div class="row">
-                      <div class="col-sm-6">
+                      <div class="col-sm-12">
                           <div class="form-group">
-                              <label for="inputHolidayName" class="col-sm-4 control-label">Holiday Name</label>
-                              <div class="col-sm-8">
-                                  <textarea class="form-control" id="inputHolidayName" placeholder="Holiday Description" name="holiday_desc"></textarea>
-                              </div>
+                              <label for="inputHolidayName" class="control-label">Holiday Name</label>
+                              <textarea class="form-control" id="inputHolidayName" placeholder="Holiday Description" name="holiday_desc" required></textarea>
+                              <span id="error_name" class="no-error">Required</span>
                           </div>
-                      </div>
-                      <div class="col-sm-6">
-                          
                       </div>
                     </div>
                   </div>
@@ -181,34 +177,39 @@
   });
   //create new product / update existing product
   $("#btn_confirm").click(function (e) {
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-    e.preventDefault(); 
-    $.ajax({
-      type: 'POST',
-      url: '/addHoliday',
-      data: {
-        holiday_description : $('#inputHolidayName').val(),
-        holiday_date        : date_selected,
-        branch_id           : $('#inputCompanyId').val(),
-        company_id          : $('#inputCompanyId').val()
-      },
-      dataType: 'json',
-      success: function (data) {
-        console.log(data);
-        $('#calendar').fullCalendar('renderEvent',data);
-        //$('#calendar').fullCalendar('refetchData');
-        $('#form_addHoliday').trigger("reset");
-        $('#modal-add').modal('hide');
-      },
-      error: function (data) {
-        alert('Error: '+JSON.stringify(data['responseJSON']));
-        console.log('Error:', data);
-      }
-    });
+    if($('#inputHolidayName').val()!=''){
+      $('#error_name').removeClass('error').addClass('no-error');
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      e.preventDefault(); 
+      $.ajax({
+        type: 'POST',
+        url: '/addHoliday',
+        data: {
+          holiday_description : $('#inputHolidayName').val(),
+          holiday_date        : date_selected,
+          branch_id           : $('#inputCompanyId').val(),
+          company_id          : $('#inputCompanyId').val()
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data);
+          $('#calendar').fullCalendar('renderEvent',data);
+          //$('#calendar').fullCalendar('refetchData');
+          $('#form_addHoliday').trigger("reset");
+          $('#modal-add').modal('hide');
+        },
+        error: function (data) {
+          alert('Error: '+JSON.stringify(data['responseJSON']));
+          console.log('Error:', data);
+        }
+      });
+    }else{
+      $('#error_name').removeClass('no-error').addClass('error').text('Required!');
+    }
   });
   
 // check if this day has an event before

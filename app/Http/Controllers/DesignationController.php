@@ -14,7 +14,8 @@ class DesignationController extends Controller
         return view('pages/admin/designation/viewDesignations',['designations'=>$designations]);
     }
     public function getDesignationById($id){
-        $result = Designation::where('designation_id',$id)->first();
+        $comp_id = Session::get('company_id');
+        $result = Designation::where([['company_id',$comp_id],['designation_id',$id]])->first();
         return $result;
     }
     public function addDesignation(Request $request){
@@ -36,7 +37,8 @@ class DesignationController extends Controller
         return response()->json($update);
     }
     public function deleteDesignation($id){
-        $delete = Designation::where('designation_id',$id)->delete();
+        $comp_id = Session::get('company_id');
+        $delete = Designation::where([['company_id',$comp_id],['designation_id',$id]])->delete();
         return response()->json($delete);
     }
 }

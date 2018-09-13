@@ -15,7 +15,6 @@
                 <button type="button" id="btn_add" class="btn btn-primary" data-toggle="modal" data-target="#modal-add">Add New</button>
             </h3>
         </div>
-        <!-- /.box-header -->
         <div class="box-body">
             <table id="designationTable" class="table table-bordered table-striped">
             <thead>
@@ -46,11 +45,9 @@
             </tfoot>
             </table>
         </div>
-        <!-- /.box-body -->
     </div>
-    <!-- /.box -->
     <div class="modal fade" id="modal-add">
-        <form id="form_addDesignation" class="form-horizontal" method="post" action="/addDesignation">
+        <form id="form_addDesignation" class="form-horizontal" >
             {{ csrf_field() }}
             <div class="modal-dialog modal-lg" style="width:90% !important;height:90% !important; padding:0;margin:0 auto">
                 <div class="modal-content">
@@ -66,29 +63,26 @@
                                 <div class="form-group">
                                     <label for="inputDesignationId" class="control-label">Designation ID <span class="required">*</span></label>
                                     <input type="text" class="form-control" id="inputDesignationId" placeholder="Designation ID" name="designation_id">
-                                    <span id="error_msg_id">Designation ID is already used</span>
+                                    <span id="error_msg_id" class="no-error">ID already Exists!</span>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="inputName" class="control-label">Designation Name <span class="required">*</span></label>
                                     <input type="text" class="form-control" id="inputName" placeholder="Name" name="designation_name">
+                                    <span id="error_name" class="no-error">Required!</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
                     </div>
                 </div>
-                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-dialog -->"
         </form>
     </div>
-    <!-- /.modal -->
-
 @endsection
 
 @section('footer')
@@ -113,8 +107,9 @@
     //Opening Add Modal
     $('#btn_add').click(function(){
         state="add";
+        $('#inputDesignationId').prop('disabled',false);
 
-        $('#error_msg_id').removeClass('error').addClass('no-error');
+        $('.error').removeClass('error').addClass('no-error');
         $('#form_addDesignation').trigger("reset");
         $('#btn_confirm').val("add");
         $('#btn_confirm').text("Add");
@@ -124,12 +119,11 @@
     //Opening Edit Modal
     $(document).on('click', '.open_modal', function(){
         state="update";
-        $('#error_msg_id').removeClass('error').addClass('no-error');
+        $('#inputDesignationId').prop('disabled',true);
+        $('.error').removeClass('error').addClass('no-error');
         var designation_id = $(this).val();
         $.get('/getDesignationById/' + designation_id, function (data) {
-            //success data
             original_designation_id = designation_id;
-            console.log(data);
             $('#inputDesignationId').val(data.designation_id);
             $('#inputName').val(data.name);
             $('#btn_confirm').val("update");
@@ -162,7 +156,6 @@
         
     });
     
-    
     var old_designation_id;
     //Detecting change on edit
     $(document).on('focusin', '#inputDesignationId', function(){
@@ -171,14 +164,14 @@
         var current = $(this).val();
         if(state=="update"){
             if($('[id=designation'+original_designation_id+']').length>0 && original_designation_id !=current && $('[id=designation'+current+']').length>0){
-                $('#error_msg_id').removeClass('no-error').addClass('error');
+                $('#error_msg_id').removeClass('no-error').addClass('error').text('ID already Exists!');
             }else{
                 $('#error_msg_id').removeClass('error').addClass('no-error');
             }
         }
         else if(state=="add"){
             if($('[id=designation'+current+']').length>0){
-                $('#error_msg_id').removeClass('no-error').addClass('error');
+                $('#error_msg_id').removeClass('no-error').addClass('error').text('ID already Exists!');
             }
             else{
                 $('#error_msg_id').removeClass('error').addClass('no-error');
@@ -188,53 +181,93 @@
     
     //create new product / update existing product
     $("#btn_confirm").click(function (e) {
-        var type = "POST"; //for creating new resource
-        var designation_id = $('#inputDesignationId').val();
-        var url = '/addDesignation'; // by default add designation
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        })
-        e.preventDefault(); 
-        var formData = {
-            designation_id       : $('#inputDesignationId').val(),
-            name                : $('#inputName').val(),
-            company_id          : $('#inputCompanyId').val()
-        }
-        //used to determine the http verb to use [add=POST], [update=PUT]
-        var state = $('#btn_confirm').val();
-        if(state=="add"){
-            type = "POST"; 
-            url = '/addDesignation';
-        }else if (state == "update"){
-            type = "PUT"; //for updating existing resource
-            url = '/updateDesignation/' + original_designation_id;
-        }
-        console.log(formData);
-        $.ajax({
-            type: type,
-            url: url,
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
-                //console.log(data);
-                var designation = '<tr id="designation' + data.designation_id + '"><td>' + data.designation_id + '</td><td>' + data.name + '</td>';
-                designation += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.designation_id + '"><i class="fa fa-edit"></i></button>';
-                designation += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.designation_id + '"><i class="fa fa-trash"></i></button></td></tr>';
-                if (state == "add"){ //if user added a new record
-                    $('#designations-list').prepend(designation);
-                }else{ //if user updated an existing record
-                    $("#designation" + original_designation_id).replaceWith( designation );
+        if(validate()==true){
+            
+            var type = "POST"; //for creating new resource
+            var designation_id = $('#inputDesignationId').val();
+            var url = '/addDesignation'; // by default add designation
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-                $('#form_addDesignation').trigger("reset");
-                $('#modal-add').modal('hide');
-            },
-            error: function (data) {
-                alert('Error: '+JSON.stringify(data['responseJSON']));
-                console.log('Error:', data);
+            });
+            var formData = {
+                designation_id      : $('#inputDesignationId').val(),
+                name                : $('#inputName').val(),
+                company_id          : $('#inputCompanyId').val()
             }
-        });
+            //used to determine the http verb to use [add=POST], [update=PUT]
+            var state = $('#btn_confirm').val();
+            if(state=="add"){
+                type = "POST"; 
+                url = '/addDesignation';
+            }else if (state == "update"){
+                type = "PUT"; //for updating existing resource
+                url = '/updateDesignation/' + original_designation_id;
+            }
+            $.ajax({
+                type: type,
+                url: url,
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    var designation = '<tr id="designation' + data.designation_id + '"><td>' + data.designation_id + '</td><td>' + data.name + '</td>';
+                    designation += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.designation_id + '"><i class="fa fa-edit"></i></button>';
+                    designation += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.designation_id + '"><i class="fa fa-trash"></i></button></td></tr>';
+                    if (state == "add"){ //if user added a new record
+                        $('#designations-list').prepend(designation);
+                    }else{ //if user updated an existing record
+                        $("#designation" + original_designation_id).replaceWith( designation );
+                    }
+                    $('#form_addDesignation').trigger("reset");
+                    $('#modal-add').modal('hide');
+                },
+                error: function (data) {
+                    alert('Error: Please Try Again!');
+                    console.log('Error:', data);
+                }
+            });
+        }
+    });
+    function validate(){
+        var validated = true;
+        if($('#inputDesignationId').val()==''){
+            validated = false;
+            $('#error_msg_id').removeClass('no-error').addClass('error').text('Required!');
+        }else{
+            $('#error_msg_id').removeClass('error').addClass('no-error');
+            var current =$('#inputDesignationId').val();
+            if(state=="update"){
+                if($('[id=designation'+original_designation_id+']').length>0 && original_designation_id !=current && $('[id=designation'+current+']').length>0){
+                    $('#error_msg_id').removeClass('no-error').addClass('error').text('ID already Exists!');
+                    validated = false;
+                }else{
+                    $('#error_msg_id').removeClass('error').addClass('no-error');
+                }
+            }
+            else if(state=="add"){
+                if($('[id=designation'+current+']').length>0){
+                    $('#error_msg_id').removeClass('no-error').addClass('error').text('ID already Exists!');
+                    validated = false;
+                }
+                else{
+                    $('#error_msg_id').removeClass('error').addClass('no-error');
+                }
+            }
+        }
+        if($('#inputName').val()==''){
+            validated = false;
+            $('#error_name').removeClass('no-error').addClass('error');
+        }else{
+            $('#error_name').removeClass('error').addClass('no-error');
+        }
+        return validated;
+    }
+    $('#inputName').keyup(function(){
+        if($('#inputName').val()!='')
+            $('#error_name').removeClass('error').addClass('no-error');
+        else
+            $('#error_name').removeClass('no-error').addClass('error');
     });
 </script>
 @endsection

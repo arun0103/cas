@@ -79,7 +79,7 @@
     </div>
     <!-- /.box -->
     <div class="modal fade" id="modal-add">
-        <form id="form_addCategory" class="form-horizontal" method="post" action="/addCategory">
+        <form id="form_addCategory" class="form-horizontal">
             {{ csrf_field() }}
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -95,13 +95,15 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputCategoryId" class="control-label">Category ID <span class="required">*</span></label>
-                                            <input type="text" class="form-control" id="inputCategoryId" placeholder="Category ID" name="category_id">
+                                            <input type="text" class="form-control" id="inputCategoryId" placeholder="Category ID" name="category_id" required>
+                                            <span id="error_id" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputName" class="control-label">Name <span class="required">*</span></label>
-                                            <input type="text" class="form-control" id="inputName" placeholder="Name" name="category_name">
+                                            <input type="text" class="form-control" id="inputName" placeholder="Name" name="category_name" required>
+                                            <span id="error_name" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                 </div>
@@ -109,13 +111,15 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputMaxLateTime" class="control-label">Max Late Time Allowed <span class="required">*</span></label>
-                                            <input type="number" class="form-control" id="inputMaxLateTime" placeholder="Max Days Grace Late Allowed (Days)" name="maxLateAllowed">
+                                            <input type="number" class="form-control" id="inputMaxLateTime" placeholder="Max Days Grace Late Allowed (Days)" name="maxLateAllowed" min="1" required>
+                                            <span id="error_MaxLateTime" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputMaxEarlyTime" class="control-label">Max Early Time Allowed <span class="required">*</span></label>
-                                            <input type="number" class="form-control" id="inputMaxEarlyTime" placeholder="Max Days Grace Early Allowed (Days)" name="maxEarlyAllowed">
+                                            <input type="number" class="form-control" id="inputMaxEarlyTime" placeholder="Max Days Grace Early Allowed (Days)" name="maxEarlyAllowed" min="1" required>
+                                            <span id="error_MaxEarlyTime" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                 </div>
@@ -123,13 +127,15 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputMaxShortLeave" class="control-label">Max Short Leave Allowed <span class="required">*</span></label>
-                                            <input type="number" class="form-control" id="inputMaxShortLeave" placeholder="Max Short Leave Allowed (in days)" name="maxShortLeaveAllowed">
+                                            <input type="number" class="form-control" id="inputMaxShortLeave" placeholder="Max Short Leave Allowed (in days)" name="maxShortLeaveAllowed" min="1" required>
+                                            <span id="error_MaxShortLeave" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputMinWorkingDaysWeeklyOff" class="control-label">Min Working Days Weekly Off <span class="required">*</span></label>
-                                            <input type="number" class="form-control" id="inputMinWorkingDaysWeeklyOff" placeholder="Min Working Days Weekly Off" name="minWorkingDaysWeeklyOff">
+                                            <input type="number" class="form-control" id="inputMinWorkingDaysWeeklyOff" placeholder="Min Working Days Weekly Off" name="minWorkingDaysWeeklyOff" min="1" required>
+                                            <span id="error_MinWorkingDaysWeeklyOff" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                 </div>
@@ -166,7 +172,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
+                        <button type="button" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -197,7 +203,10 @@
     //Opening Add Modal
     $('#btn_add').click(function(){
         state="add";
-        $('#error_msg_id').removeClass('error').addClass('no-error');
+        $('#inputCategoryId').prop('disabled',false);
+
+        $('.error').removeClass('error').addClass('no-error');
+        
         $('#btn_confirm').val("add");
         $('#btn_confirm').text("Add");
         $('#modal-title').text('Add Categories');
@@ -207,14 +216,13 @@
     //Opening Edit Modal
     $(document).on('click', '.open_modal', function(){
         state="update";
-        $('#error_msg_id').removeClass('error').addClass('no-error');
+        $('.error').removeClass('error').addClass('no-error');
         var category_id = $(this).val();
         $.get('/getCategoryById/' + category_id, function (data) {
             //success data
-            console.log(data);
             original_category_id = category_id;
             
-            $('#inputCategoryId').val(data.category_id);
+            $('#inputCategoryId').val(data.category_id).prop('disabled',true);
             $('#inputName').val(data.name);
             $('#inputMaxLateTime').val(data.max_late_allowed);
             $('#inputMaxEarlyTime').val(data.max_early_allowed);
@@ -270,107 +278,195 @@
             var current = $(this).val();
             if(state=="update"){
                 if($('[id=category'+original_category_id+']').length>0 && original_category_id !=current && $('[id=category'+current+']').length>0){
-                    $('#error_msg_id').removeClass('no-error').addClass('error');
+                    $('#error_id').removeClass('no-error').addClass('error').text('ID already exists!');
                 }
                 else{
-                    $('#error_msg_id').removeClass('error').addClass('no-error');
+                    $('#error_id').removeClass('error').addClass('no-error');
                 }
             }else if(state=="add"){
                 if($('[id=category'+current+']').length>0){
-                    $('#error_msg_id').removeClass('no-error').addClass('error');
+                    $('#error_id').removeClass('no-error').addClass('error').text('ID already exists!');
                 }
                 else{
-                    $('#error_msg_id').removeClass('error').addClass('no-error');
+                    $('#error_id').removeClass('error').addClass('no-error');
                 }
             }
         
+    });
+    $('#inputName').keyup(function(){
+        if($('#inputName').val()!='')
+            $('#error_name').removeClass('error').addClass('no-error');
+        else
+            $('#error_name').removeClass('no-error').addClass('error');
+    });
+    $('#inputMaxLateTime').keyup(function(){
+        if($('#inputMaxLateTime').val()!='')
+            $('#error_MaxLateTime').removeClass('error').addClass('no-error');
+        else
+            $('#error_MaxLateTime').removeClass('no-error').addClass('error');
+    });
+    $('#inputMaxEarlyTime').keyup(function(){
+        if($('#inputMaxEarlyTime').val()!='')
+            $('#error_MaxEarlyTime').removeClass('error').addClass('no-error');
+        else
+            $('#error_MaxEarlyTime').removeClass('no-error').addClass('error');
+    });
+    $('#inputMaxShortLeave').keyup(function(){
+        if($('#inputMaxShortLeave').val()!='')
+            $('#error_MaxShortLeave').removeClass('error').addClass('no-error');
+        else
+            $('#error_MaxShortLeave').removeClass('no-error').addClass('error');
+    });
+    
+    $('#inputMinWorkingDaysWeeklyOff').keyup(function(){
+        if($('#inputMinWorkingDaysWeeklyOff').val()!='')
+            $('#error_MinWorkingDaysWeeklyOff').removeClass('error').addClass('no-error');
+        else
+            $('#error_MinWorkingDaysWeeklyOff').removeClass('no-error').addClass('error');
     });
     
     //create new product / update existing product
     $("#btn_confirm").click(function (e) {
-        var type = "POST"; //for creating new resource
-        var leave_type_id = $('#inputCategoryId').val();
-        var url = '/addCategory'; // by default add category
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        })
-        e.preventDefault(); 
-        var checked_weekly_off_cover, checked_paid_holiday_cover;
-        
-        if($('#radio_weeklyOffCover_no').prop("checked")==true)
-            checked_weekly_off_cover = 0;
-        else   
-            checked_weekly_off_cover = 1;
-        if($('#radio_paidHolidayCover_no').prop("checked")==true)
-            checked_paid_holiday_cover = 0;
-        else   
-            checked_paid_holiday_cover = 1;
-        
-        var formData = {
-            category_id                 : $('#inputCategoryId').val(),
-            company_id                  : $('#inputCompanyId').val(),
-            name                        : $('#inputName').val(),
-            max_late_allowed            : $('#inputMaxLateTime').val(),
-            max_early_allowed           : $('#inputMaxEarlyTime').val(),
-            max_short_leave_allowed     : $('#inputMaxShortLeave').val(),
-            min_working_days_weekly_off : $('#inputMinWorkingDaysWeeklyOff').val(),
-            weekly_off_cover            : checked_weekly_off_cover,
-            paid_holiday_cover          : checked_paid_holiday_cover,
-
-            
-        }
-        //used to determine the http verb to use [add=POST], [update=PUT]
-        var state = $('#btn_confirm').val();
-        if(state=="add"){
-            type = "POST"; 
-            url = '/addCategory';
-        }else if (state == "update"){
-            type = "PUT"; //for updating existing resource
-            url = '/updateCategory/' + original_category_id;
-        }
-        console.log(formData);
-        $.ajax({
-            type: type,
-            url: url,
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
-                //console.log(data);
-                var isWeeklyOffCoverTrue, isPaidHolidayCoverTrue;
-                if(data.weekly_off_cover==1)
-                    isWeeklyOffCoverTrue = 'TRUE';
-                else
-                    isWeeklyOffCoverTrue = 'FALSE';
-                if(data.paid_holiday_cover==1)
-                    isPaidHolidayCoverTrue = 'TRUE';
-                else
-                    isPaidHolidayCoverTrue = 'FALSE';
-                var newRow = '<tr id="category' + data.category_id + '"><td>' + data.category_id + '</td><td>'
-                            + data.name + '</td><td>'
-                            + data.max_late_allowed + '</td><td>'
-                            + data.max_early_allowed + '</td><td>'
-                            + data.max_short_leave_allowed + '</td><td>'
-                            + data.min_working_days_weekly_off + '</td><td>'
-                            + isWeeklyOffCoverTrue+ '</td><td>'
-                            + isPaidHolidayCoverTrue + '</td>';
-                newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.category_id + '"><i class="fa fa-edit"> </i></button>';
-                newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.category_id + '"><i class="fa fa-trash"> </i></button></td></tr>';
-                if (state == "add"){ //if user added a new record
-                    $('#categories-list').prepend(newRow);
-                }else{ //if user updated an existing record
-                    $("#category" + original_category_id).replaceWith( newRow );
+        if(validate()==true){
+            var type = "POST"; //for creating new resource
+            var leave_type_id = $('#inputCategoryId').val();
+            var url = '/addCategory'; // by default add category
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-                $('#form_addCategory').trigger("reset");
-                $('#modal-add').modal('hide');
-                console.log(data);
-            },
-            error: function (data) {
-                alert('Error: '+JSON.stringify(data));
-                console.log('Error:', JSON.stringify(data));
+            })
+            e.preventDefault(); 
+            var checked_weekly_off_cover, checked_paid_holiday_cover;
+            
+            if($('#radio_weeklyOffCover_no').prop("checked")==true)
+                checked_weekly_off_cover = 0;
+            else   
+                checked_weekly_off_cover = 1;
+            if($('#radio_paidHolidayCover_no').prop("checked")==true)
+                checked_paid_holiday_cover = 0;
+            else   
+                checked_paid_holiday_cover = 1;
+            
+            var formData = {
+                category_id                 : $('#inputCategoryId').val(),
+                company_id                  : $('#inputCompanyId').val(),
+                name                        : $('#inputName').val(),
+                max_late_allowed            : $('#inputMaxLateTime').val(),
+                max_early_allowed           : $('#inputMaxEarlyTime').val(),
+                max_short_leave_allowed     : $('#inputMaxShortLeave').val(),
+                min_working_days_weekly_off : $('#inputMinWorkingDaysWeeklyOff').val(),
+                weekly_off_cover            : checked_weekly_off_cover,
+                paid_holiday_cover          : checked_paid_holiday_cover,
+
+                
             }
-        });
+            //used to determine the http verb to use [add=POST], [update=PUT]
+            var state = $('#btn_confirm').val();
+            if(state=="add"){
+                type = "POST"; 
+                url = '/addCategory';
+            }else if (state == "update"){
+                type = "PUT"; //for updating existing resource
+                url = '/updateCategory/' + original_category_id;
+            }
+            $.ajax({
+                type: type,
+                url: url,
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    var isWeeklyOffCoverTrue, isPaidHolidayCoverTrue;
+                    if(data.weekly_off_cover==1)
+                        isWeeklyOffCoverTrue = 'TRUE';
+                    else
+                        isWeeklyOffCoverTrue = 'FALSE';
+                    if(data.paid_holiday_cover==1)
+                        isPaidHolidayCoverTrue = 'TRUE';
+                    else
+                        isPaidHolidayCoverTrue = 'FALSE';
+                    var newRow = '<tr id="category' + data.category_id + '"><td>' + data.category_id + '</td><td>'
+                                + data.name + '</td><td>'
+                                + data.max_late_allowed + '</td><td>'
+                                + data.max_early_allowed + '</td><td>'
+                                + data.max_short_leave_allowed + '</td><td>'
+                                + data.min_working_days_weekly_off + '</td><td>'
+                                + isWeeklyOffCoverTrue+ '</td><td>'
+                                + isPaidHolidayCoverTrue + '</td>';
+                    newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.category_id + '"><i class="fa fa-edit"> </i></button>';
+                    newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.category_id + '"><i class="fa fa-trash"> </i></button></td></tr>';
+                    if (state == "add"){ //if user added a new record
+                        $('#categories-list').prepend(newRow);
+                    }else{ //if user updated an existing record
+                        $("#category" + original_category_id).replaceWith( newRow );
+                    }
+                    $('#form_addCategory').trigger("reset");
+                    $('#modal-add').modal('hide');
+                },
+                error: function (data) {
+                    alert('Error: Please Try Again!');
+                }
+            });
+        }
     });
+    function validate(){
+        var validated = true;
+        if($('#inputCategoryId').val()==''){
+            validated = false;
+            $('#error_id').removeClass('no-error').addClass('error');
+        }else{
+            $('#error_id').removeClass('error').addClass('no-error');
+            var current = $('#inputCategoryId').val();
+            if(state=="update"){
+                if($('[id=category'+original_category_id+']').length>0 && original_category_id !=current && $('[id=category'+current+']').length>0){
+                    $('#error_id').removeClass('no-error').addClass('error').text('ID already exists!');
+                    validated =false;
+                }
+                else{
+                    $('#error_id').removeClass('error').addClass('no-error');
+                }
+            }else if(state=="add"){
+                if($('[id=category'+current+']').length>0){
+                    $('#error_id').removeClass('no-error').addClass('error').text('ID already exists!');
+                    validated = false;
+                    console.log('Error found!');
+                }
+                else{
+                    $('#error_id').removeClass('error').addClass('no-error');
+                }
+            }
+        }
+        if($('#inputName').val()==''){
+            validated = false;
+            $('#error_name').removeClass('no-error').addClass('error');
+        }else{
+            $('#error_name').removeClass('error').addClass('no-error');
+        }
+        if($('#inputMaxLateTime').val()==''){
+            validated = false;
+            $('#error_MaxLateTime').removeClass('no-error').addClass('error');
+        }else{
+            $('#error_MaxLateTime').removeClass('error').addClass('no-error');
+        }
+        if($('#inputMaxEarlyTime').val()==''){
+            validated = false;
+            $('#error_MaxEarlyTime').removeClass('no-error').addClass('error');
+        }else{
+            $('#error_MaxEarlyTime').removeClass('error').addClass('no-error');
+        }
+        if($('#inputMaxShortLeave').val()==''){
+            validated = false;
+            $('#error_MaxShortLeave').removeClass('no-error').addClass('error');
+        }else{
+            $('#error_MaxShortLeave').removeClass('error').addClass('no-error');
+        }
+        if($('#inputMinWorkingDaysWeeklyOff').val()==''){
+            validated = false;
+            $('#error_MinWorkingDaysWeeklyOff').removeClass('no-error').addClass('error');
+        }else{
+            $('#error_MinWorkingDaysWeeklyOff').removeClass('error').addClass('no-error');
+        }
+        return validated;
+    }
 </script>
 @endsection

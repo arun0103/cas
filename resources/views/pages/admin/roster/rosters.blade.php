@@ -59,12 +59,12 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <label>Branch <span class="required">*</span></label>
-                                                    <select id="select_branch" class="form-control select2 percent100" multiple data-placeholder="Select Branches for generating roaster" name="selectedBranches[]" onchange="branchSelected(this.value)" required>
+                                                    <select id="select_branch" class="form-control select2 percent100" multiple data-placeholder="Select Branches for generating roaster" name="selectedBranches[]" required>
                                                         @foreach($allBranches as $branch)
                                                             <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
                                                         @endforeach
                                                     </select>
-                                                    <div id="branch_msg"></div>
+                                                    <span id="error_branch_generate" class="no-error">Required!</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -76,6 +76,7 @@
                                                     <div class="form-group">
                                                         <label for="inputYear" class="control-label">Year <span class="required">*</span></label>
                                                         <input type="number" class="form-control" id="inputYear" placeholder="Year" name="year" min="2015" value="2018" required autocomplete="off">
+                                                        <span id="error_year_generate" class="no-error">Required!</span>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-8">
@@ -95,6 +96,7 @@
                                                         <option value="11">November</option>
                                                         <option value="12">December</option>
                                                     </select>
+                                                    <span id="error_month_generate" class="no-error">Required!</span>
                                                 </div>
                                             </div>
                                         </div> 
@@ -142,7 +144,7 @@
                                                                     <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
                                                                 @endforeach
                                                             </select>
-                                                            
+                                                            <span id="error_branch_view" class="no-error">Required!</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -154,10 +156,8 @@
                                                         <div class="col-sm-12">
                                                             <select id="select_employee_view" class="form-control select2 percent100"  data-placeholder="Select an Employee" name="selectedEmployeeView">
                                                                 <option></option>
-                                                                <!-- @foreach($allBranches as $branch)
-                                                                <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
-                                                                @endforeach -->
                                                             </select>
+                                                            <span id="error_employee_view" class="no-error">Required!</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -167,13 +167,12 @@
                                     <div class="col-sm-4">
                                         <div class="form-group">
                                         <div><label for="datepicker_date" class="col-sm-4 control-label">Date</label></div>
-                                            <div class="col-sm-12">
-                                                <div class="input-group date">
-                                                    <div class="input-group-addon left-addon">
-                                                        <input type="text" class="form-control pull-right" id="datepicker_date" name="dateView" autocomplete="off">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </div>
+                                            <div class="input-group date">
+                                                <div class="input-group-addon left-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                    <input type="text" class="form-control pull-right" id="datepicker_date" name="dateView" autocomplete="off">
                                                 </div>
+                                                <span id="error_date_view" class="no-error">Required!</span>
                                             </div>
                                         </div> 
                                     </div> 
@@ -400,43 +399,26 @@
         });
 
         $('#btn_confirm_generate').click(function(e){
-            if($('#select_branch').val() ==""){
+            if(!validate_generate()){
                 e.preventDefault();
-                $('#select_branch').addClass('error');
-                $('#branch_msg').text("Please select atleast one branch!");
             }
             else{
                 $('#modal-generate').modal('hide');
-            $('#modal-wait').modal('show');
+                $('#modal-wait').modal('show');
             }
-            
-            
-            
-            //alert("Please wait while generating roaster.");
         });
 
         function populateEmployee(branch){
-            //var selectedBranch = $("#select_branch_view option:selected").val();
             if($('#select_branch_view').val()!="" && $('#select_branch_view').val()!= null){
-                console.log("Branch selected = "+branch);
                 $.get("/employees/branch/"+branch, function(data){
-                    console.log(data);
                     $("#select_employee_view").empty();
                     $('#select_employee_view').append('<option></option>');
-                    //alert(data.length);
                     for(var i=0;i<data.length;i++){
                         var newEmployee = $('<option value="'+data[i].employee_id+'">'+data[i].name+'</option>');
                         $('#select_employee_view').append(newEmployee).trigger('change');
                     }
+                    $('.select2').select2();
                 });
-            }
-        }
-        function branchSelected(branch){
-            //alert("changed");
-            if(branch =="ALL"){
-                //alert("All Checked");
-                $("select_branch").value([]);
-                //$("select_branch").value("ALL").trigger("change");
             }
         }
 
@@ -495,7 +477,6 @@
                 data: formData,
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
                     $('#modal-editRoster').modal('hide');
                     var branch_name = data.branch!=null ? data.branch['name'] : "";
                     var department_name = data.department!=null ? data.department['name']: "";
@@ -510,12 +491,103 @@
                                         '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.id + '"><i class="fa fa-edit"></i></button>'+
                                         ' <button class="btn btn-danger btn-delete delete-row" value="' + data.id + '"><i class="fa fa-trash"></i></button></td></tr>'
                     $("#roster"+data.id).replaceWith(rowUpdated);
-
-                    
                 }
             });
         });
-        
+        $('#btn_confirm_view').click(function(e){
+            if(validate_view()){
+                $('#modal-view').modal('hide');
+                $('.loading').show();
+            }else
+                e.preventDefault();
+            
+        });
+        function validate_generate(){
+            var validated = true;
+            if($('#select_branch').val().length <1 ){
+                validated = false;
+                $('#error_branch_generate').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_branch_generate').removeClass('error').addClass('no-error');
+            }
+            if($('#inputYear').val() ==""){
+                validated = false;
+                $('#error_year_generate').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_year_generate').removeClass('error').addClass('no-error');
+            }
+            if($('#select_month').val() ==[]){
+                validated = false;
+                $('#error_month_generate').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_month_generate').removeClass('error').addClass('no-error');
+            }
+            return validated;
+        }
+        $(document).on('change','#select_branch', function(){
+            if($('#select_branch').val().length<1){
+                $('#error_branch_generate').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_branch_generate').removeClass('error').addClass('no-error');
+            }
+        });
+        $(document).on('change','#inputYear', function(){
+            if($('#inputYear').val()==''){
+                $('#error_year_generate').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_year_generate').removeClass('error').addClass('no-error');
+            }
+        });
+        $(document).on('change','#select_month', function(){
+            if($('#select_month').val().length<1){
+                $('#error_month_generate').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_month_generate').removeClass('error').addClass('no-error');
+            }
+        });
+        function validate_view(){
+            var validated = true;
+            if($('#select_branch_view').val().length <1 ){
+                validated = false;
+                $('#error_branch_view').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_branch_view').removeClass('error').addClass('no-error');
+            }
+            if($('#select_employee_view').val() ==""){
+                validated = false;
+                $('#error_employee_view').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_employee_view').removeClass('error').addClass('no-error');
+            }
+            if($('#datepicker_date').val() ==[]){
+                validated = false;
+                $('#error_date_view').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_date_view').removeClass('error').addClass('no-error');
+            }
+            return validated;
+        }
+        $(document).on('change','#select_branch_view', function(){
+            if($('#select_branch_view').val().length<1){
+                $('#error_branch_view').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_branch_view').removeClass('error').addClass('no-error');
+            }
+        });
+        $(document).on('change','#select_employee_view', function(){
+            if($('#select_employee_view').val().length<1){
+                $('#error_employee_view').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_employee_view').removeClass('error').addClass('no-error');
+            }
+        });
+        $(document).on('change','#datepicker_date', function(){
+            if($('#datepicker_date').val()==''){
+                $('#error_date_view').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_date_view').removeClass('error').addClass('no-error');
+            }
+        });
 
     </script>
 @endsection

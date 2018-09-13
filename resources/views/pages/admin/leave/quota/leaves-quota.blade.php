@@ -60,7 +60,7 @@
     </div>
     <!-- /.box -->
     <div class="modal fade" id="modal-add">
-        <form id="form_addLeaveQuota" class="form-horizontal" method="post" action="/addLeaveQuota">
+        <form id="form_addLeaveQuota" class="form-horizontal">
             {{ csrf_field() }}
             <div class="modal-dialog modal-lg" >
                 <div class="modal-content">
@@ -83,6 +83,7 @@
                                                     <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
                                                 @endforeach
                                             </select>
+                                            <span id="error_branch" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -94,6 +95,7 @@
                                                     <option value="{{$leave->leave_id}}">{{$leave->leaveDetail->name}}</option>
                                                 @endforeach
                                             </select>
+                                            <span id="error_leave" class="no-error">Required!</span>
                                         </div> 
                                     </div> 
                                 </div>
@@ -104,12 +106,14 @@
                                             <select id="select_employee" class="form-control select2 " multiple data-placeholder="Select Employee(s)" name="selectedEmployees[]" required>
                                                 <option></option>
                                             </select>
+                                            <span id="error_employee" class="no-error">Required!</span>
                                         </div> 
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="inputLeaveQuota" class="control-label">Leave Quota <span class="required">*</span></label>
                                             <input type="number" class="form-control" id="inputLeaveQuota" placeholder="Max Leave Days allowed" name="leaveQuota" min="1" required>
+                                            <span id="error_leaveQuota" class="no-error">Required!</span>
                                         </div>
                                     </div>
                                 </div>                                
@@ -118,7 +122,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
+                        <button type="button" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -134,23 +138,8 @@
     <script src="{{asset('js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.js')}}"></script>
     <script src="{{asset('js/plugins/select2/select2.full.min.js')}}"></script>
-    <script src="{{asset('js/plugins/jquery/jquery.validate.min.js')}}"></script>
     <script>
         $(document).ready(function(){
-            $("#form_addLeaveQuota").validate({
-                ignore: "",
-                //put error message behind each form element
-                errorPlacement: function (error, element) {
-                    var elem = $(element);
-                    if (element.parent('.input-group').length) { 
-                        error.insertAfter(element.parent());      // radio/checkbox?
-                    } else if (element.hasClass('select2')) {     
-                        error.insertAfter(element.next('span'));  // select2
-                    } else {                                      
-                        error.insertAfter(element);               // default
-                    }; 
-                }
-            });
             //Initialize Select2 Elements
             $('.select2').select2({
                 allowClear: true
@@ -182,13 +171,14 @@
         //Opening Edit Modal
         $(document).on('click', '.open_modal', function(){
             state="update";
+            $('.error').removeClass('error').addClass('no-error');
             var id = $(this).val();
             $.get('/getLeaveQuotaById/' + id, function (data) {
                 //success data
                 original_leave_id = id;
-                $('#select_branch').prop("disabled",true).val(data.branch_id).change();
-                $('#select_employee').prop("disabled",true).val(data.employee_id).change();
-                $('#select_leave').val(data.leave_id).change();
+                $('#select_branch').val(data.branch_id).change();
+                $('#select_employee').val(data.employee_id).trigger('change');
+                $('#select_leave').val(data.leave_id).trigger('change');
                 $('#inputLeaveQuota').val(data.alloted_days);
                 
                 $('#btn_confirm').val("update");
@@ -201,7 +191,7 @@
         $('#btn_add').click(function(){
             state="add";
         
-            $('#error_msg_id').removeClass('error').addClass('no-error');
+            $('.error').removeClass('error').addClass('no-error');
 
             $('#select_branch').val([]).trigger('change');
             $('#select_leave').val([]).trigger('change');
@@ -216,8 +206,7 @@
         
         //create new product / update existing product
         $("#btn_confirm").click(function (e) {
-            e.preventDefault();
-            if($("#form_addLeaveQuota").valid()) {
+            if(validate()==true){
                 var type = "POST"; //for creating new resource
                 var leave_type_id = $('#select_leave').val();
                 var url = '/addLeaveQuota'; // by default add department
@@ -282,10 +271,8 @@
                         // alert('Error: '+JSON.stringify(data));
                         // console.log('Error:', JSON.stringify(data));
                     }
-                }); 
-            } else{
-                alert("Data Missing!\n\nPlease verify and try again");
-            }        
+                });     
+            }
         });
         //delete department and remove it from list
         $(document).on('click','.delete-row',function(){
@@ -309,6 +296,47 @@
                 });
             }
             
+        });
+
+        function validate(){
+            var validated = true;
+            if($('#select_branch').val()==[]){
+                validated = false;
+                $('#error_branch').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_branch').removeClass('error').addClass('no-error');
+            }
+            if($('#select_leave').val()==[]){
+                validated = false;
+                $('#error_leave').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_leave').removeClass('error').addClass('no-error');
+            }
+            if($('#select_employee').val().length<1){
+                validated = false;
+                $('#error_employee').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_employee').removeClass('error').addClass('no-error');
+            }
+            if($('#inputLeaveQuota').val()==[]){
+                validated = false;
+                $('#error_leaveQuota').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_leaveQuota').removeClass('error').addClass('no-error');
+            }
+            return validated;
+        }
+        $(document).on('change','#select_branch',function(){
+            $('#error_branch').removeClass('error').addClass('no-error');
+        });
+        $(document).on('change','#select_leave',function(){
+            $('#error_leave').removeClass('error').addClass('no-error');
+        });
+        $(document).on('change','#select_employee',function(){
+            $('#error_employee').removeClass('error').addClass('no-error');
+        });
+        $(document).on('change','#inputLeaveQuota',function(){
+            $('#error_leaveQuota').removeClass('error').addClass('no-error');
         });
     </script>
 @endsection

@@ -28,9 +28,9 @@ class LeaveTypeController extends Controller
             ];
             $dataToDisplay += $data;
         }
-        print_r($dataToDisplay);
+        //print_r($dataToDisplay);
         
-        //return view('pages/admin/leave/types/addLeaveType',['branches'=>$branches,'leaves'=>$leaves, 'companyLeave'=>$companyLeave, 'dataToDisplay'=>$dataToDisplay]);
+        return view('pages/admin/leave/types/viewLeaveTypes',['branches'=>$branches,'leaves'=>$leaves, 'companyLeave'=>$companyLeave, 'dataToDisplay'=>$dataToDisplay]);
     }
     public function getLeaveTypes(){
         $comp_id = (String)Session::get('company_id');
@@ -80,14 +80,6 @@ class LeaveTypeController extends Controller
             ]
         ];
         return response()->json($dataWithNames);
-            // $compLeave = new CompanyLeave([
-            //     'branch_id'=>request('selectedBranch'),
-            //     'company_id'=>1,
-            //     'leave_id'=>request('selectedLeave')
-            // ]);
-            // if($compLeave->save()){
-            //     return redirect('admin/leave/type/add')->with('status','Leave added to Branch!');
-            // }
     }
     public function deleteLeaveType($leave_id,$branch_id){
         $leave = CompanyLeave::where([['leave_id',$leave_id],['branch_id',$branch_id]])->delete();
