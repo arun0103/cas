@@ -49,7 +49,7 @@ class LeaveQuotaController extends Controller
        return response()->json($dataToSend);
     }
     public function getLeaveQuotaById($id){
-        return LeaveQuota::where('id',$id)->first();
+        return LeaveQuota::where('id',$id)->with('branch','employee')->first();
     }
     public function updateLeaveQuota($id, Request $req){
         $find = LeaveQuota::where('id',$id)->with('branch','employee','leaveMaster')->first();

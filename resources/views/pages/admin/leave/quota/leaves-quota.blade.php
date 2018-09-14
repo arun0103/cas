@@ -130,6 +130,70 @@
             <!-- /.modal-dialog -->
         </form>
     </div>
+    <div class="modal fade" id="modal-edit">
+        <form id="form_editLeaveQuota" class="form-horizontal">
+            {{ csrf_field() }}
+            <div class="modal-dialog modal-lg" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-title">Edit Leave Quota</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row roundPadding20" id="editLeaveMaster"> 
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" >
+                                            <label>Branch <span class="required">*</span></label>
+                                            <input type="text" class="form-control" disabled id="input_branch_name">
+                                            <input type="hidden" class="form-control" disabled id="input_branch_id">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" >
+                                            <label for="select_leave_edit">Leave Type <span class="required">*</span></label>
+                                            <select id="select_leave_edit" class="form-control select2 " data-placeholder="Select Leave" name="selectedLeave" required>
+                                                <option></option>
+                                                @foreach($leaves as $leave)
+                                                    <option value="{{$leave->leave_id}}">{{$leave->leaveDetail->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            <span id="error_leave_edit" class="no-error">Required!</span>
+                                        </div> 
+                                    </div> 
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" >
+                                            <label>Employee <span class="required">*</span></label>
+                                            <input type="text" class="form-control" disabled id="input_employee_name">
+                                            <input type="hidden" class="form-control" disabled id="input_employee_id">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="inputLeaveQuota_edit" class="control-label">Leave Quota <span class="required">*</span></label>
+                                            <input type="number" class="form-control" id="inputLeaveQuota_edit" placeholder="Max Leave Days allowed" name="leaveQuota" min="1" required>
+                                            <span id="error_leaveQuota_edit" class="no-error">Required!</span>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="btn_confirm_edit" value="update">Update</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </form>
+    </div>
 
 
 @endsection
@@ -172,19 +236,17 @@
         $(document).on('click', '.open_modal', function(){
             state="update";
             $('.error').removeClass('error').addClass('no-error');
-            var id = $(this).val();
-            $.get('/getLeaveQuotaById/' + id, function (data) {
-                //success data
-                original_leave_id = id;
-                $('#select_branch').val(data.branch_id).change();
-                $('#select_employee').val(data.employee_id).trigger('change');
-                $('#select_leave').val(data.leave_id).trigger('change');
-                $('#inputLeaveQuota').val(data.alloted_days);
+            original_leave_id = $(this).val();
+            $.get('/getLeaveQuotaById/' + original_leave_id, function (data) {
+                $('#input_branch_name').val(data.branch.name);
+                $('#input_branch_id').val(data.branch.branch_id);
+                $('#input_employee_name').val(data.employee.name);
+                $('#input_employee_id').val(data.employee.employee_id);
+                $('#select_leave_edit').val(data.leave_id).trigger('change');
+                $('#inputLeaveQuota_edit').val(data.alloted_days);
                 
-                $('#btn_confirm').val("update");
-                $('#btn_confirm').text("Update");
                 $('#modal-title').text('Edit Leave Quota');
-                $('#modal-add').modal('show');
+                $('#modal-edit').modal('show');
             }); 
         });
         //Opening Add Modal
@@ -203,13 +265,47 @@
             $('#form_addLeaveQuota').trigger("reset");
             $('#modal-add').modal('show');
         });
+        $('#btn_confirm_edit').click(function(e){
+            if(validate_edit()){
+                var formData = {
+                    company_id              : $('#inputCompanyId').val(),
+                    branch_id               : $('#input_branch_id').val(),
+                    leave_id                : $('#select_leave_edit').val(),
+                    employees               : $('#input_employee_id').val(),
+                    alloted_days            : $('#inputLeaveQuota_edit').val()
+                }
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: "PUT",
+                    url: '/updateLeaveQuota/' + original_leave_id,
+                    data: formData,
+                    dataType: 'json',
+                    success: function (data) {
+                        var newRow = '<tr id="lq' + data.id + '">'
+                            +'<td>' + data.branch.name + '</td>'
+                            +'<td>' + data.employee['name'] + '</td>'
+                            +'<td>' + data.leave_master['name']+'</td>'
+                            +'<td>' + data.alloted_days+'</td>'
+                            +'<td>' + data.used_days+'</td>';
+                        newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.id + '"><i class="fa fa-edit"></i></button>';
+                        newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.id + '"><i class="fa fa-trash"></i></button></td></tr>';
+                        $('#lq' + original_leave_id).replaceWith( newRow );
+                        $('#modal-edit').modal('hide');
+                    },
+                    error: function (data) {
+                        alert("Error: Please Refresh and Try again!");
+                    }
+                }); 
+            }
+        });
         
         //create new product / update existing product
         $("#btn_confirm").click(function (e) {
             if(validate()==true){
-                var type = "POST"; //for creating new resource
-                var leave_type_id = $('#select_leave').val();
-                var url = '/addLeaveQuota'; // by default add department
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -222,54 +318,30 @@
                     employees               : $('#select_employee').val(),
                     alloted_days            : $('#inputLeaveQuota').val()
                 }
-                //used to determine the http verb to use [add=POST], [update=PUT]
-                var state = $('#btn_confirm').val();
-                if(state=="add"){
-                    type = "POST"; 
-                    url = '/addLeaveQuota';
-                }else if (state == "update"){
-                    type = "PUT"; //for updating existing resource
-                    url = '/updateLeaveQuota/' + original_leave_id;
-                }
-                //console.log(formData);
                 $.ajax({
-                    type: type,
-                    url: url,
+                    type: "POST",
+                    url: '/addLeaveQuota',
                     data: formData,
                     dataType: 'json',
                     success: function (data) {
-                        if (state == "add"){ //if user added a new record
-                            $.each(data.data, function(key,val){
-                                var newRow = '<tr id="lq' + val.id + '">'
-                                    +'<td>' + val.branch.name + '</td>'
-                                    +'<td>' + val.employee['name'] + '</td>'
-                                    +'<td>' + val.leave_master['name']+'</td>'
-                                    +'<td>' + val.alloted_days+'</td>'
-                                    +'<td>' + val.used_days+'</td>';
-                                newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + val.id + '"><i class="fa fa-edit"></i></button>';
-                                newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + val.id + '"><i class="fa fa-trash"></i></button></td></tr>';
-                                $('#leaveQuota-list').prepend(newRow);
-                            });
-                            alert(data.success + ' out of '+data.total + ' added!');
-                        }else{ //if user updated an existing record
-                            var newRow = '<tr id="lq' + data.id + '">'
-                                +'<td>' + data.branch.name + '</td>'
-                                +'<td>' + data.employee['name'] + '</td>'
-                                +'<td>' + data.leave_master['name']+'</td>'
-                                +'<td>' + data.alloted_days+'</td>'
-                                +'<td>' + data.used_days+'</td>';
-                            newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + data.id + '"><i class="fa fa-edit"></i></button>';
-                            newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + data.id + '"><i class="fa fa-trash"></i></button></td></tr>';
-                            $('#lq' + original_leave_id).replaceWith( newRow );
-                        }
+                        $.each(data.data, function(key,val){
+                            var newRow = '<tr id="lq' + val.id + '">'
+                                +'<td>' + val.branch.name + '</td>'
+                                +'<td>' + val.employee['name'] + '</td>'
+                                +'<td>' + val.leave_master['name']+'</td>'
+                                +'<td>' + val.alloted_days+'</td>'
+                                +'<td>' + val.used_days+'</td>';
+                            newRow += '<td><button class="btn btn-warning btn-detail open_modal" value="' + val.id + '"><i class="fa fa-edit"></i></button>';
+                            newRow += ' <button class="btn btn-danger btn-delete delete-row" value="' + val.id + '"><i class="fa fa-trash"></i></button></td></tr>';
+                            $('#leaveQuota-list').prepend(newRow);
+                        });
+                        alert(data.success + ' out of '+data.total + ' added!');
+                        
                         $('#form_addLeaveQuota').trigger("reset");
                         $('#modal-add').modal('hide');
-                        
                     },
                     error: function (data) {
-                        alert(JSON.stringify(data));
-                        // alert('Error: '+JSON.stringify(data));
-                        // console.log('Error:', JSON.stringify(data));
+                        alert("Error: Please Refresh and Try Again!");
                     }
                 });     
             }
@@ -297,6 +369,22 @@
             }
             
         });
+        function validate_edit(){
+            var validated = true;
+            if($('#select_leave_edit').val()==[]){
+                validated = false;
+                $('#error_leave_edit').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_leave_edit').removeClass('error').addClass('no-error');
+            }
+            if($('#inputLeaveQuota_edit').val()==[]){
+                validated = false;
+                $('#error_leaveQuota_edit').removeClass('no-error').addClass('error');
+            }else{
+                $('#error_leaveQuota_edit').removeClass('error').addClass('no-error');
+            }
+            return validated;
+        }
 
         function validate(){
             var validated = true;
@@ -337,6 +425,13 @@
         });
         $(document).on('change','#inputLeaveQuota',function(){
             $('#error_leaveQuota').removeClass('error').addClass('no-error');
+        });
+
+        $(document).on('change','#select_leave_edit',function(){
+            $('#error_leave_edit').removeClass('error').addClass('no-error');
+        });
+        $(document).on('change','#inputLeaveQuota_edit',function(){
+            $('#error_leaveQuota_edit').removeClass('error').addClass('no-error');
         });
     </script>
 @endsection
