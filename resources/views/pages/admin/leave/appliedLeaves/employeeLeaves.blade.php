@@ -341,10 +341,10 @@
             $('#btn_confirm').text("Add");
             $('#modal-title').text('Apply Leave');
             $('#form_applyLeave').trigger("reset");
-            $('#select_leavePart').val("").trigger("change");
-            $('#select_leaveType').val("").trigger("change");
-            $('#select_employee').val("").trigger("change");
-            $('#select_branch').val("").trigger("change");
+            $('#select_leavePart').val([]).trigger("change");
+            $('#select_leaveType').val([]).trigger("change");
+            $('#select_employee').val([]).trigger("change");
+            $('#select_branch').val([]).trigger("change");
             
             $('#modal-add').modal('show');
         });

@@ -21,6 +21,7 @@ use App\Punch;
 use App\Roster;
 use App\Employee;
 use App\AppliedLeave;
+use App\LeaveQuota;
 use Session;
 use Illuminate\Support\Facades\Storage;
 use File;
@@ -634,27 +635,20 @@ class AdminController extends Controller
         $companyLeaves = CompanyLeave::where('company_id',$company_id)->with('leaveMaster')->get();
         return view('pages/admin/leave/appliedLeaves/employeeLeaves',['appliedLeaves'=>$appliedLeaves, 'companyLeaves'=>$companyLeaves, 'companyBranches'=>$branches]);
     }
-
+ 
     public function getEmployeeLeaveDetails($emp_id){
         $company_id = Session::get('company_id');
         $employee = Employee::where([['company_id',$company_id],['employee_id',$emp_id]])->first();
-        $companyLeaves = CompanyLeave::where([['company_id',$company_id],['branch_id',$employee->branch_id]])->with('leaveMaster')->get();
-        return $companyLeaves;
+        $employeeLeaves = LeaveQuota::where([['company_id',$company_id],['employee_id',$employee->employee_id]])->with('leaveMaster')->get();
+        return $employeeLeaves;
     }
 
     public function getEmployeeLeaveStatus($eId, $lId){
-        $appliedLeaves = AppliedLeave::where([['emp_id',$eId],['leave_id',$lId]])->get();
+        $appliedLeaves = LeaveQuota::where([['employee_id',$eId],['leave_id',$lId]])->first();
         $leaveDetail = LeaveMaster::where('leave_id',$lId)->first();
-        //print_r($leaveDetail);
-        
-        $total = $leaveDetail->max_leave_allowed;
-        $leaveTaken = 0;
-        foreach($appliedLeaves as $al){
-            $leaveTaken += $al->posted_days;
-        }
         $dataToSend = [
-            'used'=>$leaveTaken,
-            'total'=>$total
+            'used'=>$appliedLeaves->used_days,
+            'total'=>$appliedLeaves->alloted_days
         ];
         return $dataToSend;
     }
@@ -679,8 +673,11 @@ class AdminController extends Controller
             'updated_at'=>Carbon::now() 
         ]);
         $new->save();
+        $updateQuota = LeaveQuota::where([['employee_id',$new->emp_id],['leave_id',$new->leave_id]])->first();
+        $updateQuota->used_days = $updateQuota->used_days + $new->posted_days;
+        $updateQuota->save();
+        
         $dataSaved = AppliedLeave::where('id',$new->id)->with('employee','leave')->first();
-
         return response()->json($dataSaved);
     }
     public function deleteAppliedLeave($id){
