@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='companies';
     /**
      * The attributes that are mass assignable.

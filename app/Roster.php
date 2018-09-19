@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Roster extends Model
 {
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='rosters';
     /**
      * The attributes that are mass assignable.
@@ -21,16 +23,16 @@ class Roster extends Model
     ];
 
     public function branch(){
-        return $this->belongsTo('App\Branch', 'branch_id','branch_id');
+        return $this->belongsTo('App\Branch', ['branch_id','company_id'],['branch_id','company_id']);
     }
     public function department(){
-        return $this->belongsTo('App\Department','department_id','department_id');
+        return $this->belongsTo('App\Department',['department_id','company_id'],['department_id','company_id']);
     }
     public function shift(){
-        return $this->belongsTo('App\Shift', 'shift_id','shift_id');
+        return $this->belongsTo('App\Shift', ['shift_id','company_id'],['shift_id','company_id']);
     }
     public function employee(){
-        return $this->belongsTo('App\Employee', 'employee_id','employee_id');
+        return $this->belongsTo('App\Employee', ['employee_id','company_id'],['employee_id','company_id']);
     }
 
     public function punch_record(){

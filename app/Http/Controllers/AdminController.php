@@ -673,6 +673,7 @@ class AdminController extends Controller
             'updated_at'=>Carbon::now() 
         ]);
         $new->save();
+
         $updateQuota = LeaveQuota::where([['employee_id',$new->emp_id],['leave_id',$new->leave_id]])->first();
         $updateQuota->used_days = $updateQuota->used_days + $new->posted_days;
         $updateQuota->save();
@@ -719,6 +720,15 @@ class AdminController extends Controller
         $leaveToUpdate->save();
         
         $dataUpdated = AppliedLeave::where('id',$req->id)->with('employee','leave')->first();
+
+        $userAppliedLeaves = AppliedLeave::where([['emp_id',$dataUpdated->emp_id],['leave_id',$dataUpdated->leave_id]])->get();
+        $usedDays = 0;
+        foreach($userAppliedLeaves as $leave){
+            $usedDays += $leave->posted_days;
+        }
+        $updateQuota = LeaveQuota::where([['employee_id',$dataUpdated->emp_id],['leave_id',$dataUpdated->leave_id]])->first();
+        $updateQuota->used_days = $usedDays;
+        $updateQuota->save();
 
         return response()->json($dataUpdated);
 

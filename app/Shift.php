@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shift extends Model
 {
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='shifts';
     /**
      * The attributes that are mass assignable.
@@ -19,6 +21,6 @@ class Shift extends Model
         'updated_at','created_at'
     ];
     public function rosters(){
-        return $this->hasMany('App\Roster', 'shift_id','shift_id');
+        return $this->hasMany('App\Roster', ['shift_id','company_id'],['shift_id','company_id']);
     }
 }

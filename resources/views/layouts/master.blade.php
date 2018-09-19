@@ -11,6 +11,7 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   
   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{asset('js/plugins/font-awesome/css/font-awesome.min.css')}}">
@@ -25,7 +26,6 @@
   
   <link rel="stylesheet" href="{{asset('js/plugins/datepicker/datepicker3.css')}}">
 
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <!-- Custom CSS Files -->
   <link rel="stylesheet" href="{{asset('css/myStyle.css')}}">
   @yield('head')
@@ -586,8 +586,8 @@
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="{{asset('js/plugins/jquery/jquery-3.3.1.js')}}"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<!-- <script src="{{asset('js/plugins/fullcalendar/lib/jquery-ui.min.js')}}"></script> -->
+<script src="{{asset('js/plugins/fullcalendar/lib/jquery-ui.min.js')}}"></script>
+<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 <script src="{{asset('js/plugins/bootstrap/js/bootstrap.js')}}"></script>
 <!-- <script src="{{asset('js/plugins/fastclick/fastclick.js')}}"></script> -->
 @yield('footer')

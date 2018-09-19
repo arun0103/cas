@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='categories';
     /**
      * The attributes that are mass assignable.

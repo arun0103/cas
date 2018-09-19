@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='employees';
     /**
      * The attributes that are mass assignable.

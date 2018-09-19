@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Punch extends Model
 {
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='punch_records';
     /**
      * The attributes that are mass assignable.
@@ -27,18 +29,18 @@ class Punch extends Model
     ];
 
     public function employee(){
-        return $this->belongsTo('App\Employee', 'emp_id', 'employee_id');
+        return $this->belongsTo('App\Employee', ['emp_id','company_id'], ['employee_id','company_id']);
     }
     public function branch(){
-        return $this->belongsTo('App\Branch','branch_id','branch_id');
+        return $this->belongsTo('App\Branch',['branch_id','company_id'],['branch_id','company_id']);
     }
     public function department(){
-        return $this->belongsTo('App\Department','dept_id','department_id');
+        return $this->belongsTo('App\Department',['dept_id','company_id'],['department_id','company_id']);
     }
     public function roster(){
-        return $this->belongsTo('App\Roster','roster_id','id');
+        return $this->belongsTo('App\Roster',['roster_id','company_id'],['id','company_id']);
     }
     public function shift(){
-        return $this->belongsTo('App\Shift','shift_code','shift_id');
+        return $this->belongsTo('App\Shift',['shift_code','company_id'],['shift_id','company_id']);
     }
 }

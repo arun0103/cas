@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class LeaveQuota extends Model
 {
-    //
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='leaves_quota';
     /**
      * The attributes that are mass assignable.
@@ -19,12 +20,12 @@ class LeaveQuota extends Model
         'updated_at','created_at'
     ];
     public function employee(){
-        return $this->belongsTo('App\Employee', 'employee_id','employee_id');
+        return $this->belongsTo('App\Employee', ['employee_id','company_id'],['employee_id','company_id']);
     }
     public function branch(){
-        return $this->belongsTo('App\Branch','branch_id','branch_id');
+        return $this->belongsTo('App\Branch',['branch_id','company_id'],['branch_id','company_id']);
     }
     public function leaveMaster(){
-        return $this->belongsTo('App\LeaveMaster','leave_id','leave_id');
+        return $this->belongsTo('App\LeaveMaster',['leave_id','company_id'],['leave_id','company_id']);
     }
 }

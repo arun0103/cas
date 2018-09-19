@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Designation extends Model
 {
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='designations';
     /**
      * The attributes that are mass assignable.
@@ -17,6 +19,6 @@ class Designation extends Model
         'updated_at','created_at'
     ];
     public function employees(){
-        return $this->hasMany('App\Employee','designation_id','designation_id');
+        return $this->hasMany('App\Employee',['designation_id','company_id'],['designation_id','company_id']);
     }
 }

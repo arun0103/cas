@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class LeaveMaster extends Model
 {
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='leave';
     /**
      * The attributes that are mass assignable.

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class LeaveTypes extends Model
 {
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='company_leave';
     /**
      * The attributes that are mass assignable.
@@ -18,6 +20,6 @@ class LeaveTypes extends Model
         'updated_at','created_at'
     ];
     public function leaveDetail(){
-        return $this->belongsTo('App\LeaveMaster','leave_id','leave_id');
+        return $this->belongsTo('App\LeaveMaster',['leave_id','company_id'],['leave_id','company_id']);
     }
 }

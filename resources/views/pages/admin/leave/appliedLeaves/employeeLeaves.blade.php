@@ -291,7 +291,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="btn_confirm_edit" value="Update">Update</button>
+                        <button type="button" class="btn btn-primary" id="btn_confirm_edit" value="Update">Update</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -432,7 +432,8 @@
         });
         function validate(){
             var validated = true;
-            if($('#select_branch').val()==[]){
+            console.log($('#select_branch').val());
+            if($('#select_branch').val()==null || $('#select_branch').val()=='' || $('#select_branch').val()==[]){
                 validated = false;
                 $('#error_branch').removeClass('no-error').addClass('error');
                 $('#error_employee').removeClass('no-error').addClass('error');
@@ -452,7 +453,7 @@
                     $('#error_leaveType').removeClass('error').addClass('no-error');
                 }
             }
-            if($('#select_leavePart').val().length<1){
+            if($('#select_leavePart').val()==[]||$('#select_leavePart').val()==null||$('#select_leavePart').val()==''){
                 validated = false;
                 $('#error_leavePart').removeClass('no-error').addClass('error');
             }else{

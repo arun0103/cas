@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    //
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='students';
     /**
      * The attributes that are mass assignable.
@@ -24,10 +25,10 @@ class Student extends Model
     ];
 
     public function grade(){
-        return $this->belongsTo('App\Student_Grade','grade_id','grade_id');
+        return $this->belongsTo('App\Student_Grade',['grade_id','institution_id'],['grade_id','institution_id']);
     }
     public function section(){
-        return $this->belongsTo('App\Student_Section','section_id','section_id');
+        return $this->belongsTo('App\Student_Section',['section_id','institution_id'],['section_id','institution_id']);
     }
     
 }

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student_Punch extends Model
 {
+    use \Awobaz\Compoships\Compoships;
+    
     protected $table ='student_punch_records';
     /**
      * The attributes that are mass assignable.
@@ -21,6 +23,6 @@ class Student_Punch extends Model
     ];
 
     public function student(){
-        return $this->belongsTo('App\Student', 'student_id', 'student_id');
+        return $this->belongsTo('App\Student', ['student_id','institution_id'], ['student_id','institution_id']);
     }
 }
