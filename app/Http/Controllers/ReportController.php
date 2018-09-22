@@ -67,13 +67,15 @@ class ReportController extends Controller
                     'From' => $fromDate,
                     'To ' => $toDate,
                 ];
-                $queryBuilder = Roster::where('company_id',Session::get('company_id'))
-                                ->where('final_half_1','AB')->orWhere('final_half_2','AB')
+                $queryBuilder = Roster::whereBetween('date',[$fromDate,$toDate])
                                 ->whereIn('employee_id',$employees)
-                                ->whereBetween('date',[$fromDate,$toDate])
+                                ->where('company_id',Session::get('company_id'))
+                                ->where(function($query){
+                                        $query->where('final_half_1','AB')->orWhere('final_half_2','AB');
+                                    })
                                 ->with('employee','shift');//->orderBy('shift_id','ASC');
-                //dd($queryBuilder);
-                $columns = [
+               //dd($queryBuilder->toSql());
+               $columns = [
                     'Emp Code' => 'employee_id',
                     'Name' =>function($result){
                         return $result->employee['name'];
