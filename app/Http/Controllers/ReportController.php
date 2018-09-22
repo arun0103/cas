@@ -67,7 +67,9 @@ class ReportController extends Controller
                     'From' => $fromDate,
                     'To ' => $toDate,
                 ];
-                $queryBuilder = Roster::whereIn('employee_id',$employees)
+                $queryBuilder = Roster::where('company_id',Session::get('company_id'))
+                                ->where('final_half_1','AB')->orWhere('final_half_2','AB')
+                                ->whereIn('employee_id',$employees)
                                 ->whereBetween('date',[$fromDate,$toDate])
                                 ->with('employee','shift');//->orderBy('shift_id','ASC');
                 //dd($queryBuilder);
@@ -168,10 +170,11 @@ class ReportController extends Controller
                     'From' => $fromDate,
                     'To ' => $toDate,
                 ];
-                $queryBuilder = Employee::with(['rosters'=> function ($query) use($fromDate,$toDate) {
+                $queryBuilder = Employee::where('company_id',Session::get('company_id'))
+                                            ->with(['rosters'=> function ($query) use($fromDate,$toDate) {
                                                 $query->whereBetween('date', [$fromDate, $toDate]);
                                             }])
-                                            ->with('shifts','punch_records')->whereIn('employee_id',$employees);
+                                            ->with('first_shift','punch_records')->whereIn('employee_id',$employees);
                 //dd($queryBuilder);
                 $columns = [
                     'Emp Code' => 'employee_id',
@@ -260,7 +263,9 @@ class ReportController extends Controller
                     'From' => $fromDate,
                     'To ' => $toDate,
                 ];
-                $queryBuilder = Roster::whereIn('employee_id',$employees)->whereBetween('date',[$fromDate,$toDate])->with('employee','shift', 'punch_record');
+                $queryBuilder = Roster::whereIn('employee_id',$employees)
+                                        ->whereBetween('date',[$fromDate,$toDate])
+                                        ->with('employee','shift', 'punch_record');
                 //dd($queryBuilder);
                 $columns = [
                     'Emp Code' => 'employee_id',
@@ -308,7 +313,7 @@ class ReportController extends Controller
                         ->setCss([
                             '.head-content' => 'border-width: 1px',
                         ])->setPaper('a4')
-                        
+                        ->setOrientation('landscape')
                         ->stream(); // or download('filename here..') to download pdf;
                 }
                 else{
@@ -447,7 +452,8 @@ class ReportController extends Controller
                     'From' => $fromDate,
                     'To ' => $toDate,
                 ];
-                $queryBuilder = Employee::where([['company_id',Session::get('company_id')]])->with('department','shifts','designation');
+                $queryBuilder = Employee::where([['company_id',Session::get('company_id')]])
+                                ->with('department','first_shift','designation');
                 //dd($queryBuilder);
                 $columns = [
                     'Emp Code' => 'employee_id',
@@ -458,7 +464,7 @@ class ReportController extends Controller
                     },
                     'Father Name'=>'father_name',
                     'Shift'=>function($result){
-                        return $result->shifts[0]['name'];
+                        return $result->first_shift[0]['name'];
                     },
                     'Designation' =>function($result){
                         return $result->designation['name'];
@@ -593,9 +599,9 @@ class ReportController extends Controller
                 $meta = [
                     'Date' => $fromDate,
                 ];
-                $queryBuilder = Department:://where('department_id','1_002')->
+                $queryBuilder = Department::where('company_id',Session::get('company_id'))
                                 //->whereIn('branch_id',$branches)
-                                with(['employees'=>function($query){
+                                ->with(['employees'=>function($query){
                                     $query->with('appliedLeaves');
                                 }])
                                 ->with(['punch_records'=>function($query) use($fromDate){
@@ -634,11 +640,8 @@ class ReportController extends Controller
                                     if($diff_between_leave_and_fromDate_in_days <$result->employees[$i]->appliedLeaves[$j]->posted_days)
                                         $leave_count++;
                                 }
-                                
                             }
-                            
                         }
-                        
                         return $leave_count; //// To be changed
                     },
                     'Present'=>function ($result){

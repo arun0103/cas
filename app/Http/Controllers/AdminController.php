@@ -675,7 +675,10 @@ class AdminController extends Controller
         $new->save();
 
         $updateQuota = LeaveQuota::where([['employee_id',$new->emp_id],['leave_id',$new->leave_id]])->first();
-        $updateQuota->used_days = $updateQuota->used_days + $new->posted_days;
+        if($new->day_part ==3)
+            $updateQuota->used_days = $updateQuota->used_days + $new->posted_days;
+        else
+            $updateQuota->used_days = $updateQuota->used_days + $new->posted_days/2;
         $updateQuota->save();
         
         $dataSaved = AppliedLeave::where('id',$new->id)->with('employee','leave')->first();

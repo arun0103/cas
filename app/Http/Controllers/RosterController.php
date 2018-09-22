@@ -31,69 +31,61 @@ class RosterController extends Controller
         $twoDigitMonth = (int)$month<10?"0".$month:$month;
         //dd($twoDigitMonth);
         $isWeekOff = false;
-        $isHoliday = false;
         if($branch !=null){
             $employeeCount = 0;
             foreach($branch as $b){
                 $checkDate = $year."-".($month>9?$month:"0".$month)."-01";
                 
-                // $check = Roster::where([['company_id',$company_id],['branch_id',$b],['date',$checkDate]])->get();
-                // if(count($check)==0)
-                {
-                    $employees = Employee::where([['company_id',$company_id],['branch_id',$b]])->get();
-                    $employeeCount +=count($employees);
-                    foreach($employees as $employee){
-                        for($i=1; $i<=$number_of_days; $i++){
-                            $twoDigitDay = $i<10?"0".$i:$i;
-                            $date = $year."-".$twoDigitMonth."-".$twoDigitDay;
+                $employees = Employee::where([['company_id',$company_id],['branch_id',$b]])->get();
+                $employeeCount +=count($employees);
+                foreach($employees as $employee){
+                    for($i=1; $i<=$number_of_days; $i++){
+                        $twoDigitDay = $i<10?"0".$i:$i;
+                        $date = $year."-".$twoDigitMonth."-".$twoDigitDay;
 
-                            $check_roster_exists = Roster::where([['company_id',$company_id],['employee_id',$employee->employee_id],['date',$date]])->get();
-                            if(count($check_roster_exists)>0)
-                                continue;
+                        $check_roster_exists = Roster::where([['company_id',$company_id],['employee_id',$employee->employee_id],['date',$date]])->get();
+                        if(count($check_roster_exists)>0)
+                            continue;
 
-                            $dateDay =  date('D', strtotime($date." 00:00"));
-                            $dateDay_number = 0;
-                            $day_status = "W";
-                            switch($dateDay){
-                                case "Mon": $dateDay_number = 1;break;
-                                case "Tue": $dateDay_number = 2;break;
-                                case "Wed": $dateDay_number = 3;break;
-                                case "Thu": $dateDay_number = 4;break;
-                                case "Fri": $dateDay_number = 5;break;
-                                case "Sat": $dateDay_number = 6;break;
-                                case "Sun": $dateDay_number = 7;break;
-                            }
-                            
-                            if($employee->week_off_day == $dateDay_number){
-                                $isWeekOff = true;
-                                $day_status = "O";
-                            }else{
-                                $isWeekOff = false;
-                                $day_status = "W";
-                            }
-                            //echo("Company Id : ".$company_id."\tShift Id : ".$employee->shift_1."Employee Id :".$employee->employee_id."\tDate : ".$date."<br>");
-                            $holiday_check = Holiday::where([['company_id',$company_id],['branch_id',$b],['holiday_date',$date]])->first();
-                            if($holiday_check != null){
-                                $isHoliday = true;
-                                $day_status = "H";
-                            }
-                            else{
-                                $isHoliday = false;
-                            }
-                            
-                            $roster = new Roster([
-                                'employee_id'=>$employee->employee_id,
-                                'company_id'=>$company_id,
-                                'branch_id'=>$employee->branch_id,
-                                'department_id'=>$employee->dept_id,
-                                'shift_id'=>$employee->shift_1,
-                                'date'=>$date,
-                                'is_holiday'=>$day_status,
-                                'final_half_1'=>"AB",
-                                'final_half_2'=>"AB"
-                            ]);
-                            $roster->save();
+                        $dateDay =  date('D', strtotime($date." 00:00"));
+                        $dateDay_number = 0;
+                        $day_status = "W";
+                        switch($dateDay){
+                            case "Mon": $dateDay_number = 1;break;
+                            case "Tue": $dateDay_number = 2;break;
+                            case "Wed": $dateDay_number = 3;break;
+                            case "Thu": $dateDay_number = 4;break;
+                            case "Fri": $dateDay_number = 5;break;
+                            case "Sat": $dateDay_number = 6;break;
+                            case "Sun": $dateDay_number = 0;break;
                         }
+                        
+                        if($employee->week_off_day == $dateDay_number){
+                            $isWeekOff = true;
+                            $day_status = "O";
+                        }else{
+                            $isWeekOff = false;
+                            $day_status = "W";
+                        }
+                        //echo("Company Id : ".$company_id."\tShift Id : ".$employee->shift_1."Employee Id :".$employee->employee_id."\tDate : ".$date."<br>");
+                        $holiday_check = Holiday::where([['company_id',$company_id],['holiday_date',$date]])->first();
+                        
+                        if($holiday_check != null){
+                            $day_status = "H";
+                        }
+                        
+                        $roster = new Roster([
+                            'employee_id'=>$employee->employee_id,
+                            'company_id'=>$company_id,
+                            'branch_id'=>$employee->branch_id,
+                            'department_id'=>$employee->dept_id,
+                            'shift_id'=>$employee->shift_1,
+                            'date'=>$date,
+                            'is_holiday'=>$day_status,
+                            'final_half_1'=>"AB",
+                            'final_half_2'=>"AB"
+                        ]);
+                        $roster->save();
                     }
                 }
             }

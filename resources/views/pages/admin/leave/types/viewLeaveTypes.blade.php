@@ -259,7 +259,7 @@
             $('#error_leave').removeClass('error').addClass('no-error');
         }
         if($('#select_branch_id').val()!='' && $('#select_leave_id').val()!=''){
-            if($('[id=leave'+$('#select_leave_id').val()+'___'+$('#select_branch_id').val()+']').length>0){
+            if($('[id=leave'+$('#select_leave_id').val()+'___'+$('#select_branch_id').val()+']').length>0 && ($('#select_leave_id').val() != original_leave_id || $('#select_branch_id').val()!=original_branch_id)){
                 validated = false;
                 alert('Duplicate Entry Found!');
             }

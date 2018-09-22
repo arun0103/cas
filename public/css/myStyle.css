@@ -36,6 +36,8 @@
   background-color: rgb(171, 171, 177);
 }
 
+.select2-selection__choice { background-color: rgb(69, 228, 90) !important; }
+#select_cannot_club span.select2-selection__choice  { background-color: rgb(238, 104, 64) !important; }
 .dropdown-content a:hover {background-color: #ddd;}
 
 .dropdown-submenu:hover .dropdown-content {display: block;}

@@ -102,10 +102,7 @@ class CreateEmployeesTable extends Migration
             $table->string('bank_account_number');
 
             
-
-            
             $table->timestamps();
-            $table->unique('card_number');
             $table->unique(array('employee_id','company_id'));
         });
     }

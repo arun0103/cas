@@ -15,7 +15,7 @@ class Roster extends Model
      * @var array
      */
     protected $fillable = [
-        'company_id','branch_id','employee_id', 'deparment_id','shift_id',
+        'company_id','branch_id','employee_id', 'department_id','shift_id',
         'date','is_holiday',
         'final_half_1','final_half_2',
         
@@ -36,6 +36,6 @@ class Roster extends Model
     }
 
     public function punch_record(){
-        return $this->belongsTo('App\Punch','punch_id','id');
+        return $this->belongsTo('App\Punch','id','roster_id');
     }
 }

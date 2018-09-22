@@ -16,7 +16,6 @@
                 <button type="button" id="btn_add" class="btn btn-primary" data-toggle="modal" data-target="#modal-add">Add New</button>
             </h3>
         </div>
-        <!-- /.box-header -->
         <div class="box-body">
             <table id="leaveQuotaTable" class="table table-bordered table-striped" style="width:100%">
                 <thead>
@@ -56,9 +55,7 @@
                 </tfoot>
             </table>
         </div>
-        <!-- /.box-body -->
     </div>
-    <!-- /.box -->
     <div class="modal fade" id="modal-add">
         <form id="form_addLeaveQuota" class="form-horizontal">
             {{ csrf_field() }}
@@ -77,7 +74,7 @@
                                     <div class="col-sm-6">
                                         <div class="form-group" >
                                             <label for="select_branch">Branch <span class="required">*</span></label>
-                                            <select id="select_branch" class="form-control select2 percent100" data-placeholder="Select Branch" name="selectedBranch" onchange="populateEmployee(this.value)" required>
+                                            <select id="select_branch" class="form-control select2 percent100" data-placeholder="Select Branch" name="selectedBranch" onchange="populateLeaves(this.value);populateEmployee(this.value)" required>
                                                 <option></option>
                                                 @foreach($branches as $branch)
                                                     <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
@@ -91,9 +88,6 @@
                                             <label for="select_leave">Leave Type <span class="required">*</span></label>
                                             <select id="select_leave" class="form-control select2 " data-placeholder="Select Leave" name="selectedLeave" required>
                                                 <option></option>
-                                                @foreach($leaves as $leave)
-                                                    <option value="{{$leave->leave_id}}">{{$leave->leaveDetail->name}}</option>
-                                                @endforeach
                                             </select>
                                             <span id="error_leave" class="no-error">Required!</span>
                                         </div> 
@@ -125,9 +119,7 @@
                         <button type="button" class="btn btn-primary" id="btn_confirm" value="Add">Add</button>
                     </div>
                 </div>
-                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-dialog -->
         </form>
     </div>
     <div class="modal fade" id="modal-edit">
@@ -155,12 +147,8 @@
                                     <div class="col-sm-6">
                                         <div class="form-group" >
                                             <label for="select_leave_edit">Leave Type <span class="required">*</span></label>
-                                            <select id="select_leave_edit" class="form-control select2 " data-placeholder="Select Leave" name="selectedLeave" required>
-                                                <option></option>
-                                                @foreach($leaves as $leave)
-                                                    <option value="{{$leave->leave_id}}">{{$leave->leaveDetail->name}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input type="text" class="form-control" disabled id="input_leave_name">
+                                            <input type="hidden" class="form-control" disabled id="input_leave_id">
                                             <span id="error_leave_edit" class="no-error">Required!</span>
                                         </div> 
                                     </div> 
@@ -189,9 +177,7 @@
                         <button type="button" class="btn btn-primary" id="btn_confirm_edit" value="update">Update</button>
                     </div>
                 </div>
-                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-dialog -->
         </form>
     </div>
 
@@ -231,6 +217,20 @@
                 });
             }
         }
+        function populateLeaves(branch){
+            if(branch != []){
+                $('#select_leave').empty();
+                $.get('/admin/getBranchLeaves/'+branch, function(data){
+                    console.log(data);
+                    $('#select_leave').empty();
+                    $('#select_leave').append('<option></option>')
+                    $.each(data,function(key,value){
+                        $('#select_leave').append('<option value="'+value.leave_id+'">'+value.leave_name+'</option>');
+                    });
+                    //$('#select_leave').select2();
+                });
+            }
+        }
         var original_leave_id;
         //Opening Edit Modal
         $(document).on('click', '.open_modal', function(){
@@ -242,6 +242,8 @@
                 $('#input_branch_id').val(data.branch.branch_id);
                 $('#input_employee_name').val(data.employee.name);
                 $('#input_employee_id').val(data.employee.employee_id);
+                $('#input_leave_id').val(data.leave_id);
+                $('#input_leave_name').val(data.leave_master.name);
                 $('#select_leave_edit').val(data.leave_id).trigger('change');
                 $('#inputLeaveQuota_edit').val(data.alloted_days);
                 
@@ -270,7 +272,7 @@
                 var formData = {
                     company_id              : $('#inputCompanyId').val(),
                     branch_id               : $('#input_branch_id').val(),
-                    leave_id                : $('#select_leave_edit').val(),
+                    leave_id                : $('#input_leave_id').val(),
                     employees               : $('#input_employee_id').val(),
                     alloted_days            : $('#inputLeaveQuota_edit').val()
                 }

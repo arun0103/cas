@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('head')
     <link rel="stylesheet" href="{{asset('js/plugins/datepicker/datepicker3.css')}}">
-    <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-datetimepicker-0.0.11/css/bootstrap-datetimepicker.min.css')}}">
+    <!-- <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-datetimepicker-0.0.11/css/bootstrap-datetimepicker.min.css')}}"> -->
     
     <link rel="stylesheet" href="{{asset('js/plugins/timepicker/bootstrap-timepicker.css')}}">
     <link rel="stylesheet" href="{{asset('js/plugins/select2/select2.min.css')}}">
@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col-sm-12" id="branch_div">
                         <select id="select_branch" class="form-control select2 percent100"  data-placeholder="Select Branch" name="selectedBranchView" onchange="populateEmployee(this.value)" required>
-                        <option></option>    
+                            <option></option>    
                             @foreach($branches as $branch)
                                 <option value="{{$branch->branch_id}}">{{$branch->name}}</option>
                             @endforeach
@@ -48,7 +48,7 @@
                 <div class="input-group">
                     <div class="input-group-addon left-addon">
                         <i class="fa fa-calendar"></i>
-                        <input type="text" class="form-control pull-right date" id="datepicker_punch_date" autocomplete="off" placeholder="Select Date">
+                        <input type="text" class="form-control pull-right" id="datepicker_punch_date" autocomplete="off" placeholder="Select Date">
                     </div>
                     <span id="error_date" class="no-error">Required!</span>
                 </div>
@@ -66,7 +66,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="modal-title">Add/Edit Punch Details of </h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -109,7 +109,7 @@
                                             <div class="input-group date">
                                                 <div class="input-group-addon left-addon">
                                                     <i class="fa fa-calendar"></i>
-                                                    <input type="text" class="form-control pull-right date" id="datepicker_punch1_date" autocomplete="off" placeholder="No Data">
+                                                    <input type="text" class="form-control pull-right date punchDates" id="datepicker_punch1_date" autocomplete="off" placeholder="No Data">
                                                 </div>
                                             </div>
                                         </div>
@@ -134,7 +134,7 @@
                                             <div class="input-group date">
                                                 <div class="input-group-addon left-addon">
                                                     <i class="fa fa-calendar"></i>
-                                                    <input type="text" class="form-control pull-right date" id="datepicker_punch2_date" autocomplete="off" placeholder="No Data">
+                                                    <input type="text" class="form-control pull-right date punchDates" id="datepicker_punch2_date" autocomplete="off" placeholder="No Data">
                                                 </div>
                                             </div>
                                         </div>
@@ -161,7 +161,7 @@
                                             <div class="input-group date">
                                                 <div class="input-group-addon left-addon">
                                                     <i class="fa fa-calendar"></i>
-                                                    <input type="text" class="form-control pull-right date" id="datepicker_punch3_date" autocomplete="off" placeholder="No Data">
+                                                    <input type="text" class="form-control pull-right date punchDates" id="datepicker_punch3_date" autocomplete="off" placeholder="No Data">
                                                 </div>
                                             </div>
                                         </div>
@@ -186,7 +186,7 @@
                                             <div class="input-group date">
                                                 <div class="input-group-addon left-addon">
                                                     <i class="fa fa-calendar"></i>
-                                                    <input type="text" class="form-control pull-right date" id="datepicker_punch4_date" autocomplete="off" placeholder="No Data">
+                                                    <input type="text" class="form-control pull-right date punchDates" id="datepicker_punch4_date" autocomplete="off" placeholder="No Data">
                                                 </div>
                                             </div>
                                         </div>
@@ -213,7 +213,7 @@
                                             <div class="input-group date">
                                                 <div class="input-group-addon left-addon">
                                                     <i class="fa fa-calendar"></i>
-                                                    <input type="text" class="form-control pull-right date" id="datepicker_punch5_date" autocomplete="off" placeholder="No Data">
+                                                    <input type="text" class="form-control pull-right date punchDates" id="datepicker_punch5_date" autocomplete="off" placeholder="No Data">
                                                 </div>
                                             </div>
                                         </div>
@@ -238,7 +238,7 @@
                                             <div class="input-group date">
                                                 <div class="input-group-addon left-addon">
                                                     <i class="fa fa-calendar"></i>
-                                                    <input type="text" class="form-control pull-right date" id="datepicker_punch6_date" autocomplete="off" placeholder="No Data">
+                                                    <input type="text" class="form-control pull-right date punchDates" id="datepicker_punch6_date" autocomplete="off" placeholder="No Data">
                                                 </div>
                                             </div>
                                         </div>
@@ -380,7 +380,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="btn_save" value="view">Save</button>
                         <button type="button" class="btn btn-danger" id="btn_delete" value="view">Delete</button>
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default pull-left btn-close" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -395,14 +395,14 @@
     <script src="{{asset('js/plugins/select2/select2.full.min.js')}}"></script>
     <script src="{{asset('js/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
     <script src="{{asset('js/plugins/timepicker/bootstrap-timepicker.js')}}"></script>
-    <script src="{{asset('js/plugins/bootstrap-datetimepicker-0.0.11/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <!-- <script src="{{asset('js/plugins/bootstrap-datetimepicker-0.0.11/js/bootstrap-datetimepicker.min.js')}}"></script> -->
     
     <script>
         var dataFrom, id;
         var branch_id, emp_id;
         $(document).ready(function () {
             $('.select2').select2();
-            $('.date').datepicker({
+            $('#datepicker_punch_date').datepicker({
                 format: "yyyy-mm-dd",
                 weekStart: 0,
                 autoclose: true,
@@ -468,6 +468,20 @@
                         $('#input_half_1').val(rosterData.final_half_1).trigger('change');
                         $('#input_half_2').val(rosterData.final_half_2).trigger('change');
                         $.get('/getPunchDetails/'+branch_id +'/'+emp_id+'/'+date, function(punchData){
+                            $(".punchDates").datepicker('remove');
+                            var maxPunchDate = new Date(date);
+                            maxPunchDate.setDate(maxPunchDate.getDate()+1);
+                            $( ".punchDates" ).datepicker({ 
+                                defaultDate: date,
+                                format: "yyyy-mm-dd",
+                                weekStart: 0,
+                                autoclose: true,
+                                todayHighlight: true,
+                                orientation: "auto",
+                                startDate: date,
+                                endDate: maxPunchDate,
+                                
+                            });
                         if(punchData != ""){
                             dataFrom = "punch";
                             id = punchData.id;
@@ -477,26 +491,38 @@
                             if(punchData.punch_1 !=null){
                                 $('#datepicker_punch1_date').val(getDate(punchData.punch_1)).trigger('change');
                                 $('#time_punch_1').val(getTime(punchData.punch_1)).trigger('change');
+                            }else{
+                                $('#datepicker_punch1_date').val(date).trigger('change');
                             }
                             if(punchData.punch_2 !=null){
                                 $('#datepicker_punch2_date').val(getDate(punchData.punch_2)).trigger('change');
                                 $('#time_punch_2').val(getTime(punchData.punch_2)).trigger('change');
+                            }else{
+                                $('#datepicker_punch2_date').val(date).trigger('change');
                             }
                             if(punchData.punch_3 !=null){
                                 $('#datepicker_punch3_date').val(getDate(punchData.punch_3)).trigger('change');
                                 $('#time_punch_3').val(getTime(punchData.punch_3)).trigger('change');
+                            }else{
+                                $('#datepicker_punch3_date').val(date).trigger('change');
                             }
                             if(punchData.punch_4 !=null){
                                 $('#datepicker_punch4_date').val(getDate(punchData.punch_4)).trigger('change');
                                 $('#time_punch_4').val(getTime(punchData.punch_4)).trigger('change');
+                            }else{
+                                $('#datepicker_punch4_date').val(date).trigger('change');
                             }
                             if(punchData.punch_5 !=null){
                                 $('#datepicker_punch5_date').val(getDate(punchData.punch_5)).trigger('change');
                                 $('#time_punch_5').val(getTime(punchData.punch_5)).trigger('change');
+                            }else{
+                                $('#datepicker_punch5_date').val(date).trigger('change');
                             }
                             if(punchData.punch_6 !=null){
                                 $('#datepicker_punch6_date').val(getDate(punchData.punch_6)).trigger('change');
                                 $('#time_punch_6').val(getTime(punchData.punch_6)).trigger('change');
+                            }else{
+                                $('#datepicker_punch6_date').val(date).trigger('change');
                             }
                             if(punchData.half_1_gate_pass ==1){
                                 $('#hasGatePass1').prop('checked',true);
@@ -529,15 +555,18 @@
                             $('#modal-manual_entry').modal('show');
                         }else{
                             //alert("finding roster details");
+                            $('#datepicker_punch1_date').val(date).trigger('change');
+                            $('#datepicker_punch2_date').val(date).trigger('change');
+                            $('#datepicker_punch3_date').val(date).trigger('change');
+                            $('#datepicker_punch4_date').val(date).trigger('change');
+                            $('#datepicker_punch5_date').val(date).trigger('change');
+                            $('#datepicker_punch6_date').val(date).trigger('change');
                             
                         }
                     });
                         $('#btn_confirm_delete').prop('hidden',true);                       
                         $('#modal-manual_entry').modal('show');
                     }else{
-                        // if(confirm("No roster data of given date! Do you want to create new roster?")){
-                        //     alert("Creating new roster!");
-                        // }
                         alert("No Data found in Roster.. \n\nPlease create Roster first!")
                     }
                 }); 
@@ -646,47 +675,126 @@
                 $('#gatePass2_in').removeClass('error error-border');  
                 $('#inputHours2').removeClass('error error-border');  
             }
-            var punch_1, punch_2, punch_3, punch_4, punch_5, punch_6;
-            if($('#datepicker_punch1_date').val()!=""){
-                if($('#time_punch_1').val()!=""){
-                    $('#time_punch_1').removeClass('error error-border');
-                    //alert("Validation 1 entered");
-                    punch_1 = makeDateTime($('#datepicker_punch1_date').val(),$('#time_punch_1').val() );
-                // alert("Validate 1: "+punch_1);
-                }else{
-                    $('#time_punch_1').addClass('error error-border');
-                    valid = false;
-                }
+            var punch_1 = null, punch_2 = null, punch_3 = null, punch_4 = null, punch_5 = null, punch_6 = null;
+            if($('#time_punch_1').val() !=""){
+                punch_1 = makeDateTime($('#datepicker_punch1_date').val(),$('#time_punch_1').val());
             }else{
-                if($('#time_punch_1').val()!=""){
-                    $('#datepicker_punch1_date').addClass('error error-border');
-                    valid = false;
-                }else{
-                    $('#datepicker_punch1_date').removeClass('error error-border');
+                if($('#time_punch_2').val() !="" || $('#time_punch_3').val() !="" || $('#time_punch_4').val() !="" 
+                    || $('#time_punch_5').val() !="" || $('#time_punch_6').val() !=""){
+                        valid = false;
+                        alert('ERROR: Punch 1 is empty!');
+                        $('#time_punch_1').addClass('error error-border');
                 }
             }
+            if($('#time_punch_2').val() !=""){
+                punch_2 = makeDateTime($('#datepicker_punch2_date').val(),$('#time_punch_2').val());
+                if(punch_2 < punch_1){
+                    alert('Punch 2 is less than punch 1');
+                    valid= false;
+                }
+            }else{
+                if($('#time_punch_3').val() !="" || $('#time_punch_4').val() !="" 
+                    || $('#time_punch_5').val() !="" || $('#time_punch_6').val() !=""){
+                        valid = false;
+                        alert('ERROR: Punch 2 is empty!');
+                        $('#time_punch_2').addClass('error error-border');
+                }
+            }
+            if($('#time_punch_3').val() !=""){
+                punch_3 = makeDateTime($('#datepicker_punch3_date').val(),$('#time_punch_3').val());
+                if(punch_3 < punch_2){
+                    alert('Punch 3 is less than punch 2');
+                    valid= false;
+                }
+            }else{
+                if($('#time_punch_4').val() !="" || $('#time_punch_5').val() !="" || $('#time_punch_6').val() !=""){
+                        valid = false;
+                        alert('ERROR: Punch 3 is empty!');
+                        $('#time_punch_3').addClass('error error-border');
+                }
+            }
+            if($('#time_punch_4').val() !=""){
+                punch_4 = makeDateTime($('#datepicker_punch4_date').val(),$('#time_punch_4').val());
+                if(punch_4 < punch_3){
+                    valid = false;
+                    alert('Punch 4 is less than punch 3');
+                }
+            }else{
+                if($('#time_punch_5').val() !="" || $('#time_punch_6').val() !=""){
+                        valid = false;
+                        alert('ERROR: Punch 4 is empty!');
+                        $('#time_punch_4').addClass('error error-border');
+                }
+            }
+            if($('#time_punch_5').val() !=""){
+                punch_5 = makeDateTime($('#datepicker_punch5_date').val(),$('#time_punch_5').val());
+                if(punch_5 < punch_4){
+                    valid = false;
+                    alert('Punch 5 is less than punch 4');
+                }
+            }else{
+                if($('#time_punch_6').val() !=""){
+                        valid = false;
+                        alert('ERROR: Punch 5 is empty!');
+                        $('#time_punch_5').addClass('error error-border');
+                }
+            }
+            if($('#time_punch_6').val() !=""){
+                punch_6 = makeDateTime($('#datepicker_punch6_date').val(),$('#time_punch_6').val());
+                if(punch_6 < punch_5){
+                    valid = false;
+                    alert('Punch 6 is less than punch 5');
+                }
+            }
+
             
-            if($('#datepicker_punch2_date').val()!=""){
-                if($('#time_punch_2').val()!=""){
-                    $('#time_punch_2').removeClass('error error-border');
-                    punch_2 = makeDateTime($('#datepicker_punch2_date').val(),$('#time_punch_2').val());
-                    // if(punch_2 >punch_1){
-                    //     alert('OK');
-                    // }else{
-                    //     alert('Punch 2 must be greater than Punch 1');
-                    // }
-                }else{
-                    $('#time_punch_2').addClass('error error-border');
-                    valid = false;
-                }
-            }else{
-                if($('#time_punch_2').val()!=""){
-                    $('#datepicker_punch2_date').addClass('error error-border');
-                    valid = false;
-                }else{
-                    $('#datepicker_punch2_date').removeClass('error error-border');
-                }
-            }
+            // if($('#time_punch_6').val() != ""){
+            //     if($('#time_punch_5').val() == "" ||$('#time_punch_4').val() == "" ||$('#time_punch_3').val() == "" ||$('#time_punch_2').val() == "" ||$('#time_punch_1').val() == ""){
+            //         valid = false;
+            //     }else{
+            //         if($('#time_punch_5').val() == "")
+            //     }
+            // }
+            // if($('#datepicker_punch1_date').val()!=""){
+            //     if($('#time_punch_1').val()!=""){
+            //         $('#time_punch_1').removeClass('error error-border');
+            //         //alert("Validation 1 entered");
+            //         punch_1 = makeDateTime($('#datepicker_punch1_date').val(),$('#time_punch_1').val());
+            //     // alert("Validate 1: "+punch_1);
+            //     }else{
+            //         $('#time_punch_1').addClass('error error-border');
+            //         valid = false;
+            //     }
+            // }else{
+            //     if($('#time_punch_1').val()!=""){
+            //         $('#datepicker_punch1_date').addClass('error error-border');
+            //         valid = false;
+            //     }else{
+            //         $('#datepicker_punch1_date').removeClass('error error-border');
+            //     }
+            // }
+            
+            // if($('#datepicker_punch2_date').val()!=""){
+            //     if($('#time_punch_2').val()!=""){
+            //         $('#time_punch_2').removeClass('error error-border');
+            //         punch_2 = makeDateTime($('#datepicker_punch2_date').val(),$('#time_punch_2').val());
+            //         // if(punch_2 >punch_1){
+            //         //     alert('OK');
+            //         // }else{
+            //         //     alert('Punch 2 must be greater than Punch 1');
+            //         // }
+            //     }else{
+            //         $('#time_punch_2').addClass('error error-border');
+            //         valid = false;
+            //     }
+            // }else{
+            //     if($('#time_punch_2').val()!=""){
+            //         $('#datepicker_punch2_date').addClass('error error-border');
+            //         valid = false;
+            //     }else{
+            //         $('#datepicker_punch2_date').removeClass('error error-border');
+            //     }
+            // }
             return valid;
         }
         $('#btn_delete').click(function(){

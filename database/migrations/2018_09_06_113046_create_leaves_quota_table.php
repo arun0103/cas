@@ -21,7 +21,7 @@ class CreateLeavesQuotaTable extends Migration
             $table->string('employee_id');
             $table->string('leave_id');
             $table->integer('alloted_days');
-            $table->integer('used_days');
+            $table->float('used_days');
             $table->timestamps();
             $table->unique(array('company_id','branch_id','employee_id','leave_id'),'u');
         });

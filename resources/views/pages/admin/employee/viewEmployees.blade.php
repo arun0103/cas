@@ -802,7 +802,7 @@
     <script>
         var employee_table;
         var employee_id;
-        var validate = true;
+        var validated = true;
         $(document).ready(function () {
             employee_table = $('#employeeTable').DataTable({
                 'paging'        : true,
@@ -816,48 +816,6 @@
             
             $('#tabs').tabs();
             
-            $('#btn_tab_1_next').click(function(e){
-                
-                if($('#form_addEmployee_t1').valid() && validated == true){
-                    $( "#tabs" ).tabs({
-                        active: 1
-                    });
-                    $("label.error").hide();
-                    $(".error").removeClass("error");
-
-                    $('#modal-add').animate({ scrollTop: 0 }, 'slow');
-                    $('#tab_2_li').removeClass('disabled');
-                }else{
-                    alert('Some values are missing! \nPlease Check!');
-                }
-                
-                
-            });
-            $('#btn_tab_2_next').click(function(e){
-                
-                if($('#form_addEmployee_t2').valid()){
-                    $( "#tabs" ).tabs({
-                        active: 2
-                    });
-                    $('#modal-add').animate({ scrollTop: 0 }, 'slow');
-                }else{
-                    alert('Some values are missing! \nPlease Check!');
-                }
-            });
-            $('#btn_tab_2_back').click(function(e){
-                $( "#tabs" ).tabs({
-                    active: 0
-                });
-                 $('#modal-add').animate({ scrollTop: 0 }, 'slow');
-                
-            });
-            $('#btn_tab_3_back').click(function(e){
-                $( "#tabs" ).tabs({
-                    active: 1
-                });
-                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
-                
-            });
             $('.date').datepicker({
                 format: "yyyy-mm-dd",
                 weekStart: 0,
@@ -902,6 +860,47 @@
             };
 
         });
+        $('#btn_tab_1_next').click(function(e){
+                if($('#form_addEmployee_t1').valid() && validated == true){
+                    $( "#tabs" ).tabs({
+                        active: 1
+                    });
+                    $("label.error").hide();
+                    $(".error").removeClass("error");
+
+                    $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                    $('#tab_2_li').removeClass('disabled');
+                }else{
+                    alert('Some values are missing! \nPlease Check!');
+                }
+                
+                
+            });
+            $('#btn_tab_2_next').click(function(e){
+                
+                if($('#form_addEmployee_t2').valid()){
+                    $( "#tabs" ).tabs({
+                        active: 2
+                    });
+                    $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                }else{
+                    alert('Some values are missing! \nPlease Check!');
+                }
+            });
+            $('#btn_tab_2_back').click(function(e){
+                $( "#tabs" ).tabs({
+                    active: 0
+                });
+                 $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                
+            });
+            $('#btn_tab_3_back').click(function(e){
+                $( "#tabs" ).tabs({
+                    active: 1
+                });
+                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+                
+            });
         $('#btn_add').click(function(){
             state="add";
             $("label.error").hide();
@@ -921,7 +920,9 @@
 
             $('#error_msg_id').removeClass('error').addClass('no-error');
 
-            $('#form_addEmployee').trigger("reset");
+            $('#form_addEmployee_t1').trigger("reset");
+            $('#form_addEmployee_t2').trigger("reset");
+            $('#form_addEmployee_t3').trigger("reset");
             $('#select_department').val([]).change();
             $('#select_category').val([]).change();
             $('#select_branch').val([]).change();
@@ -1324,17 +1325,17 @@
                 }
             }
         });
-        $(document).on('change','#inputCardNumber', function(){
-            var current = $(this).val();
-            $.get('/findCardNumber/'+current, function(result){
-                if(result=="duplicate"){
-                    validated = false;
-                    $('#error_cardNumber').removeClass('no-error').addClass('error');
-                }else{
-                    validated = true;
-                    $('#error_cardNumber').removeClass('error').addClass('no-error');
-                }
-            });
-        });
+        // $(document).on('change','#inputCardNumber', function(){
+        //     var current = $(this).val();
+        //     $.get('/findCardNumber/'+current, function(result){
+        //         if(result=="duplicate"){
+        //             validated = false;
+        //             $('#error_cardNumber').removeClass('no-error').addClass('error');
+        //         }else{
+        //             validated = true;
+        //             $('#error_cardNumber').removeClass('error').addClass('no-error');
+        //         }
+        //     });
+        // });
     </script>
 @endsection

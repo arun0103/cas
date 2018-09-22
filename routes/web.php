@@ -163,6 +163,8 @@ Route::put('updateLeaveType/{leave_id}/{branch_id}', 'LeaveTypeController@update
 Route::delete('/deleteLeaveType/{leave_id}/{branch_id}','LeaveTypeController@deleteLeaveType');
 
 Route::get('/admin/leave/type/add','LeaveTypeController@addLeaveTypes')->name('addLeaveType');
+
+Route::get('/admin/getBranchLeaves/{branch_id}','LeaveTypeController@getBranchLeaves');
 //////////////////////////////////////////////////////////////////////////////////////////////
 //Leave quota
 Route::get('/admin/leave/quota/view','LeaveQuotaController@getAllEmployeesLeaveQuota')->name('leaveQuotas');

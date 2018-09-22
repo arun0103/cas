@@ -82,11 +82,13 @@ class LeaveTypeController extends Controller
         return response()->json($dataWithNames);
     }
     public function deleteLeaveType($leave_id,$branch_id){
-        $leave = CompanyLeave::where([['leave_id',$leave_id],['branch_id',$branch_id]])->delete();
+        $company_id = Session::get('company_id');
+        $leave = CompanyLeave::where([['company_id',$company_id],['leave_id',$leave_id],['branch_id',$branch_id]])->delete();
         return response()->json($leave);
     }
     public function updateLeaveType(Request $request, $leave_id,$branch_id){
-        $update = CompanyLeave::where([['leave_id',$leave_id],['branch_id',$branch_id]])->first();
+        $company_id = Session::get('company_id');
+        $update = CompanyLeave::where([['company_id',$company_id],['leave_id',$leave_id],['branch_id',$branch_id]])->first();
         $update->leave_id = $request->leave_id;
         $update->branch_id = $request->branch_id;
         $update->save();
@@ -98,5 +100,17 @@ class LeaveTypeController extends Controller
             ]
         ];
         return response()->json($dataWithNames);
+    }
+
+    public function getBranchLeaves($branch_id){
+        $comp_id = Session::get('company_id');
+        
+        $leaveTypes = CompanyLeave::where([['company_id',$comp_id],['branch_id',$branch_id]])->with('leaveMaster')->get();
+        $dataToSend = [];
+        foreach($leaveTypes as $leave){
+            $data = ['leave_id'=>$leave->leave_id, 'leave_name'=>$leave->leaveMaster->name];
+            array_push($dataToSend, $data);
+        }
+        return $dataToSend;
     }
 }

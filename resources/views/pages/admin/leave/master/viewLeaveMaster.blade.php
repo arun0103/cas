@@ -176,7 +176,7 @@
                                             <label>Can Club with</label>
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <select id="select_can_club" class="form-control select2 percent100" multiple="multiple" data-placeholder="Select Leave(s) that can be clubbed with" name="selectedClubWith[]">
+                                                    <select id="select_can_club" class="form-control select2 percent100 allLeaves" multiple="multiple" data-placeholder="Select Leave(s) that can be clubbed with" name="selectedClubWith[]">
                                                         @foreach($allLeaves as $leave)
                                                             <option value="{{$leave->leave_id}}">{{$leave->name}}</option>
                                                         @endforeach
@@ -190,7 +190,7 @@
                                             <label>Cannot Club with</label>
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <select id="select_cannot_club" class="form-control select2 " multiple="multiple" data-placeholder="Select Leave(s) that cannot be clubbed with" name="selectedCannotClubWith[]">   
+                                                    <select id="select_cannot_club" class="form-control select2 allLeaves" multiple="multiple" data-placeholder="Select Leave(s) that cannot be clubbed with" name="selectedCannotClubWith[]">   
                                                         @foreach($allLeaves as $leave)
                                                             <option value="{{$leave->leave_id}}">{{$leave->name}}</option>
                                                         @endforeach
@@ -208,7 +208,7 @@
                                             <label>Balance Adjusted From</label>
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <select id="select_balance_adjusted_from" class="form-control select2 " data-placeholder="Select Leave from which balance will be adjusted" name="selectedBalanceAdjustedFrom">   
+                                                    <select id="select_balance_adjusted_from" class="form-control select2 allLeaves" data-placeholder="Select Leave from which balance will be adjusted" name="selectedBalanceAdjustedFrom">   
                                                         @foreach($allLeaves as $leave)
                                                             <option value="{{$leave->leave_id}}">{{$leave->name}}</option>
                                                         @endforeach
@@ -502,6 +502,7 @@
                     newRow += ' <button class="btn btn-danger btn-delete delete-leaveMaster" value="' + data.leave_id + '"><i class="fa fa-trash"></i></button></td></tr>';
                     if (state == "add"){ 
                         $('#leaveMaster-list').prepend(newRow);
+                        $('.allLeaves').prepend('<option value="'+data.leave_id+'">'+data.name+'</option>');
                     }else{
                         $("#leaveMaster" + original_leave_master_id).replaceWith( newRow );
                     }
@@ -577,6 +578,33 @@
             $('#error_MinLeaveAllowed').removeClass('error').addClass('no-error');
         else
             $('#error_MinLeaveAllowed').removeClass('no-error').addClass('error');
+    });
+    var can_club_length=0, cannot_club_length=0;
+    $('#select_can_club').on('change',function(){
+        if($('#select_can_club').val()!='' && can_club_length != $('#select_can_club').val().length){
+            can_club_length = $('#select_can_club').val().length;
+            $('#select_cannot_club').children().each(function(){
+                $('#select_cannot_club option[value='+$(this).val()+']').prop('disabled',false).trigger('change');
+            });
+            $.each($('#select_can_club').val(),function(index,val){
+                console.log(index +'-'+val);
+                $('#select_cannot_club option[value='+val+']').prop('disabled',true).trigger('change');
+            });
+            $('#select_cannot_club').select2();
+        }  
+    });
+    $('#select_cannot_club').on('change',function(){
+        if($('#select_cannot_club').val()!='' && cannot_club_length != $('#select_cannot_club').val().length){
+            cannot_club_length = $('#select_cannot_club').val().length;
+            $('#select_cannot_club').children().each(function(){
+                $('#select_can_club option[value='+$(this).val()+']').prop('disabled',false).trigger('change');
+            });
+            $.each($('#select_cannot_club').val(),function(index,val){
+                console.log(index +'-'+val);
+                $('#select_can_club option[value='+val+']').prop('disabled',true).trigger('change');
+            });
+            $('#select_can_club').select2();
+        }  
     });
 
 </script>

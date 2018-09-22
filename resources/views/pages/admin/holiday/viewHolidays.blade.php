@@ -116,8 +116,8 @@
       if (IsDateHasEvent(date)) 
         alert("event exists!!!!");
       else{
-        $(this).css('background-color', 'red');
         if(confirm("Do you want to Add holiday at "+ date.format())){
+          //$(this).css('background-color', 'red');
           $('#form_addHoliday').trigger("reset");
           $('#btn_confirm').val("add");
           $('#btn_confirm').text("Add");
@@ -196,7 +196,6 @@
         },
         dataType: 'json',
         success: function (data) {
-          console.log(data);
           $('#calendar').fullCalendar('renderEvent',data);
           //$('#calendar').fullCalendar('refetchData');
           $('#form_addHoliday').trigger("reset");
@@ -212,15 +211,15 @@
     }
   });
   
-// check if this day has an event before
-function IsDateHasEvent(date) {
-        var allEvents = [];
-        allEvents = $('#calendar').fullCalendar('clientEvents');
-        var event = $.grep(allEvents, function (v) {
-            return +v.start === +date;
-        });
-        return event.length > 0;
-    }
+  // check if this day has an event before
+  function IsDateHasEvent(date) {
+    var allEvents = [];
+    allEvents = $('#calendar').fullCalendar('clientEvents');
+    var event = $.grep(allEvents, function (v) {
+      return +v.start === +date;
+    });
+    return event.length > 0;
+  }
  
 
 </script>
