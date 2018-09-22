@@ -861,46 +861,42 @@
 
         });
         $('#btn_tab_1_next').click(function(e){
-                if($('#form_addEmployee_t1').valid() && validated == true){
-                    $( "#tabs" ).tabs({
-                        active: 1
-                    });
-                    $("label.error").hide();
-                    $(".error").removeClass("error");
-
-                    $('#modal-add').animate({ scrollTop: 0 }, 'slow');
-                    $('#tab_2_li').removeClass('disabled');
-                }else{
-                    alert('Some values are missing! \nPlease Check!');
-                }
-                
-                
-            });
-            $('#btn_tab_2_next').click(function(e){
-                
-                if($('#form_addEmployee_t2').valid()){
-                    $( "#tabs" ).tabs({
-                        active: 2
-                    });
-                    $('#modal-add').animate({ scrollTop: 0 }, 'slow');
-                }else{
-                    alert('Some values are missing! \nPlease Check!');
-                }
-            });
-            $('#btn_tab_2_back').click(function(e){
-                $( "#tabs" ).tabs({
-                    active: 0
-                });
-                 $('#modal-add').animate({ scrollTop: 0 }, 'slow');
-                
-            });
-            $('#btn_tab_3_back').click(function(e){
+            if($('#form_addEmployee_t1').valid() && validated == true){
                 $( "#tabs" ).tabs({
                     active: 1
                 });
+                $("label.error").hide();
+                $(".error").removeClass("error");
+
                 $('#modal-add').animate({ scrollTop: 0 }, 'slow');
-                
+                $('#tab_2_li').removeClass('disabled');
+            }else{
+                alert('Some values are missing! \nPlease Check!');
+            }
+        });
+        $('#btn_tab_2_next').click(function(e){
+            if($('#form_addEmployee_t2').valid()){
+                $( "#tabs" ).tabs({
+                    active: 2
+                });
+                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+            }else{
+                alert('Some values are missing! \nPlease Check!');
+            }
+        });
+        $('#btn_tab_2_back').click(function(e){
+            $( "#tabs" ).tabs({
+                active: 0
             });
+                $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+        });
+        $('#btn_tab_3_back').click(function(e){
+            $( "#tabs" ).tabs({
+                active: 1
+            });
+            $('#modal-add').animate({ scrollTop: 0 }, 'slow');
+            
+        });
         $('#btn_add').click(function(){
             state="add";
             $("label.error").hide();
@@ -911,10 +907,6 @@
             });
             
             $('#a_tab_1').addClass('active');
-
-            // $('#tab_2').removeClass('active').attr('aria-expanded','false');
-            // $('#tab_3').removeClass('active').attr('aria-expanded','false');
-            
             $('#a_tab_2').removeClass('active');
             $('#a_tab_3').removeClass('active');
 
@@ -973,7 +965,6 @@
             $.get('/getEmployeeById/' + employee_id, function (data) {
                 //success data
                 original_employee_id = employee_id;
-                console.log(data);
                 $('#inputEmployeeId').val(data.employee_id);
                 $('#inputName').val(data.name);
                 
@@ -1023,7 +1014,6 @@
                 $('#select_additionalOffDay').val(data.additional_off_day).change();
                 var additional_off_week_array;
                 if(data.additional_off_week !=null){
-                    console.log(data.additional_off_week)
                     additional_off_week_array= data.additional_off_week.split(',');
                 }
                 $('#select_additionalOffWeek').val(additional_off_week_array).change();
@@ -1302,40 +1292,40 @@
             }
         });
         $(document).on('focusin', '#inputEmployeeId', function(){
-            $(this).data('val', $(this).val());
-        }).on('change','#inputEmployeeId', function(){
-            var current = $(this).val();
-            if(state=="update"){
-                if($('[id=employee'+employee_id+']').length>0 && employee_id !=current && $('[id=employee'+current+']').length>0){
-                    $('#error_employee_id').removeClass('no-error').addClass('error');
-                    validated = false;
+                $(this).data('val', $(this).val());
+            }).on('change','#inputEmployeeId', function(){
+                var current = $(this).val();
+                if(state=="update"){
+                    if($('[id=employee'+employee_id+']').length>0 && employee_id !=current && $('[id=employee'+current+']').length>0){
+                        $('#error_employee_id').removeClass('no-error').addClass('error');
+                        validated = false;
+                    }
+                    else{
+                        $('#error_employee_id').removeClass('error').addClass('no-error');
+                        validated = true;
+                    }
+                }else if(state=="add"){
+                    if($('[id=employee'+current+']').length>0){
+                        $('#error_employee_id').removeClass('no-error').addClass('error');
+                        validated = false;
+                    }
+                    else{
+                        $('#error_employee_id').removeClass('error').addClass('no-error');
+                        validated = true;
+                    }
                 }
-                else{
-                    $('#error_employee_id').removeClass('error').addClass('no-error');
-                    validated = true;
-                }
-            }else if(state=="add"){
-                if($('[id=employee'+current+']').length>0){
-                    $('#error_employee_id').removeClass('no-error').addClass('error');
-                    validated = false;
-                }
-                else{
-                    $('#error_employee_id').removeClass('error').addClass('no-error');
-                    validated = true;
-                }
-            }
         });
-        // $(document).on('change','#inputCardNumber', function(){
-        //     var current = $(this).val();
-        //     $.get('/findCardNumber/'+current, function(result){
-        //         if(result=="duplicate"){
-        //             validated = false;
-        //             $('#error_cardNumber').removeClass('no-error').addClass('error');
-        //         }else{
-        //             validated = true;
-        //             $('#error_cardNumber').removeClass('error').addClass('no-error');
-        //         }
-        //     });
-        // });
+        $(document).on('change','#inputCardNumber', function(){
+            var current = $(this).val();
+            $.get('/findCardNumber/'+current, function(result){
+                if(result=="duplicate"){
+                    validated = false;
+                    $('#error_cardNumber').removeClass('no-error').addClass('error');
+                }else{
+                    validated = true;
+                    $('#error_cardNumber').removeClass('error').addClass('no-error');
+                }
+            });
+        });
     </script>
 @endsection

@@ -156,8 +156,8 @@ class EmployeeController extends Controller
         
     }
     public function findCardNumber($number){
-        $findEmployee = Employee::where('card_number',$number)->first();
-        $findStudent = Student::where('card_number',$number)->first();
+        $findEmployee = Employee::where([['company_id',Session::get('company_id')],['card_number',$number]])->first();
+        $findStudent = Student::where([['institution_id',Session::get('company_id')],['card_number',$number]])->first();
         if($findEmployee!=null || $findStudent !=null){
             $message = "duplicate";
         }else{
