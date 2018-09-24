@@ -11,7 +11,9 @@ use App\Category;
 use App\Shift;
 use App\Punch;
 use App\Roster;
+use App\AppliedLeave;
 
+use PDF;
 use PdfReport;
 use ExcelReport;
 use Carbon\Carbon;
@@ -736,5 +738,22 @@ class ReportController extends Controller
         //                 ])
         //                 ->limit(20)
         //                 ->stream(); // or download('filename here..') to download pdf
-         }
+    }
+
+    public function pdfview(Request $request){
+        $leaves = AppliedLeave::all();
+        //dd($leaves);
+        //$pdf = \App::make('dompdf.wrapper');
+        view()->share('leaves',$leaves);
+        //$pdf = PDF::loadView('pages.reports.pdfview');
+        if($request->has('download')){
+            $pdf = PDF::loadView('pages.reports.pdfview');
+            return $pdf->download('pdfview.pdf');
+        }
+
+
+        return view('pages.reports.pdfview');
+        //return $pdf;
+        //return $pdf->download('test.pdf');
+    }
 }

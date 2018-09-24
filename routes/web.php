@@ -100,6 +100,8 @@ Route::get('/admin/reports', 'ReportController@viewReportPage')->name('reportSel
 Route::get('/getEmployees','ReportController@getEmployees');
 Route::get('/generateReport','ReportController@generateReport');
 
+Route::get('/pdfview',array('as'=>'pdfview','uses'=>'ReportController@pdfview'));
+
 
 
 ////////////////////// Employee
