@@ -51,6 +51,7 @@ class ReportController extends Controller
     }
 
     public function generateReport(Request $req){
+        //dd($req);
         $comp_id = Session::get('company_id');
         $fromDate = $req->fromDate;
         $this->fromDate = $fromDate;
@@ -258,8 +259,7 @@ class ReportController extends Controller
                     ->download('Attendance_report_'.$fromDate.'-'.$toDate); // or download('filename here..') to download pdf;
                 } 
                 break;
-            case 'rep_canteen_1': break; // left
-            case 'rep_canteen_2': break; // left
+            
             case 'rep_daily_punch': // completed
                 // Report title
                 $title = 'Punch Details'; 
@@ -606,11 +606,13 @@ class ReportController extends Controller
                 $queryBuilder = Department::where('company_id',Session::get('company_id'))
                                 //->whereIn('branch_id',$branches)
                                 ->with(['employees'=>function($query){
-                                    $query->with('appliedLeaves');
+                                    $query->with('appliedLeaves')->with(['punch_records'=>function($q){
+                                        $q->where('punch_date',$this->fromDate);
+                                    }]);
                                 }])
-                                ->with(['punch_records'=>function($query) use($fromDate){
-                                    $query->where('punch_date',$fromDate);
-                                } ])
+                                // ->with(['punch_records'=>function($query) use($fromDate){
+                                //     $query->where('punch_date',$fromDate);
+                                // } ])
                                 ->with(['rosters'=> function ($query) use($fromDate) {
                                     $query->where('date', $fromDate);
                                 }]);
@@ -622,13 +624,12 @@ class ReportController extends Controller
                     },
                     'Absent'=>function ($result){
                         $absent_count = 0;
-                        $total_employees = count($result->employees);
-                        $absent_count = $total_employees - count($result->punch_records);
-                        //dd($result);
-                        for($i=0;$i<count($result->punch_records->where('punch_date',$this->fromDate)->groupBy('emp_id'));$i++){
-                            if($result->punch_records[$i]['punch_1']==null )
+                        for($i=0;$i<count($result->employees);$i++){
+                            if($result->employees[$i]->punch_records==null){
                                 $absent_count++;
+                            }
                         }
+                        //$absent_count = count(Employee::where([['company_id',Session::get('company_id')],['dept_id',$result->department_id]])->get());
                         return $absent_count;
                     },
                     'Leave'=>function($result){
@@ -651,9 +652,10 @@ class ReportController extends Controller
                     'Present'=>function ($result){
                         //dd($result);
                         $present_count = 0;
-                        for($i=0;$i<count($result->punch_records);$i++){
-                            if($result->punch_records[$i]['punch_1']!=null)
-                            $present_count++;
+                        for($i=0;$i<count($result->employees);$i++){
+                            //dd($result->employees[$i]->punch_records[0]['punch_1']);
+                            if($result->employees[$i]->punch_records!=null )
+                                $present_count++;
                         }
                         return $present_count;
                     },
@@ -676,13 +678,14 @@ class ReportController extends Controller
                     ->download('Absent_report_'.$fromDate.'-'.$toDate); // or download('filename here..') to download pdf;
                 }
                 break;
-            case 'rep_mismatch': break;
+            case 'rep_mismatch': $this->mismatchReport($req);break;
             case 'rep_movement': break;
             case 'rep_muster': break;
             case 'rep_overstay': break;
             case 'rep_punch_card': break;
             case 're_register': break;
-            
+            case 'rep_canteen_1': break; // left
+            case 'rep_canteen_2': break; // left
         }
     
         // For displaying filters description on header
@@ -741,19 +744,25 @@ class ReportController extends Controller
     }
 
     public function pdfview(Request $request){
+        // ini_set('max_execution_time', 0);
         $leaves = AppliedLeave::all();
-        //dd($leaves);
+        // dd($request);
         //$pdf = \App::make('dompdf.wrapper');
         view()->share('leaves',$leaves);
-        //$pdf = PDF::loadView('pages.reports.pdfview');
-        if($request->has('download')){
-            $pdf = PDF::loadView('pages.reports.pdfview');
-            return $pdf->download('pdfview.pdf');
-        }
-
+        $pdf = PDF::loadView('pages.reports.pdfview',['leaves'=>$leaves]);
+        return $pdf->download('pdfview.pdf');
 
         return view('pages.reports.pdfview');
         //return $pdf;
         //return $pdf->download('test.pdf');
+    }
+    public function mismatchReport(Request $request){
+        $employees = Employee::where('company_id',Session::get('company_id'))->with(['punch_records'=>function($query){
+            $query->where([['punch_1','!=',null],['punch_2',null]])->orWhere([['punch_3','!=',null],['punch_4',null]])->orWhere([['punch_5','!=',null],['punch_6',null]]);
+        }])->get();
+        $pdf = app('dompdf.wrapper'); 
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        $pdf->loadView('pages.reports.mismatch',['employees'=>$employees])->setPaper('A4','landscape');
+        return $pdf->stream('mismatch.pdf');
     }
 }

@@ -101,6 +101,7 @@ Route::get('/getEmployees','ReportController@getEmployees');
 Route::get('/generateReport','ReportController@generateReport');
 
 Route::get('/pdfview',array('as'=>'pdfview','uses'=>'ReportController@pdfview'));
+Route::get('/reports/mismatch','ReportController@mismatchReport');
 
 
 
