@@ -65,7 +65,11 @@ class StudentController extends Controller
 
     public function getGrades(){
         $institution_id = Session::get('company_id');
-        $grades = Student_Grade::where('institution_id',$institution_id)->get();
+        $grades = Student_Grade::where('institution_id',$institution_id)->with(['students'=>function($query){
+            $query->count();
+        }])->with(['sections'=>function($query2){
+            $query2->count();
+        }])->get();
 
         return view('pages/admin/student/viewGrades',['grades'=>$grades]);
     }
@@ -99,7 +103,9 @@ class StudentController extends Controller
     public function getSections(){
         $institution_id = Session::get('company_id');
         $sections = Student_Section::where('institution_id',$institution_id)->with('grade')->get();
-        $grades = Student_Grade::where('institution_id',$institution_id)->get();
+        $grades = Student_Grade::where('institution_id',$institution_id)->with(['students'=>function($query){
+            $query->count();
+        }])->get();
 
         return view('pages/admin/student/viewSections',['sections'=>$sections, 'grades'=>$grades]);
     }

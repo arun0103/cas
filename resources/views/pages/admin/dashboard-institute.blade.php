@@ -189,22 +189,39 @@
   }
 
   $('#div-total-employees').click(function (e){
+    // $('#total-employees-table').DataTable( {
+    //     "ajax": {
+    //         "url": "/getTotalEmployees/",
+    //         "dataSrc": ""
+    //     },
+    //     "columns": [
+    //       { "data": "name" },
+    //         { "data": "branch.name" },
+    //         { "data": "department.name" },
+    //         { "data": "designation.name" },
+    //         { "data": "punch_records.punch_1","defaultContent":"<i style='color:red'>No Data</i>" }
+    //     ]
+    // } );
     $.ajax({
       'url': "/getTotalEmployees/",
       'method': "GET",
       'contentType': 'application/json'
       }).done( function(data) {
       console.log(data);
-      $('#total-employees-table').dataTable({
-        "aaData": data,
-        "columns": [
-            { "data": "name" },
-            { "data": "branch.name" },
-            { "data": "department.name" },
-            { "data": "designation.name" },
-            { "data": "punch_records.punch_1","defaultContent":"<i style='color:red'>No Data</i>" }
-        ]
-      });
+      if ( $.fn.dataTable.isDataTable( '#total-employees-table' ) ) {
+          table = $('#total-employees-table').DataTable();
+        }else{
+          $('#total-employees-table').dataTable({
+            "aaData": data,
+            "columns": [
+                { "data": "name" },
+                { "data": "branch.name" },
+                { "data": "department.name" },
+                { "data": "designation.name" },
+                { "data": "punch_records.punch_1","defaultContent":"<i style='color:red'>No Data</i>" }
+            ]
+          });
+        }
     });
     $("#div-total-employees-container").addClass('display-block').removeClass('no-display');
 
@@ -229,17 +246,21 @@
       'contentType': 'application/json'
       }).done( function(data) {
       console.log(data);
-      $('#absent-employees-table').dataTable({
-        "aaData": data,
-        "columns": [
-            { "data": "name" },
-            { "data": "branch.name" },
-            { "data": "department.name" },
-            { "data": "designation.name" },
-            { "data": "applied_leaves[0].leave_from","defaultContent":"<i style='color:red'>Not Applied</i>"},
-            { "data": "applied_leaves[0].leave_to","defaultContent":"<i style='color:red'>Not Applied</i>"}            
-        ]
-      });
+      if ( $.fn.dataTable.isDataTable( '#absent-employees-table' ) ) {
+          table = $('#absent-employees-table').DataTable();
+        }else{
+          $('#absent-employees-table').dataTable({
+            "aaData": data,
+            "columns": [
+                { "data": "name" },
+                { "data": "branch.name" },
+                { "data": "department.name" },
+                { "data": "designation.name" },
+                { "data": "applied_leaves[0].leave_from","defaultContent":"<i style='color:red'>Not Applied</i>"},
+                { "data": "applied_leaves[0].leave_to","defaultContent":"<i style='color:red'>Not Applied</i>"}            
+            ]
+          });
+        }
     });
     $("#div-absent-employees-container").addClass('display-block').removeClass('no-display');
 
@@ -263,16 +284,21 @@
       'contentType': 'application/json'
       }).done( function(data) {
       console.log(data);
-      $('#present-employees-table').dataTable({
-        "aaData": data,
-        "columns": [
-            { "data": "employee.name" },
-            { "data": "employee.branch.name" },
-            { "data": "employee.department.name" },
-            { "data": "employee.designation.name" },
-            { "data": "punch_1" }
-        ]
-      });
+      if ( $.fn.dataTable.isDataTable( '#present-employees-table' ) ) {
+          table = $('#present-employees-table').DataTable();
+        }else{
+          table = $('#present-employees-table').dataTable({
+            "aaData": data,
+            "columns": [
+                { "data": "employee.name" },
+                { "data": "employee.branch.name" },
+                { "data": "employee.department.name" },
+                { "data": "employee.designation.name" },
+                { "data": "punch_1" }
+            ]
+          });
+        }
+      
     });
     $("#div-present-employees-container").addClass('display-block').removeClass('no-display');
 
@@ -296,16 +322,21 @@
       'contentType': 'application/json'
       }).done( function(data) {
       console.log("late employees: "+ data);
-      $('#late-employees-table').dataTable({
-        "aaData": data,
-        "columns": [
-            { "data": "employee.name" },
-            { "data": "employee.branch.name" },
-            { "data": "employee.department.name" },
-            { "data": "employee.designation.name" },
-            { "data": "late_in" }
-        ]
-      });
+      if ( $.fn.dataTable.isDataTable( '#late-employees-table' ) ) {
+          table = $('#late-employees-table').DataTable();
+        }
+        else {
+          table = $('#late-employees-table').dataTable({
+            "aaData": data,
+            "columns": [
+                { "data": "employee.name" },
+                { "data": "employee.branch.name" },
+                { "data": "employee.department.name" },
+                { "data": "employee.designation.name" },
+                { "data": "late_in" }
+            ]
+          });
+        }
     });
     $("#div-late-employees-container").addClass('display-block').removeClass('no-display');
 
@@ -324,37 +355,63 @@
   });
 
   $('#div-total-students').on('click',function(){
+    // if ( $.fn.dataTable.isDataTable( '#total-students-table' ) ) {
+    //   table = $('#total-students-table').Datatable();
+      
+    // }else{
+    //   table = $('#total-students-table').DataTable( {
+    //     "ajax": {
+    //         "url": "/getTotalStudents/",
+    //         "dataSrc": ""
+    //     },
+    //     "columns": [
+    //       { "data": "name" },
+    //       { "data": "grade.name" },
+    //       { "data": "section.name" },
+    //       { "data": "guardian_name" },
+    //       { "data": "contact_1_number" },
+    //       { "data": "contact_2_number" },
+    //     ]
+    // } );
+    // }
+    
     $.ajax({
       'url': "/getTotalStudents/",
       'method': "GET",
       'contentType': 'application/json'
       }).done( function(data) {
-      $('#total-students-table').dataTable({
-        "aaData": data,
-        "columns": [
-            { "data": "name" },
-            { "data": "grade.name" },
-            { "data": "section.name" },
-            { "data": "guardian_name" },
-            { "data": "contact_1_number" },
-            { "data": "contact_2_number" },
-        ]
+        if ( $.fn.dataTable.isDataTable( '#total-students-table' ) ) {
+          table = $('#total-students-table').DataTable();
+        }
+        else {
+            table = $('#total-students-table').dataTable({
+                      "aaData": data,
+                      "columns": [
+                          { "data": "name" },
+                          { "data": "grade.name" },
+                          { "data": "section.name" },
+                          { "data": "guardian_name" },
+                          { "data": "contact_1_number" },
+                          { "data": "contact_2_number" },
+                      ]
+                    });
+        }
+      
       });
-    });
-    $('#div-total-students-container').addClass('display-block').removeClass('no-display');
+      $('#div-total-students-container').addClass('display-block').removeClass('no-display');
 
-    $('#div-present-students-container').addClass('no-display').removeClass('display-block');
-    $('#div-absent-students-container').addClass('no-display').removeClass('display-block');
-    $('#div-late-students-container').addClass('no-display').removeClass('display-block');
+      $('#div-present-students-container').addClass('no-display').removeClass('display-block');
+      $('#div-absent-students-container').addClass('no-display').removeClass('display-block');
+      $('#div-late-students-container').addClass('no-display').removeClass('display-block');
 
-    $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
-    $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
-    $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
-    $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
+      $('#div-total-employees-container').addClass('no-display').removeClass('display-block');
+      $('#div-present-employees-container').addClass('no-display').removeClass('display-block');
+      $('#div-absent-employees-container').addClass('no-display').removeClass('display-block');
+      $('#div-late-employees-container').addClass('no-display').removeClass('display-block');
 
-    $('html, body').animate({
-        scrollTop: $("#div-total-students-container").offset().top
-    }, 1000);    
+      $('html, body').animate({
+          scrollTop: $("#div-total-students-container").offset().top
+      }, 1000);    
   });
   $('#div-present-students').on('click',function(){
     $.ajax({
@@ -363,18 +420,23 @@
       'contentType': 'application/json'
       }).done( function(data) {
       console.log(data);
-      var p_s_t = $('#present-students-table').dataTable({
-        "aaData": data,
-        "columns": [
-            { "data": "student.name" },
-            { "data": "student.grade.name" },
-            { "data": "student.section.name" },
-            { "data": "student.guardian_name" },
-            { "data": "student.contact_1_number" },
-            { "data": "student.contact_2_number" },
-            { "data": "punch_1" },
-        ]
-      });
+      if ( $.fn.dataTable.isDataTable( '#present-students-table' ) ) {
+          table = $('#present-students-table').DataTable();
+      }
+      else {
+          table = $('#present-students-table').DataTable({
+                    "aaData": data,
+                    "columns": [
+                        { "data": "student.name" },
+                        { "data": "student.grade.name" },
+                        { "data": "student.section.name" },
+                        { "data": "student.guardian_name" },
+                        { "data": "student.contact_1_number" },
+                        { "data": "student.contact_2_number" },
+                        { "data": "punch_1" },
+                    ]
+                  });
+        }
     });
     $('#div-present-students-container').addClass('display-block').removeClass('no-display');
 
@@ -398,17 +460,23 @@
       'method': "GET",
       'contentType': 'application/json'
       }).done( function(data) {
-      $('#absent-students-table').dataTable({
-        "aaData": data,
-        "columns": [
-            { "data": "name" },
-            { "data": "grade.name" },
-            { "data": "section.name" },
-            { "data": "guardian_name" },
-            { "data": "contact_1_number" },
-            { "data": "contact_2_number" },
-        ]
-      });
+        if ( $.fn.dataTable.isDataTable( '#absent-students-table' ) ) {
+            table = $('#absent-students-table').DataTable();
+        }
+        else {
+          table = $('#absent-students-table').dataTable({
+                    "aaData": data,
+                    "columns": [
+                        { "data": "name" },
+                        { "data": "grade.name" },
+                        { "data": "section.name" },
+                        { "data": "guardian_name" },
+                        { "data": "contact_1_number" },
+                        { "data": "contact_2_number" },
+                    ]
+                  });
+        }
+      
     });
     $('#div-absent-students-container').addClass('display-block').removeClass('no-display');
 

@@ -503,7 +503,20 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Auto Shift Select<span class="required">*</span></label>
+                                                            <div>
+                                                                <label for="radio_autoSelectShift_yes">Yes
+                                                                    <input type="radio" id="radio_autoSelectShift_yes" name="auto_select_shift" value="1" class="flat-red">
+                                                                </label>
+                                                                <label for="radio_autoSelectShift_no">No
+                                                                    <input type="radio" id="radio_autoSelectShift_no" name="auto_select_shift" value="0" class="flat-red" checked>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
                                                         <div class="form-group">
                                                             <label class="control-label">Change By Week <span class="required">*</span></label>
                                                             <div>
@@ -516,7 +529,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-3">
                                                         <div class="form-group">
                                                             <label class="control-label">Change After Day</label>
                                                             <div>
@@ -529,7 +542,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-3">
                                                         <div class="form-group">
                                                             <label for="select_changed_on_day" class="control-label">Change On Day</label>
                                                             <select id="select_changed_on_day" class="form-control select2" data-placeholder="Select a Day">
@@ -963,6 +976,7 @@
             $('#error_msg_id').removeClass('error').addClass('no-error');
             
             $.get('/getEmployeeById/' + employee_id, function (data) {
+                console.log(data);
                 //success data
                 original_employee_id = employee_id;
                 $('#inputEmployeeId').val(data.employee_id);
@@ -1021,6 +1035,11 @@
                 $('#select_shift_2').val(data.shift_2).change();
                 $('#select_shift_3').val(data.shift_3).change();
                 $('#select_shift_4').val(data.shift_4).change();
+
+                if(data.auto_shift==1 ||data.auto_shift == true)
+                    $('#radio_autoSelectShift_yes').prop("checked", true);
+                else
+                    $('#radio_autoSelectShift_no').prop("checked", true);
                 
                 if(data.change_by_week==1)
                     $('#radio_changeByWeek_yes').prop("checked",true);
@@ -1187,6 +1206,7 @@
                     shift_2                     : $('#select_shift_2').val()!="none"?$('#select_shift_2').val():null,
                     shift_3                     : $('#select_shift_3').val()!="none"?$('#select_shift_3').val():null,
                     shift_4                     : $('#select_shift_4').val()!="none"?$('#select_shift_4').val():null,
+                    auto_shift                  : $('#radio_autoSelectShift_yes').prop('checked')==true?1:0,
                     change_by_week              : $('#radio_changeByWeek_yes').prop("checked")==true?1:0,
                     change_after_days           : $('#radio_changeAfterDay_yes').prop("checked")==true?1:0,
                     changed_on_day              : $('#select_changed_on_day').val(),

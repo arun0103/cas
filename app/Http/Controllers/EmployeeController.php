@@ -104,6 +104,7 @@ class EmployeeController extends Controller
         $e->shift_2 = $request->shift_2;
         $e->shift_3 = $request->shift_3;
         $e->shift_4 = $request->shift_4;
+        $e->auto_shift =$request->auto_shift;
         $e->change_by_week = $request->change_by_week;
         $e->change_after_days = $request->change_after_days;
         $e->changed_on_day = $request->changed_on_day;

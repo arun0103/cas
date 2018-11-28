@@ -23,6 +23,6 @@ class Student_Grade extends Model
         return $this->hasMany('App\Student',['grade_id','institution_id'],['grade_id','institution_id']);
     }
     public function sections(){
-        return $this->hasMany('App\Student_Section','grade_id',[['grade_id','institution_id'],'institution_id']);
+        return $this->hasMany('App\Student_Section',['grade_id','institution_id'],['grade_id','institution_id']);
     }
 }

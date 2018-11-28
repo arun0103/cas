@@ -20,6 +20,8 @@
                 <tr>
                     <th>Grade ID</th>
                     <th>Grade Name</th>
+                    <th># Sections</th>
+                    <th># Students</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -28,6 +30,8 @@
                     <tr id="grade{{$grade->grade_id}}">
                         <td>{{$grade->grade_id}}</td>
                         <td>{{$grade->name}}</td>
+                        <td>{{$grade->sections->count()}}</td>
+                        <td>{{$grade->students->count()}}</td>
                         <td>
                             <button class="btn btn-warning open_modal" value="{{$grade->grade_id}}"><i class="fa fa-edit"> </i></button>
                             <button class="btn btn-danger delete-row" value="{{$grade->grade_id}}"><i class="fa fa-trash"> </i></button>
@@ -39,6 +43,8 @@
                 <tr>
                     <th>Grade ID</th>
                     <th>Grade Name</th>
+                    <th># Sections</th>
+                    <th># Students</th>
                     <th>Actions</th>
                 </tr>
             </tfoot>

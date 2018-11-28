@@ -208,6 +208,75 @@ class AdminController extends Controller
         
         $employeeDetails = Employee::where([['company_id',Session::get('company_id')],['employee_id',$req->employee_id]])->first();
         $shiftDetails = Shift::where('shift_id',$req->shift_id)->first();
+        
+        switch($employeeDetails->auto_shift){
+            case null: break;
+            case false: 
+                $todayRoster = Roster::where('roster_id',$req->roster_id)->first();
+                $shiftDetails = Shift::where('shift_id',$todayRoster->shift_id)->first();
+                break;
+            case 1:
+            case true: 
+                $shift_1_emp= null;
+                $shift_2_emp= null;
+                $shift_3_emp = null;
+                $shift_4_emp = null;
+                $shift_1_time = null;
+                $shift_2_time = null;
+                $shift_3_time = null;
+                $shift_4_time = null;
+                $dt_punch_1 = new DateTime($req->punch_1);
+                $punch_1 = Carbon::instance($dt_punch_1);   
+                $shift_time;
+                if($employeeDetails->shift_1!= null){
+                    $shift_1_emp = Shift::where('shift_id',$employeeDetails->shift_1)->first();
+                    $shiftDetails =  $shift_1_emp;
+                    $shift_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shiftDetails->start_time)));
+                }
+                if($employeeDetails->shift_2!=null){
+                    $shift_2_emp = Shift::where('shift_id',$employeeDetails->shift_2)->first();
+                    $shift_1_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shift_1_emp->start_time)));
+                    $shift_2_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shift_2_emp->start_time)));
+                    $diff_in_minutes_1 = $shift_1_time->diffInMinutes($punch_1);
+                    $diff_in_minutes_2 = $shift_2_time->diffInMinutes($punch_1);
+                    if($diff_in_minutes_1<0)
+                        $diff_in_minutes_1 *= -1;
+                    if($diff_in_minutes_2<0)
+                        $diff_in_minutes_2 *= -1;
+
+                    if($diff_in_minutes_1 > $diff_in_minutes_2){
+                        $shiftDetails =  $shift_2_emp;
+                        $shift_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shiftDetails->start_time)));
+                    }
+                }
+                if($employeeDetails->shift_3!=null){
+                    $shift_3_emp = Shift::where('shift_id',$employeeDetails->shift_3)->first();
+                    //$shift_1_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shift_1_emp->start_time)));
+                    $shift_3_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shift_3_emp->start_time)));
+                    $diff_in_minutes_less = $shift_time->diffInMinutes($punch_1);
+                    $diff_in_minutes_3 = $shift_3_time->diffInMinutes($punch_1);
+                    if($diff_in_minutes_3<0)
+                        $diff_in_minutes_3 *= -1;
+
+                    if($diff_in_minutes_less > $diff_in_minutes_3){
+                        $shiftDetails =  $shift_3_emp;
+                        $shift_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shiftDetails->start_time)));
+                    }
+                }
+                if($employeeDetails->shift_4!=null){
+                    $shift_4_emp = Shift::where('shift_id',$employeeDetails->shift_4)->first();
+                    $shift_4_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shift_4_emp->start_time)));
+                    $diff_in_minutes_less = $shift_time->diffInMinutes($punch_1);
+                    $diff_in_minutes_4 = $shift_4_time->diffInMinutes($punch_1);
+                    if($diff_in_minutes_4<0)
+                        $diff_in_minutes_4 *= -1;
+
+                    if($diff_in_minutes_less > $diff_in_minutes_4){
+                        $shiftDetails =  $shift_4_emp;
+                        //$shift_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shiftDetails->start_time)));
+                    }
+                }
+        }   
 
         $punchToInsert = new Punch([
             'emp_id'=>$employeeDetails->employee_id,
@@ -223,7 +292,7 @@ class AdminController extends Controller
             'punch_4'=>$req->punch_4,
             'punch_5'=>$req->punch_5,
             'punch_6'=>$req->punch_6,
-            'shift_code'=>$req->shift_id,
+            'shift_code'=>$shiftDetails->shift_id,
             'half_1_gate_pass'=>$req->half_1_gate_pass,
             'half_2_gate_pass'=>$req->half_2_gate_pass,
             'half_1_gp_out'=>$req->half_1_gp_out,
@@ -236,17 +305,17 @@ class AdminController extends Controller
             'is_manual_entry_done'=>1
             
             // 'early_in'=>,
-            // 'early_out'=>,
-            // 'late_in'=>,
-            // 'overstay'=>,
-            // 'overtime'=>,
-            // 'comp_off'=>,
-            // 'comp_off_avail'=>,
-            // 'hours_worked_minutes'=>,
-            // 'half_1'=>,
-            // 'half_2'=>,
-            // 'final_half_1'=>,
-            // 'final_half_2'=>,
+                // 'early_out'=>,
+                // 'late_in'=>,
+                // 'overstay'=>,
+                // 'overtime'=>,
+                // 'comp_off'=>,
+                // 'comp_off_avail'=>,
+                // 'hours_worked_minutes'=>,
+                // 'half_1'=>,
+                // 'half_2'=>,
+                // 'final_half_1'=>,
+                // 'final_half_2'=>,
             
             // 'deduction_minutes'=>, 
         ]);
@@ -443,7 +512,77 @@ class AdminController extends Controller
     public function updatePunch(Request $request, $id){
         
         $worked_hours = 0;
+        
         $shift = Shift::where('shift_id',$request->shift_id)->first();
+        $employeeDetails = Employee::where([['company_id',Session::get('company_id')],['employee_id',$request->employee_id]])->first();
+        switch($employeeDetails->auto_shift){
+            case null: break;
+            case false: 
+                $todayRoster = Roster::where('roster_id',$request->roster_id)->first();
+                $shift = Shift::where('shift_id',$todayRoster->shift_id)->first();
+                break;
+            case 1:
+            case true: 
+                $shift_1_emp = null;
+                $shift_2_emp = null;
+                $shift_3_emp = null;
+                $shift_4_emp = null;
+                $shift_1_time = null;
+                $shift_2_time = null;
+                $shift_3_time = null;
+                $shift_4_time = null;
+                $dt_punch_1 = new DateTime($request->punch_1);
+                $punch_1 = Carbon::instance($dt_punch_1);   
+                $shift_time;
+                if($employeeDetails->shift_1!= null){
+                    $shift_1_emp = Shift::where('shift_id',$employeeDetails->shift_1)->first();
+                    $shift =  $shift_1_emp;
+                    $shift_time = Carbon::instance(new DateTime($this->makeDateTime($request->punch_date,$shift->start_time)));
+                }
+                if($employeeDetails->shift_2!=null){
+                    $shift_2_emp = Shift::where('shift_id',$employeeDetails->shift_2)->first();
+                    $shift_1_time = Carbon::instance(new DateTime($this->makeDateTime($request->punch_date,$shift_1_emp->start_time)));
+                    $shift_2_time = Carbon::instance(new DateTime($this->makeDateTime($request->punch_date,$shift_2_emp->start_time)));
+                    $diff_in_minutes_1 = $shift_1_time->diffInMinutes($punch_1);
+                    $diff_in_minutes_2 = $shift_2_time->diffInMinutes($punch_1);
+                    if($diff_in_minutes_1<0)
+                        $diff_in_minutes_1 *= -1;
+                    if($diff_in_minutes_2<0)
+                        $diff_in_minutes_2 *= -1;
+
+                    if($diff_in_minutes_1 > $diff_in_minutes_2){
+                        $shift =  $shift_2_emp;
+                        $shift_time = Carbon::instance(new DateTime($this->makeDateTime($request->punch_date,$shift->start_time)));
+                    }
+                }
+                if($employeeDetails->shift_3!=null){
+                    $shift_3_emp = Shift::where('shift_id',$employeeDetails->shift_3)->first();
+                    //$shift_1_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shift_1_emp->start_time)));
+                    $shift_3_time = Carbon::instance(new DateTime($this->makeDateTime($request->punch_date,$shift_3_emp->start_time)));
+                    $diff_in_minutes_less = $shift_time->diffInMinutes($punch_1);
+                    $diff_in_minutes_3 = $shift_3_time->diffInMinutes($punch_1);
+                    if($diff_in_minutes_3<0)
+                        $diff_in_minutes_3 *= -1;
+
+                    if($diff_in_minutes_less > $diff_in_minutes_3){
+                        $shift =  $shift_3_emp;
+                        $shift_time = Carbon::instance(new DateTime($this->makeDateTime($request->punch_date,$shift->start_time)));
+                    }
+                }
+                if($employeeDetails->shift_4!=null){
+                    $shift_4_emp = Shift::where('shift_id',$employeeDetails->shift_4)->first();
+                    $shift_4_time = Carbon::instance(new DateTime($this->makeDateTime($request->punch_date,$shift_4_emp->start_time)));
+                    $diff_in_minutes_less = $shift_time->diffInMinutes($punch_1);
+                    $diff_in_minutes_4 = $shift_4_time->diffInMinutes($punch_1);
+                    if($diff_in_minutes_4<0)
+                        $diff_in_minutes_4 *= -1;
+
+                    if($diff_in_minutes_less > $diff_in_minutes_4){
+                        $shift =  $shift_4_emp;
+                        //$shift_time = Carbon::instance(new DateTime($this->makeDateTime($req->punch_date,$shiftDetails->start_time)));
+                    }
+                }
+        }
         $punch = Punch::where('id',$id)->first();
         //dd( $request->input('punch_1'));
         if($punch != null){
@@ -594,6 +733,7 @@ class AdminController extends Controller
                     }
                 }
             }
+            $punch->shift_code = $shift->shift_id;
             $punch->hour_worked_minutes = $worked_hours;
             $punch->half_1_gate_pass = $request->input('half_1_gate_pass');
             $punch->half_1_gp_out = $request->input('half_1_gp_out');
